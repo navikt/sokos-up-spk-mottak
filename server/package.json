@@ -1,7 +1,7 @@
 {
-  "name": "sokos-mikrofrontend-template-server",
+  "name": "sokos-up-spk-mottak-server",
   "version": "1.0.0",
-  "description": "Server for sokos-mikrofrontend-template",
+  "description": "Server for sokos-up-spk-mottak",
   "main": "src/server.ts",
   "scripts": {
     "dev": "nodemon src/server.ts",

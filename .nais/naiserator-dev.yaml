@@ -1,7 +1,7 @@
 apiVersion: "nais.io/v1alpha1"
 kind: "Application"
 metadata:
-  name: sokos-mikrofrontend-template
+  name: sokos-up-spk-mottak
   namespace: okonomi
   labels:
     team: okonomi
@@ -14,20 +14,20 @@ spec:
   image: "{{ image }}"
   port: 8080
   liveness:
-    path: /sokos-mikrofrontend-template/internal/isAlive
+    path: /sokos-up-spk-mottak/internal/isAlive
     initialDelay: 10
   readiness:
-    path: /sokos-mikrofrontend-template/internal/isReady
+    path: /sokos-up-spk-mottak/internal/isReady
     initialDelay: 10
   prometheus:
     enabled: true
-    path: /sokos-mikrofrontend-template/internal/metrics
+    path: /sokos-up-spk-mottak/internal/metrics
   replicas:
     min: 1
     max: 2
   ingresses:
-    - "https://utbetalingsportalen.intern.dev.nav.no/sokos-mikrofrontend-template"
-    - "https://utbetalingsportalen.ansatt.dev.nav.no/sokos-mikrofrontend-template"
+    - "https://utbetalingsportalen.intern.dev.nav.no/sokos-up-spk-mottak"
+    - "https://utbetalingsportalen.ansatt.dev.nav.no/sokos-up-spk-mottak"
   resources:
     limits:
       cpu: "3"

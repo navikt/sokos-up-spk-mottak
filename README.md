@@ -1,4 +1,4 @@
-# sokos-mikrofrontend-template
+# sokos-up-spk-mottak
 
 Brukes som utgangspunkt for å opprette nye mikrofrontends i Økonomiportalen.
 

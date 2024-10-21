@@ -16,7 +16,7 @@ export default defineConfig(({ mode }) => ({
   build: {
     lib: {
       entry: resolve(__dirname, "src/App.tsx"),
-      name: "sokos-mikrofrontend-template",
+      name: "sokos-up-spk-mottak",
       formats: ["es"],
       fileName: () => "bundle.js",
     },
