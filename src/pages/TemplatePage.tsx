@@ -13,10 +13,10 @@ export default function TemplatePage() {
     <>
       <div className={styles.template__header}>
         <Heading spacing level="2" size="large">
-          Mikrofrontend Template
+          Frontend for spk mottak
         </Heading>
         <BodyLong>
-          Dette er en template for å bygge undersider i Utbetalingsportalen
+          Dette er en template for å bygge undersider i Utbetalingsportalen.
         </BodyLong>
       </div>
 
