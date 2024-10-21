@@ -1,0 +1,40 @@
+apiVersion: "nais.io/v1alpha1"
+kind: "Application"
+metadata:
+  name: sokos-mikrofrontend-template
+  namespace: okonomi
+  labels:
+    team: okonomi
+  annotations:
+    config.linkerd.io/proxy-memory-limit: "512Mi"
+    config.linkerd.io/proxy-memory-request: "128Mi"
+spec:
+  env:
+  - name: CORS_ALLOWED_ORIGIN_INTERN
+    value: "https://utbetalingsportalen.intern.nav.no"
+  - name: CORS_ALLOWED_ORIGIN_ANSATT
+    value: "https://utbetalingsportalen.ansatt.nav.no"
+  image: "{{ image }}"
+  port: 8080
+  liveness:
+    path: /sokos-mikrofrontend-template/internal/isAlive
+    initialDelay: 10
+  readiness:
+    path: /sokos-mikrofrontend-template/internal/isReady
+    initialDelay: 10
+  prometheus:
+    enabled: true
+    path: /sokos-mikrofrontend-template/internal/metrics
+  replicas:
+    min: 2
+    max: 2
+  ingresses:
+    - "https://utbetalingsportalen.intern.nav.no/sokos-mikrofrontend-template"
+    - "https://utbetalingsportalen.ansatt.nav.no/sokos-mikrofrontend-template"
+  resources:
+    limits:
+      cpu: "3"
+      memory: 768Mi
+    requests:
+      cpu: "50m"
+      memory: 256Mi

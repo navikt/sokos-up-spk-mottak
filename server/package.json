@@ -1,0 +1,29 @@
+{
+  "name": "sokos-mikrofrontend-template-server",
+  "version": "1.0.0",
+  "description": "Server for sokos-mikrofrontend-template",
+  "main": "src/server.ts",
+  "scripts": {
+    "dev": "nodemon src/server.ts",
+    "build": "tsc --build"
+  },
+  "author": "navikt",
+  "license": "MIT",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.21.1",
+    "express-static-gzip": "^2.1.8"
+  },
+  "devDependencies": {
+    "@types/cors": "^2.8.17",
+    "@types/express": "^5.0.0",
+    "@types/node": "^22.7.7",
+    "nodemon": "^3.1.7",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.6.3"
+  },
+  "engines": {
+    "node": ">=20.16.0",
+    "pnpm": ">=9.6.0"
+  }
+}

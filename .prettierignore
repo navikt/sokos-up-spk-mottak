@@ -1,0 +1,7 @@
+# Ignore artifacts:
+dist
+mock
+server/build
+**/node_modules
+*.yml
+*.yaml
