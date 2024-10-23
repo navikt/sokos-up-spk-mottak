@@ -1,52 +1,69 @@
-import { BodyLong, Heading, Table } from "@navikt/ds-react";
-import { Employee } from "../types/Employee";
+import { useState } from "react";
+import { Alert, Button, HStack, Heading, VStack } from "@navikt/ds-react";
 import styles from "./TemplatePage.module.css";
 
-export default function TemplatePage() {
-  const employees = [
-    { id: 1, navn: "Ola Nordmann", yrke: "Lærer" },
-    { id: 2, navn: "Kari Nordmann", yrke: "Sykepleier" },
-    { id: 3, navn: "Per Hansen", yrke: "Elektriker" },
-  ];
+const TemplatePage = () => {
+  const [activeAlert, setActiveAlert] = useState<number | null>(null);
+
+  const handleButtonClick = (buttonId: number) => {
+    setActiveAlert(buttonId);
+
+    setTimeout(() => {
+      setActiveAlert(null);
+    }, 3000);
+  };
 
   return (
     <>
       <div className={styles.template__header}>
-        <Heading spacing level="2" size="large">
-          Frontend for spk mottak
-        </Heading>
-        <BodyLong>
-          Dette er en template for å bygge undersider i Utbetalingsportalen.
-        </BodyLong>
-      </div>
+        <VStack align="center">
+          <HStack margin="6" paddingBlock="6" gap="24">
+            <Heading spacing size="large">
+              SPK Mottak Dashboard
+            </Heading>
+          </HStack>
+        </VStack>
 
-      <div className={styles.template__body}>
-        <Heading spacing level="2" size="medium">
-          Ansatte
-        </Heading>
+        <VStack gap="16" align="center">
+          <HStack gap="16">
+            <Heading size="medium">Dette er en overskrift i medium</Heading>
+            <Button variant="primary" onClick={() => handleButtonClick(1)}>
+              Knapp en
+            </Button>
+            {activeAlert === 1 && (
+              <Alert variant="success" className={styles.animatedAlert}>
+                Knapp en trykket!
+              </Alert>
+            )}
+          </HStack>
 
-        <Table>
-          <Table.Header>
-            <Table.Row>
-              <Table.HeaderCell scope="col">Id</Table.HeaderCell>
-              <Table.HeaderCell scope="col">Navn</Table.HeaderCell>
-              <Table.HeaderCell scope="col">Yrke</Table.HeaderCell>
-            </Table.Row>
-          </Table.Header>
+          <HStack gap="16">
+            <Heading size="medium">Dette er en overskrift i medium</Heading>
+            <Button variant="primary" onClick={() => handleButtonClick(2)}>
+              Knapp to
+            </Button>
+            {activeAlert === 2 && (
+              <Alert variant="success" className={styles.animatedAlert}>
+                Knapp to trykket!
+              </Alert>
+            )}
+          </HStack>
 
-          <Table.Body>
-            {employees?.map((employee: Employee) => {
-              return (
-                <Table.Row key={employee.id}>
-                  <Table.HeaderCell scope="row">{employee.id}</Table.HeaderCell>
-                  <Table.DataCell>{employee.navn}</Table.DataCell>
-                  <Table.DataCell>{employee.yrke}</Table.DataCell>
-                </Table.Row>
-              );
-            })}
-          </Table.Body>
-        </Table>
+          <HStack gap="16">
+            <Heading size="medium">Dette er en overskrift i medium</Heading>
+            <Button variant="primary" onClick={() => handleButtonClick(3)}>
+              Knapp tre
+            </Button>
+            {activeAlert === 3 && (
+              <Alert variant="success" className={styles.animatedAlert}>
+                Knapp tre trykket!
+              </Alert>
+            )}
+          </HStack>
+        </VStack>
       </div>
     </>
   );
-}
+};
+
+export default TemplatePage;

@@ -1,11 +1,25 @@
-.loader {
-  @apply flex justify-center m-10;
+.animatedAlert {
+  animation: fade-in-out 3s ease-in-out;
 }
 
-.template__body {
-  @apply bg-[--a-surface-alt-1-subtle] mx-20 pt-10 p-10;
-}
+@keyframes fade-in-out {
+  0% {
+    opacity: 0;
+    transform: translateY(20px);
+  }
 
-.template__header {
-  @apply text-center pb-6 pt-6;
+  10% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  90% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  100% {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
 }
