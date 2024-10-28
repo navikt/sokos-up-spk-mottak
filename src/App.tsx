@@ -1,12 +1,13 @@
 import { useEffect } from "react";
 import "./App.module.css";
-import TemplatePage from "./pages/TemplatePage";
+import Dashboard from "./pages/Dashboard";
 import { initGrafanaFaro } from "./util/grafanaFaro";
 
 export default function App() {
   useEffect(() => {
-    initGrafanaFaro();
+    if (import.meta.env.MODE !== "mock" && import.meta.env.MODE !== "backend")
+      initGrafanaFaro();
   }, []);
 
-  return <TemplatePage />;
+  return <Dashboard />;
 }
