@@ -1,66 +1,13 @@
-import { useState } from "react";
-import { Alert, Button, HStack, Heading, VStack } from "@navikt/ds-react";
+import React, { useState } from "react";
+import { HStack, Heading, VStack } from "@navikt/ds-react";
+import {
+  useGetAvstemming,
+  useGetReadParseFile,
+  useGetSendTrekkTransaksjon,
+  useGetSendUtbetalingTransaksjon,
+} from "../api/apiService";
+import ActionButton from "./ActionButton";
 import styles from "./Dashboard.module.css";
-
-const fetchReadParseFile = async () => {
-  try {
-    const response = await fetch(
-      "/spk-mottak-api/api/v1/readParseFileAndValidateTransactions",
-    );
-    if (!response.ok) {
-      throw new Error("Network response was not ok");
-    }
-    const data = await response.json();
-    return { success: true, data };
-  } catch (error) {
-    return { success: false, error: error };
-  }
-};
-
-const fetchSendUtbetalingTransaksjon = async () => {
-  try {
-    const response = await fetch(
-      "/spk-mottak-api/api/v1/sendUtbetalingTransaksjonToOppdragZ",
-    );
-    if (!response.ok) {
-      throw new Error("Network response was not ok");
-    }
-    const data = await response.json();
-
-    return { success: true, data };
-  } catch (error) {
-    return { success: false, error: error };
-  }
-};
-
-const fetchSendTrekkTransaksjon = async () => {
-  try {
-    const response = await fetch(
-      "/spk-mottak-api/api/v1/sendTrekkTransaksjonToOppdragZ",
-    );
-    if (!response.ok) {
-      throw new Error("Network response was not ok");
-    }
-    const data = await response.json();
-
-    return { success: true, data };
-  } catch (error) {
-    return { success: false, error: error };
-  }
-};
-
-const fetchAvstemming = async () => {
-  try {
-    const response = await fetch("/spk-mottak-api/api/v1/avstemming");
-    if (!response.ok) {
-      throw new Error("Network response was not ok");
-    }
-    const data = await response.json();
-    return { success: true, data };
-  } catch (error) {
-    return { success: false, error: error };
-  }
-};
 
 const TemplatePage = () => {
   const [activeAlert, setActiveAlert] = useState<{
@@ -70,22 +17,41 @@ const TemplatePage = () => {
   } | null>(null);
   const [disabled, setDisabled] = useState(false);
 
+  const { data: readParseFileData, error: readParseFileError } =
+    useGetReadParseFile();
+  const { data: utbetalingData, error: utbetalingError } =
+    useGetSendUtbetalingTransaksjon();
+  const { data: trekkData, error: trekkError } = useGetSendTrekkTransaksjon();
+  const { data: avstemmingData, error: avstemmingError } = useGetAvstemming();
+
   const handleButtonClick = async (buttonId: number) => {
     setDisabled(true);
 
     let result;
     switch (buttonId) {
       case 1:
-        result = await fetchReadParseFile();
+        result = {
+          success: !readParseFileError,
+          data: readParseFileData,
+          error: readParseFileError,
+        };
         break;
       case 2:
-        result = await fetchSendUtbetalingTransaksjon();
+        result = {
+          success: !utbetalingError,
+          data: utbetalingData,
+          error: utbetalingError,
+        };
         break;
       case 3:
-        result = await fetchSendTrekkTransaksjon();
+        result = { success: !trekkError, data: trekkData, error: trekkError };
         break;
       case 4:
-        result = await fetchAvstemming();
+        result = {
+          success: !avstemmingError,
+          data: avstemmingData,
+          error: avstemmingError,
+        };
         break;
       default:
         return;
@@ -101,13 +67,8 @@ const TemplatePage = () => {
       });
     }
 
-    setTimeout(() => {
-      setActiveAlert(null);
-    }, 10000);
-
-    setTimeout(() => {
-      setDisabled(false);
-    }, 10000);
+    setTimeout(() => setActiveAlert(null), 10000);
+    setTimeout(() => setDisabled(false), 10000);
   };
 
   return (
@@ -121,83 +82,42 @@ const TemplatePage = () => {
           </HStack>
         </VStack>
 
-        <VStack gap="16" align="center">
-          <HStack gap="16">
-            <Heading size="medium">Start Read and Parse File</Heading>
-            <Button
-              variant="primary"
-              onClick={() => handleButtonClick(1)}
+        <div className={styles.actionButtonContainer}>
+          <VStack gap="16" align="stretch">
+            <ActionButton
+              title="Start Read and Parse File"
+              buttonText="Knapp en"
+              buttonId={1}
+              activeAlert={activeAlert}
+              onClick={handleButtonClick}
               disabled={disabled}
-            >
-              Knapp en
-            </Button>
-            {activeAlert && activeAlert.id === 1 && (
-              <Alert
-                variant={activeAlert.type}
-                className={styles.animatedAlert}
-              >
-                {activeAlert.message}
-              </Alert>
-            )}
-          </HStack>
-
-          <HStack gap="16">
-            <Heading size="medium">Send Utbetaling Transaksjon</Heading>
-            <Button
-              variant="primary"
-              onClick={() => handleButtonClick(2)}
+            />
+            <ActionButton
+              title="Send Utbetaling Transaksjon"
+              buttonText="Knapp to"
+              buttonId={2}
+              activeAlert={activeAlert}
+              onClick={handleButtonClick}
               disabled={disabled}
-            >
-              Knapp to
-            </Button>
-            {activeAlert && activeAlert.id === 2 && (
-              <Alert
-                variant={activeAlert.type}
-                className={styles.animatedAlert}
-              >
-                {activeAlert.message}
-              </Alert>
-            )}
-          </HStack>
-
-          <HStack gap="16">
-            <Heading size="medium">Send Trekk Transaksjon</Heading>
-            <Button
-              variant="primary"
-              onClick={() => handleButtonClick(3)}
+            />
+            <ActionButton
+              title="Send Trekk Transaksjon"
+              buttonText="Knapp tre"
+              buttonId={3}
+              activeAlert={activeAlert}
+              onClick={handleButtonClick}
               disabled={disabled}
-            >
-              Knapp tre
-            </Button>
-            {activeAlert && activeAlert.id === 3 && (
-              <Alert
-                variant={activeAlert.type}
-                className={styles.animatedAlert}
-              >
-                {activeAlert.message}
-              </Alert>
-            )}
-          </HStack>
-
-          <HStack gap="16">
-            <Heading size="medium">Start Grensesnitt Avstemming</Heading>
-            <Button
-              variant="primary"
-              onClick={() => handleButtonClick(4)}
+            />
+            <ActionButton
+              title="Start Grensesnitt Avstemming"
+              buttonText="Knapp fire"
+              buttonId={4}
+              activeAlert={activeAlert}
+              onClick={handleButtonClick}
               disabled={disabled}
-            >
-              Knapp fire
-            </Button>
-            {activeAlert && activeAlert.id === 4 && (
-              <Alert
-                variant={activeAlert.type}
-                className={styles.animatedAlert}
-              >
-                {activeAlert.message}
-              </Alert>
-            )}
-          </HStack>
-        </VStack>
+            />
+          </VStack>
+        </div>
       </div>
     </>
   );

@@ -33,7 +33,7 @@ function api(baseUri: string) {
   return instance;
 }
 
-export const BASE_API_URL = "/mikrofrontend-api/api/v1";
+export const BASE_API_URL = "/spk-mottak-api/api/v1";
 
 export function axiosFetcher<T>(baseUri: string, url: string) {
   return api(baseUri)

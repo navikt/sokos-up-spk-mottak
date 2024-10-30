@@ -9,7 +9,7 @@ export default [
     },
   },
 
-  {
+  { 
     url: "/spk-mottak-api/api/v1/sendUtbetalingTransaksjonToOppdragZ",
     method: "GET",
     response: () => {
