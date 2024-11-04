@@ -1,75 +1,21 @@
 import React, { useState } from "react";
 import { HStack, Heading, VStack } from "@navikt/ds-react";
 import {
-  useGetAvstemming,
-  useGetReadParseFile,
-  useGetSendTrekkTransaksjon,
-  useGetSendUtbetalingTransaksjon,
+  postAvstemming,
+  postReadAndParseFile,
+  postSendTrekkTransaksjon,
+  postSendUtbetalingTransaksjon,
 } from "../api/apiService";
 import ActionButton from "./ActionButton";
 import styles from "./Dashboard.module.css";
 
 const Dashboard = () => {
-  const [activeAlert, setActiveAlert] = useState<{
+  const [activeAlert] = useState<{
     id: number;
     type: "success" | "error";
     message: string;
   } | null>(null);
-  const [disabled, setDisabled] = useState(false);
-
-  const { data: readParseFileData, error: readParseFileError } =
-    useGetReadParseFile();
-  const { data: utbetalingData, error: utbetalingError } =
-    useGetSendUtbetalingTransaksjon();
-  const { data: trekkData, error: trekkError } = useGetSendTrekkTransaksjon();
-  const { data: avstemmingData, error: avstemmingError } = useGetAvstemming();
-
-  const handleButtonClick = async (buttonId: number) => {
-    setDisabled(true);
-
-    let result;
-    switch (buttonId) {
-      case 1:
-        result = {
-          success: !readParseFileError,
-          data: readParseFileData,
-          error: readParseFileError,
-        };
-        break;
-      case 2:
-        result = {
-          success: !utbetalingError,
-          data: utbetalingData,
-          error: utbetalingError,
-        };
-        break;
-      case 3:
-        result = { success: !trekkError, data: trekkData, error: trekkError };
-        break;
-      case 4:
-        result = {
-          success: !avstemmingError,
-          data: avstemmingData,
-          error: avstemmingError,
-        };
-        break;
-      default:
-        return;
-    }
-
-    if (result.success) {
-      setActiveAlert({ id: buttonId, type: "success", message: result.data });
-    } else {
-      setActiveAlert({
-        id: buttonId,
-        type: "error",
-        message: `Feil oppstod: ${result.error}`,
-      });
-    }
-
-    setTimeout(() => setActiveAlert(null), 10000);
-    setTimeout(() => setDisabled(false), 10000);
-  };
+  const [disabled] = useState(false);
 
   return (
     <>
@@ -89,7 +35,7 @@ const Dashboard = () => {
               buttonText="Knapp en"
               buttonId={1}
               activeAlert={activeAlert}
-              onClick={handleButtonClick}
+              onClick={postReadAndParseFile}
               disabled={disabled}
             />
             <ActionButton
@@ -97,7 +43,7 @@ const Dashboard = () => {
               buttonText="Knapp to"
               buttonId={2}
               activeAlert={activeAlert}
-              onClick={handleButtonClick}
+              onClick={postSendUtbetalingTransaksjon}
               disabled={disabled}
             />
             <ActionButton
@@ -105,7 +51,7 @@ const Dashboard = () => {
               buttonText="Knapp tre"
               buttonId={3}
               activeAlert={activeAlert}
-              onClick={handleButtonClick}
+              onClick={postSendTrekkTransaksjon}
               disabled={disabled}
             />
             <ActionButton
@@ -113,7 +59,7 @@ const Dashboard = () => {
               buttonText="Knapp fire"
               buttonId={4}
               activeAlert={activeAlert}
-              onClick={handleButtonClick}
+              onClick={postAvstemming}
               disabled={disabled}
             />
           </VStack>
