@@ -1,6 +1,8 @@
 import useSWRImmutable from "swr/immutable";
 import { SpkResponse } from "../types/SpkResponse";
-import { BASE_API_URL, axiosFetcher } from "./apiConfig";
+import { axiosFetcher } from "./apiConfig";
+
+export const BASE_API_URL = "/spk-mottak-api/api/v1";
 
 const swrConfig = {
   fetcher: <T>(url: string) => axiosFetcher<T>(BASE_API_URL, url),

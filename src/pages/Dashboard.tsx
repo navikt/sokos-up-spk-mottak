@@ -9,7 +9,7 @@ import {
 import ActionButton from "./ActionButton";
 import styles from "./Dashboard.module.css";
 
-const TemplatePage = () => {
+const Dashboard = () => {
   const [activeAlert, setActiveAlert] = useState<{
     id: number;
     type: "success" | "error";
@@ -73,7 +73,7 @@ const TemplatePage = () => {
 
   return (
     <>
-      <div className={styles.template__header}>
+      <div className={styles.dashboard__header}>
         <VStack align="center">
           <HStack margin="6" paddingBlock="6" gap="24">
             <Heading spacing size="large">
@@ -123,4 +123,4 @@ const TemplatePage = () => {
   );
 };
 
-export default TemplatePage;
+export default Dashboard;

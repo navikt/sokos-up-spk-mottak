@@ -40,3 +40,12 @@ export function axiosFetcher<T>(baseUri: string, url: string) {
     .get<T>(url)
     .then((res) => res.data);
 }
+
+export async function axiosPostFetcher<T, U>(
+  baseUri: string,
+  url: string,
+  body?: T,
+) {
+  const res = await api(baseUri).post<U>(url, body);
+  return res.data;
+}
