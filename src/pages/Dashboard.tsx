@@ -10,12 +10,28 @@ import ActionButton from "./ActionButton";
 import styles from "./Dashboard.module.css";
 
 const Dashboard = () => {
-  const [activeAlert] = useState<{
+  const [activeAlert, setActiveAlert] = useState<{
     id: number;
     type: "success" | "error";
     message: string;
   } | null>(null);
-  const [disabled] = useState(false);
+  const [disabled, setDisabled] = useState(false);
+
+  const handleButtonClick = async (buttonId, action) => {
+    setDisabled(true);
+    try {
+      const data = await action();
+      setActiveAlert({ id: buttonId, type: "success", message: data });
+    } catch (error) {
+      setActiveAlert({
+        id: buttonId,
+        type: "error",
+        message: `Feil oppstod: ${error.message || error}`,
+      });
+    }
+    setTimeout(() => setActiveAlert(null), 10000);
+    setTimeout(() => setDisabled(false), 10000);
+  };
 
   return (
     <>
@@ -35,7 +51,7 @@ const Dashboard = () => {
               buttonText="Knapp en"
               buttonId={1}
               activeAlert={activeAlert}
-              onClick={postReadAndParseFile}
+              onClick={() => handleButtonClick(1, postReadAndParseFile)}
               disabled={disabled}
             />
             <ActionButton
@@ -43,7 +59,9 @@ const Dashboard = () => {
               buttonText="Knapp to"
               buttonId={2}
               activeAlert={activeAlert}
-              onClick={postSendUtbetalingTransaksjon}
+              onClick={() =>
+                handleButtonClick(2, postSendUtbetalingTransaksjon)
+              }
               disabled={disabled}
             />
             <ActionButton
@@ -51,7 +69,7 @@ const Dashboard = () => {
               buttonText="Knapp tre"
               buttonId={3}
               activeAlert={activeAlert}
-              onClick={postSendTrekkTransaksjon}
+              onClick={() => handleButtonClick(3, postSendTrekkTransaksjon)}
               disabled={disabled}
             />
             <ActionButton
@@ -59,7 +77,7 @@ const Dashboard = () => {
               buttonText="Knapp fire"
               buttonId={4}
               activeAlert={activeAlert}
-              onClick={postAvstemming}
+              onClick={() => handleButtonClick(4, postAvstemming)}
               disabled={disabled}
             />
           </VStack>
