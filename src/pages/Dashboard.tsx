@@ -17,16 +17,21 @@ const Dashboard = () => {
   } | null>(null);
   const [disabled, setDisabled] = useState(false);
 
-  const handleButtonClick = async (buttonId, action) => {
+  const handleButtonClick = async (
+    buttonId: number,
+    action: () => Promise<unknown>,
+  ) => {
     setDisabled(true);
     try {
-      const data = await action();
+      const data = (await action()) as string;
       setActiveAlert({ id: buttonId, type: "success", message: data });
-    } catch (error) {
+    } catch (error: unknown) {
+      const errorMessage =
+        error instanceof Error ? error.message : "Ukjent feil oppstod";
       setActiveAlert({
         id: buttonId,
         type: "error",
-        message: `Feil oppstod: ${error.message || error}`,
+        message: `Feil oppstod: ${errorMessage}`,
       });
     }
     setTimeout(() => setActiveAlert(null), 10000);
