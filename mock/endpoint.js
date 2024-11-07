@@ -1,3 +1,5 @@
+import jobtaskinfo from './jobtaskinfo.json'
+
 export default [
   {
     url: "/spk-mottak-api/api/v1/readParseFileAndValidateTransactions",
@@ -38,4 +40,12 @@ export default [
       return message;
     },
   },
+
+  {
+    url: "/spk-mottak-api/api/v1/jobTaskInfo",
+    method: "GET",
+    response: () => jobtaskinfo
+  },
+
 ];
+

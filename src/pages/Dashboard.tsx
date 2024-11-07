@@ -1,13 +1,14 @@
 import React, { useState } from "react";
 import { HStack, Heading, VStack } from "@navikt/ds-react";
+import jobTaskInfoData from "../../mock/jobtaskinfo.json";
 import {
   postAvstemming,
   postReadAndParseFile,
   postSendTrekkTransaksjon,
   postSendUtbetalingTransaksjon,
 } from "../api/apiService";
-import ActionButton from "./ActionButton";
-import styles from "./Dashboard.module.css";
+import { JobTaskInfo } from "../types/JobTaskInfo";
+import JobCard from "./components/JobCard";
 
 const Dashboard = () => {
   const [activeAlert, setActiveAlert] = useState<{
@@ -16,6 +17,8 @@ const Dashboard = () => {
     message: string;
   } | null>(null);
   const [disabled, setDisabled] = useState(false);
+
+  const jobTasks: JobTaskInfo[] = jobTaskInfoData;
 
   const handleButtonClick = async (
     buttonId: number,
@@ -40,54 +43,72 @@ const Dashboard = () => {
 
   return (
     <>
-      <div className={styles.dashboard__header}>
-        <VStack align="center">
-          <HStack margin="6" paddingBlock="6" gap="24">
-            <Heading spacing size="large">
-              SPK Mottak Dashboard
-            </Heading>
-          </HStack>
-        </VStack>
+      <VStack align="center">
+        <HStack margin="6" paddingBlock="6" gap="24">
+          <Heading spacing size="large">
+            SPK Mottak Dashboard
+          </Heading>
+        </HStack>
+      </VStack>
 
-        <div className={styles.actionButtonContainer}>
-          <VStack gap="16" align="stretch">
-            <ActionButton
-              title="Start Read and Parse File"
-              buttonText="Knapp en"
+      <VStack gap="16" align="stretch">
+        {jobTasks && jobTasks.length > 0 ? (
+          <>
+            <JobCard
+              title="Read and Parse File"
+              buttonText="Start"
               buttonId={1}
               activeAlert={activeAlert}
               onClick={() => handleButtonClick(1, postReadAndParseFile)}
               disabled={disabled}
+              jobTaskInfo={jobTasks.filter(
+                (task: JobTaskInfo) =>
+                  task.taskName === "readParseFileAndValidateTransactions",
+              )}
             />
-            <ActionButton
+            <JobCard
               title="Send Utbetaling Transaksjon"
-              buttonText="Knapp to"
+              buttonText="Start"
               buttonId={2}
               activeAlert={activeAlert}
               onClick={() =>
                 handleButtonClick(2, postSendUtbetalingTransaksjon)
               }
               disabled={disabled}
+              jobTaskInfo={jobTasks.filter(
+                (task: JobTaskInfo) =>
+                  task.taskName === "sendUtbetalingTransaksjonToOppdragZ",
+              )}
             />
-            <ActionButton
+            <JobCard
               title="Send Trekk Transaksjon"
-              buttonText="Knapp tre"
+              buttonText="Start"
               buttonId={3}
               activeAlert={activeAlert}
               onClick={() => handleButtonClick(3, postSendTrekkTransaksjon)}
               disabled={disabled}
+              jobTaskInfo={jobTasks.filter(
+                (task: JobTaskInfo) =>
+                  task.taskName === "sendTrekkTransaksjonToOppdragZ",
+              )}
             />
-            <ActionButton
-              title="Start Grensesnitt Avstemming"
-              buttonText="Knapp fire"
+            <JobCard
+              title="Grensesnitt Avstemming"
+              buttonText="Start"
               buttonId={4}
               activeAlert={activeAlert}
               onClick={() => handleButtonClick(4, postAvstemming)}
               disabled={disabled}
+              jobTaskInfo={jobTasks.filter(
+                (task: JobTaskInfo) =>
+                  task.taskName === "grensesnittAvstemming",
+              )}
             />
-          </VStack>
-        </div>
-      </div>
+          </>
+        ) : (
+          <Heading size="small">No job task data available.</Heading>
+        )}
+      </VStack>
     </>
   );
 };

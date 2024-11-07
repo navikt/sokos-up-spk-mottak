@@ -1,5 +1,5 @@
 import useSWRImmutable from "swr/immutable";
-import { SpkResponse } from "../types/SpkResponse";
+import { JobTaskInfo } from "../types/JobTaskInfo";
 import { axiosFetcher, axiosPostFetcher } from "./apiConfig";
 
 export const BASE_API_URL = "/spk-mottak-api/api/v1";
@@ -12,7 +12,7 @@ const swrConfig = {
 };
 
 export function useGetjobTaskInfo() {
-  return useSWRImmutable<SpkResponse>(`/jobTaskInfo`, swrConfig);
+  return useSWRImmutable<JobTaskInfo>(`/jobTaskInfo`, swrConfig);
 }
 
 export async function postReadAndParseFile() {
