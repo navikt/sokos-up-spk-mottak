@@ -5,6 +5,6 @@ export const JobTaskInfoSchema = z.object({
   taskName: z.string(),
   executionTime: z.string(),
   isPicked: z.boolean(),
-  lastFailure: z.string(),
-  lastSuccess: z.string(),
+  lastFailure: z.optional(z.string()),
+  lastSuccess: z.optional(z.string()),
 });
