@@ -24,56 +24,67 @@ const JobCard: React.FC<JobCardProps> = ({
   onClick,
   disabled,
   jobTaskInfo,
-}) => (
-  <div className={styles.jobCardContainer}>
-    <div className={styles.titleContainer}>
-      <Heading size="medium">{title}</Heading>
-    </div>
-    {jobTaskInfo && jobTaskInfo.length > 0 && (
-      <div className={styles.taskDetailsContainer}>
-        {jobTaskInfo.map((task, index) => (
-          <div key={index} className={styles.taskDetailsRow}>
-            {Object.entries(task).map(([key, value], i) => {
-              if (key === "taskId") return null;
-              return (
-                <div key={i} className={styles.taskDetailItem}>
-                  <strong>{key.charAt(0).toUpperCase() + key.slice(1)}:</strong>{" "}
-                  {typeof value === "boolean"
-                    ? value
-                      ? "True"
-                      : "False"
-                    : value || "N/A"}
-                </div>
-              );
-            })}
-          </div>
-        ))}
+}) => {
+  const isButtonDisabled = jobTaskInfo?.some((task) =>
+    Object.values(task).some(
+      (value) => typeof value === "boolean" && value === true,
+    ),
+  );
+  const buttonDisabled = disabled || isButtonDisabled;
+
+  return (
+    <div className={styles.jobCardContainer}>
+      <div className={styles.titleContainer}>
+        <Heading size="medium">{title}</Heading>
       </div>
-    )}
-    <div className={styles.buttonAndAlertContainer}>
-      {activeAlert && activeAlert.id === buttonId && (
-        <div className={styles.alertWrapper}>
-          <Alert
-            size="small"
-            variant={activeAlert.type}
-            className={styles.alert}
-          >
-            {activeAlert.message}
-          </Alert>
+      {jobTaskInfo && jobTaskInfo.length > 0 && (
+        <div className={styles.taskDetailsContainer}>
+          {jobTaskInfo.map((task, index) => (
+            <div key={index} className={styles.taskDetailsRow}>
+              {Object.entries(task).map(([key, value], i) => {
+                if (key === "taskId") return null;
+                return (
+                  <div key={i} className={styles.taskDetailItem}>
+                    <strong>
+                      {key.charAt(0).toUpperCase() + key.slice(1)}:
+                    </strong>{" "}
+                    {typeof value === "boolean"
+                      ? value
+                        ? "True"
+                        : "False"
+                      : value || "N/A"}
+                  </div>
+                );
+              })}
+            </div>
+          ))}
         </div>
       )}
-      <div className={styles.buttonWrapper}>
-        <Button
-          variant="primary"
-          size="medium"
-          onClick={() => onClick(buttonId)}
-          disabled={disabled}
-        >
-          {buttonText}
-        </Button>
+      <div className={styles.buttonAndAlertContainer}>
+        {activeAlert && activeAlert.id === buttonId && (
+          <div className={styles.alertWrapper}>
+            <Alert
+              size="small"
+              variant={activeAlert.type}
+              className={styles.alert}
+            >
+              {activeAlert.message}
+            </Alert>
+          </div>
+        )}
+        <div className={styles.buttonWrapper}>
+          <Button
+            variant="primary"
+            size="medium"
+            onClick={() => onClick(buttonId)}
+            disabled={buttonDisabled}
+          >
+            {buttonText}
+          </Button>
+        </div>
       </div>
     </div>
-  </div>
-);
+  );
+};
 
 export default JobCard;

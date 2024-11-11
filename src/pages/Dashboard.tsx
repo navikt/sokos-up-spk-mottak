@@ -16,7 +16,11 @@ const Dashboard = () => {
     type: "success" | "error";
     message: string;
   } | null>(null);
-  const [disabled, setDisabled] = useState(false);
+
+  // Track disabled buttons by their IDs
+  const [disabledButtons, setDisabledButtons] = useState<{
+    [key: number]: boolean;
+  }>({});
 
   const jobTasks: JobTaskInfo[] = jobTaskInfoData;
 
@@ -24,7 +28,7 @@ const Dashboard = () => {
     buttonId: number,
     action: () => Promise<unknown>,
   ) => {
-    setDisabled(true);
+    setDisabledButtons((prev) => ({ ...prev, [buttonId]: true }));
     try {
       const data = (await action()) as string;
       setActiveAlert({ id: buttonId, type: "success", message: data });
@@ -38,7 +42,10 @@ const Dashboard = () => {
       });
     }
     setTimeout(() => setActiveAlert(null), 10000);
-    setTimeout(() => setDisabled(false), 10000);
+    setTimeout(
+      () => setDisabledButtons((prev) => ({ ...prev, [buttonId]: false })),
+      10000,
+    );
   };
 
   return (
@@ -60,7 +67,7 @@ const Dashboard = () => {
               buttonId={1}
               activeAlert={activeAlert}
               onClick={() => handleButtonClick(1, postReadAndParseFile)}
-              disabled={disabled}
+              disabled={disabledButtons[1] || false}
               jobTaskInfo={jobTasks.filter(
                 (task: JobTaskInfo) =>
                   task.taskName === "readParseFileAndValidateTransactions",
@@ -74,7 +81,7 @@ const Dashboard = () => {
               onClick={() =>
                 handleButtonClick(2, postSendUtbetalingTransaksjon)
               }
-              disabled={disabled}
+              disabled={disabledButtons[2] || false}
               jobTaskInfo={jobTasks.filter(
                 (task: JobTaskInfo) =>
                   task.taskName === "sendUtbetalingTransaksjonToOppdragZ",
@@ -86,7 +93,7 @@ const Dashboard = () => {
               buttonId={3}
               activeAlert={activeAlert}
               onClick={() => handleButtonClick(3, postSendTrekkTransaksjon)}
-              disabled={disabled}
+              disabled={disabledButtons[3] || false}
               jobTaskInfo={jobTasks.filter(
                 (task: JobTaskInfo) =>
                   task.taskName === "sendTrekkTransaksjonToOppdragZ",
@@ -98,7 +105,7 @@ const Dashboard = () => {
               buttonId={4}
               activeAlert={activeAlert}
               onClick={() => handleButtonClick(4, postAvstemming)}
-              disabled={disabled}
+              disabled={disabledButtons[4] || false}
               jobTaskInfo={jobTasks.filter(
                 (task: JobTaskInfo) =>
                   task.taskName === "grensesnittAvstemming",
