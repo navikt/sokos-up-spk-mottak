@@ -17,7 +17,6 @@ const Dashboard = () => {
     message: string;
   } | null>(null);
 
-  // Track disabled buttons by their IDs
   const [disabledButtons, setDisabledButtons] = useState<{
     [key: number]: boolean;
   }>({});
