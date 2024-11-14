@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { HStack, Heading, VStack } from "@navikt/ds-react";
 import jobTaskInfoData from "../../mock/jobtaskinfo.json";
 import {
@@ -46,6 +46,11 @@ const Dashboard = () => {
       10000,
     );
   };
+
+  useEffect(() => {
+    const intervalId = setInterval(() => window.location.reload(), 15000);
+    return () => clearInterval(intervalId);
+  }, []);
 
   return (
     <>

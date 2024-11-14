@@ -23,7 +23,7 @@ const formatDate = (dateString: string) => {
     return dateString;
   }
 
-  return date.toLocaleString("en-GB", {
+  return date.toLocaleString("nb-NO", {
     year: "numeric",
     month: "short",
     day: "numeric",
@@ -31,6 +31,14 @@ const formatDate = (dateString: string) => {
     minute: "2-digit",
     timeZone: "Europe/Oslo",
   });
+};
+
+const labelTranslations: Record<string, string> = {
+  taskName: "Oppgavenavn",
+  executionTime: "Planlagt kjøringstid",
+  isPicked: "Er valgt",
+  lastSuccess: "Siste vellykkede kjøring",
+  lastFailure: "Siste mislykkede kjøring",
 };
 
 const JobCard: React.FC<JobCardProps> = ({
@@ -71,12 +79,10 @@ const JobCard: React.FC<JobCardProps> = ({
                   displayValue = value || "N/A";
                 }
 
+                // Translate labels to Norwegian if available
                 const label =
-                  key === "ExecutionTime"
-                    ? "Scheduled Execution Time"
-                    : key === "LastSuccess"
-                      ? "Last Successful Run"
-                      : key.charAt(0).toUpperCase() + key.slice(1);
+                  labelTranslations[key] ||
+                  key.charAt(0).toUpperCase() + key.slice(1);
 
                 return (
                   <div key={i} className={styles.taskDetailItem}>
