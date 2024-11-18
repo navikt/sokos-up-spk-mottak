@@ -19,7 +19,7 @@
         "taskId": "recurring",
         "taskName": "readParseFileAndValidateTransactions",
         "executionTime": "2024-11-07T09:00:00Z",
-        "isPicked": true,
+        "isPicked": false,
         "lastSuccess": "2024-11-07T08:05:03.021320Z"
     },
     {

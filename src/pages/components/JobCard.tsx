@@ -79,7 +79,6 @@ const JobCard: React.FC<JobCardProps> = ({
                   displayValue = value || "N/A";
                 }
 
-                // Translate labels to Norwegian if available
                 const label =
                   labelTranslations[key] ||
                   key.charAt(0).toUpperCase() + key.slice(1);
