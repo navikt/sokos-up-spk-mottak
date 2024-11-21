@@ -117,7 +117,7 @@ const Dashboard = () => {
             />
           </>
         ) : (
-          <Heading size="small">No job task data available.</Heading>
+          <Heading size="small">Ingen oppgaveinformasjon tilgjengelig</Heading>
         )}
       </VStack>
     </>

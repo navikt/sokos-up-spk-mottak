@@ -1,5 +1,7 @@
 import React from "react";
+import { CheckmarkIcon, XMarkIcon } from "@navikt/aksel-icons";
 import { Alert, Button, Heading } from "@navikt/ds-react";
+import { isoDatoTilNorskDato } from "../../util/datoUtil";
 import styles from "../Dashboard.module.css";
 
 interface JobCardProps {
@@ -15,23 +17,6 @@ interface JobCardProps {
   disabled: boolean;
   jobTaskInfo?: Record<string, string | boolean>[];
 }
-
-const formatDate = (dateString: string) => {
-  const date = new Date(dateString);
-
-  if (isNaN(date.getTime())) {
-    return dateString;
-  }
-
-  return date.toLocaleString("nb-NO", {
-    year: "numeric",
-    month: "short",
-    day: "numeric",
-    hour: "2-digit",
-    minute: "2-digit",
-    timeZone: "Europe/Oslo",
-  });
-};
 
 const labelTranslations: Record<string, string> = {
   taskName: "Oppgavenavn",
@@ -72,9 +57,13 @@ const JobCard: React.FC<JobCardProps> = ({
 
                 let displayValue;
                 if (typeof value === "boolean") {
-                  displayValue = value ? "✓" : "✗";
+                  displayValue = value ? (
+                    <CheckmarkIcon aria-hidden="true" />
+                  ) : (
+                    <XMarkIcon aria-hidden="true" />
+                  );
                 } else if (typeof value === "string" && value.endsWith("Z")) {
-                  displayValue = formatDate(value);
+                  displayValue = isoDatoTilNorskDato(value);
                 } else {
                   displayValue = value || "N/A";
                 }
