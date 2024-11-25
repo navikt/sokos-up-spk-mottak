@@ -12,22 +12,31 @@ import JobCard from "./components/JobCard";
 
 const Dashboard = () => {
   const [activeAlert, setActiveAlert] = useState<{
-    id: number;
+    id: string;
     type: "success" | "error";
     message: string;
   } | null>(null);
 
   const [disabledButtons, setDisabledButtons] = useState<{
-    [key: number]: boolean;
+    [key: string]: { disabled: boolean; timestamp: number };
   }>({});
 
   const jobTasks: JobTaskInfo[] = jobTaskInfoData;
 
   const handleButtonClick = async (
-    buttonId: number,
+    buttonId: string,
     action: () => Promise<unknown>,
   ) => {
-    setDisabledButtons((prev) => ({ ...prev, [buttonId]: true }));
+    const currentTime = Date.now();
+    setDisabledButtons((prev) => {
+      const newState = {
+        ...prev,
+        [buttonId]: { disabled: true, timestamp: currentTime },
+      };
+      localStorage.setItem("disabledButtons", JSON.stringify(newState));
+      return newState;
+    });
+
     try {
       const data = (await action()) as string;
       setActiveAlert({ id: buttonId, type: "success", message: data });
@@ -40,16 +49,36 @@ const Dashboard = () => {
         message: `Feil oppstod: ${errorMessage}`,
       });
     }
-    setTimeout(() => setActiveAlert(null), 10000);
-    setTimeout(
-      () => setDisabledButtons((prev) => ({ ...prev, [buttonId]: false })),
-      10000,
-    );
+
+    setTimeout(() => setActiveAlert(null), 15000);
+
+    setTimeout(() => {
+      setDisabledButtons((prev) => {
+        const newState = {
+          ...prev,
+          [buttonId]: { disabled: false, timestamp: 0 },
+        };
+        localStorage.setItem("disabledButtons", JSON.stringify(newState));
+        return newState;
+      });
+    }, 15000);
   };
 
   useEffect(() => {
-    const intervalId = setInterval(() => window.location.reload(), 15000);
-    return () => clearInterval(intervalId);
+    const disabledState = localStorage.getItem("disabledButtons");
+    if (disabledState) {
+      const parsedState = JSON.parse(disabledState);
+      const now = Date.now();
+      Object.keys(parsedState).forEach((key) => {
+        const buttonState = parsedState[key];
+        if (buttonState.disabled && now - buttonState.timestamp < 15000) {
+          parsedState[key].disabled = true;
+        } else {
+          parsedState[key].disabled = false;
+        }
+      });
+      setDisabledButtons(parsedState);
+    }
   }, []);
 
   return (
@@ -68,10 +97,18 @@ const Dashboard = () => {
             <JobCard
               title="Read and Parse File"
               buttonText="Start"
-              buttonId={1}
+              buttonId="readParseFileAndValidateTransactions"
               activeAlert={activeAlert}
-              onClick={() => handleButtonClick(1, postReadAndParseFile)}
-              disabled={disabledButtons[1] || false}
+              onClick={() =>
+                handleButtonClick(
+                  "readParseFileAndValidateTransactions",
+                  postReadAndParseFile,
+                )
+              }
+              disabled={
+                disabledButtons["readParseFileAndValidateTransactions"]
+                  ?.disabled || false
+              }
               jobTaskInfo={jobTasks.filter(
                 (task: JobTaskInfo) =>
                   task.taskName === "readParseFileAndValidateTransactions",
@@ -80,12 +117,18 @@ const Dashboard = () => {
             <JobCard
               title="Send Utbetaling Transaksjon"
               buttonText="Start"
-              buttonId={2}
+              buttonId="sendUtbetalingTransaksjonToOppdragZ"
               activeAlert={activeAlert}
               onClick={() =>
-                handleButtonClick(2, postSendUtbetalingTransaksjon)
+                handleButtonClick(
+                  "sendUtbetalingTransaksjonToOppdragZ",
+                  postSendUtbetalingTransaksjon,
+                )
               }
-              disabled={disabledButtons[2] || false}
+              disabled={
+                disabledButtons["sendUtbetalingTransaksjonToOppdragZ"]
+                  ?.disabled || false
+              }
               jobTaskInfo={jobTasks.filter(
                 (task: JobTaskInfo) =>
                   task.taskName === "sendUtbetalingTransaksjonToOppdragZ",
@@ -94,10 +137,18 @@ const Dashboard = () => {
             <JobCard
               title="Send Trekk Transaksjon"
               buttonText="Start"
-              buttonId={3}
+              buttonId="sendTrekkTransaksjonToOppdragZ"
               activeAlert={activeAlert}
-              onClick={() => handleButtonClick(3, postSendTrekkTransaksjon)}
-              disabled={disabledButtons[3] || false}
+              onClick={() =>
+                handleButtonClick(
+                  "sendTrekkTransaksjonToOppdragZ",
+                  postSendTrekkTransaksjon,
+                )
+              }
+              disabled={
+                disabledButtons["sendTrekkTransaksjonToOppdragZ"]?.disabled ||
+                false
+              }
               jobTaskInfo={jobTasks.filter(
                 (task: JobTaskInfo) =>
                   task.taskName === "sendTrekkTransaksjonToOppdragZ",
@@ -106,10 +157,14 @@ const Dashboard = () => {
             <JobCard
               title="Grensesnitt Avstemming"
               buttonText="Start"
-              buttonId={4}
+              buttonId="grensesnittAvstemming"
               activeAlert={activeAlert}
-              onClick={() => handleButtonClick(4, postAvstemming)}
-              disabled={disabledButtons[4] || false}
+              onClick={() =>
+                handleButtonClick("grensesnittAvstemming", postAvstemming)
+              }
+              disabled={
+                disabledButtons["grensesnittAvstemming"]?.disabled || false
+              }
               jobTaskInfo={jobTasks.filter(
                 (task: JobTaskInfo) =>
                   task.taskName === "grensesnittAvstemming",

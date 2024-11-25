@@ -42,14 +42,21 @@
   bottom: 16px;
   right: 16px;
   display: flex;
-  align-items: center;
+  justify-content: flex-end;
   gap: 8px;
+  width: auto;
 }
 
 .alertWrapper {
-  display: inline-flex;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 8px;
+  width: auto;
 }
 
 .buttonWrapper {
-  display: inline-flex;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
 }

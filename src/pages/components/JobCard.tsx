@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { CheckmarkIcon, XMarkIcon } from "@navikt/aksel-icons";
 import { Alert, Button, Heading } from "@navikt/ds-react";
 import { isoDatoTilNorskDato } from "../../util/datoUtil";
@@ -7,13 +7,13 @@ import styles from "../Dashboard.module.css";
 interface JobCardProps {
   title: string;
   buttonText: string;
-  buttonId: number;
+  buttonId: string;
   activeAlert: {
-    id: number;
+    id: string;
     type: "success" | "error";
     message: string;
   } | null;
-  onClick: (id: number) => void;
+  onClick: (id: string) => void;
   disabled: boolean;
   jobTaskInfo?: Record<string, string | boolean>[];
 }
@@ -42,6 +42,53 @@ const JobCard: React.FC<JobCardProps> = ({
   );
   const buttonDisabled = disabled || isButtonDisabled;
 
+  const [isRefreshDisabled, setIsRefreshDisabled] = useState(true);
+
+  const handleRefresh = () => {
+    window.location.reload();
+  };
+
+  const handleStartClick = async (id: string) => {
+    await onClick(id);
+
+    const currentTime = Date.now();
+    localStorage.setItem(`${id}_timestamp`, currentTime.toString());
+
+    setIsRefreshDisabled(false);
+
+    setTimeout(() => {
+      setIsRefreshDisabled(true);
+      localStorage.removeItem(`${id}_timestamp`);
+    }, 15000);
+  };
+
+  useEffect(() => {
+    const savedTimestamp = localStorage.getItem(`${buttonId}_timestamp`);
+
+    if (savedTimestamp) {
+      const savedTime = parseInt(savedTimestamp);
+      const currentTime = Date.now();
+
+      if (currentTime - savedTime < 15000) {
+        setIsRefreshDisabled(false);
+
+        setTimeout(() => {
+          setIsRefreshDisabled(true);
+          localStorage.removeItem(`${buttonId}_timestamp`);
+        }, 15000);
+      } else {
+        setIsRefreshDisabled(true);
+        localStorage.removeItem(`${buttonId}_timestamp`);
+      }
+    }
+
+    const isErValgtTrue = jobTaskInfo?.some((task) => task.isPicked === true);
+
+    if (isErValgtTrue) {
+      setIsRefreshDisabled(false);
+    }
+  }, [buttonId, jobTaskInfo]);
+
   return (
     <div className={styles.jobCardContainer}>
       <div className={styles.titleContainer}>
@@ -56,14 +103,20 @@ const JobCard: React.FC<JobCardProps> = ({
                 if (key === "taskId") return null;
 
                 let displayValue;
-                if (typeof value === "boolean") {
+                if (key === "taskName") {
+                  // Always display the task name as plain text
+                  displayValue = value || "N/A";
+                } else if (typeof value === "boolean") {
                   displayValue = value ? (
                     <CheckmarkIcon aria-hidden="true" />
                   ) : (
                     <XMarkIcon aria-hidden="true" />
                   );
                 } else if (typeof value === "string" && value.endsWith("Z")) {
-                  displayValue = isoDatoTilNorskDato(value);
+                  const dateValue = new Date(value);
+                  displayValue = isNaN(dateValue.getTime())
+                    ? "N/A"
+                    : isoDatoTilNorskDato(value);
                 } else {
                   displayValue = value || "N/A";
                 }
@@ -102,9 +155,17 @@ const JobCard: React.FC<JobCardProps> = ({
         )}
         <div className={styles.buttonWrapper}>
           <Button
+            variant="secondary"
+            size="medium"
+            onClick={handleRefresh}
+            disabled={isRefreshDisabled}
+          >
+            Refresh
+          </Button>
+          <Button
             variant="primary"
             size="medium"
-            onClick={() => onClick(buttonId)}
+            onClick={() => handleStartClick(buttonId)}
             disabled={buttonDisabled}
           >
             {buttonText}
