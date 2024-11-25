@@ -10,7 +10,7 @@ const swrConfig = {
 };
 
 export function useGetjobTaskInfo() {
-  return useSWRImmutable<JobTaskInfo>(`/jobTaskInfo`, swrConfig);
+  return useSWRImmutable<JobTaskInfo[]>(`/jobTaskInfo`, swrConfig);
 }
 
 export async function postReadAndParseFile() {

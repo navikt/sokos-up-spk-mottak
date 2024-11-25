@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { HStack, Heading, VStack } from "@navikt/ds-react";
-import jobTaskInfoData from "../../mock/jobtaskinfo.json";
 import {
   postAvstemming,
   postReadAndParseFile,
   postSendTrekkTransaksjon,
   postSendUtbetalingTransaksjon,
+  useGetjobTaskInfo,
 } from "../api/apiService";
 import { JobTaskInfo } from "../types/JobTaskInfo";
 import JobCard from "./components/JobCard";
@@ -21,7 +21,7 @@ const Dashboard = () => {
     [key: string]: { disabled: boolean; timestamp: number };
   }>({});
 
-  const jobTasks: JobTaskInfo[] = jobTaskInfoData;
+  const { data } = useGetjobTaskInfo();
 
   const handleButtonClick = async (
     buttonId: string,
@@ -92,7 +92,7 @@ const Dashboard = () => {
       </VStack>
 
       <VStack gap="16" align="stretch">
-        {jobTasks && jobTasks.length > 0 ? (
+        {data && data.length > 0 ? (
           <>
             <JobCard
               title="Read and Parse File"
@@ -109,7 +109,7 @@ const Dashboard = () => {
                 disabledButtons["readParseFileAndValidateTransactions"]
                   ?.disabled || false
               }
-              jobTaskInfo={jobTasks.filter(
+              jobTaskInfo={data.filter(
                 (task: JobTaskInfo) =>
                   task.taskName === "readParseFileAndValidateTransactions",
               )}
@@ -129,7 +129,7 @@ const Dashboard = () => {
                 disabledButtons["sendUtbetalingTransaksjonToOppdragZ"]
                   ?.disabled || false
               }
-              jobTaskInfo={jobTasks.filter(
+              jobTaskInfo={data.filter(
                 (task: JobTaskInfo) =>
                   task.taskName === "sendUtbetalingTransaksjonToOppdragZ",
               )}
@@ -149,7 +149,7 @@ const Dashboard = () => {
                 disabledButtons["sendTrekkTransaksjonToOppdragZ"]?.disabled ||
                 false
               }
-              jobTaskInfo={jobTasks.filter(
+              jobTaskInfo={data.filter(
                 (task: JobTaskInfo) =>
                   task.taskName === "sendTrekkTransaksjonToOppdragZ",
               )}
@@ -165,7 +165,7 @@ const Dashboard = () => {
               disabled={
                 disabledButtons["grensesnittAvstemming"]?.disabled || false
               }
-              jobTaskInfo={jobTasks.filter(
+              jobTaskInfo={data.filter(
                 (task: JobTaskInfo) =>
                   task.taskName === "grensesnittAvstemming",
               )}
