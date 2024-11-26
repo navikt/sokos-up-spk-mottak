@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Alert, Button, Heading } from "@navikt/ds-react";
+import { isoDatoTilNorskDato } from "../../util/datoUtil";
 import styles from "../Dashboard.module.css";
 
 interface JobCardProps {
@@ -18,10 +19,10 @@ interface JobCardProps {
 
 const labelTranslations: Record<string, string> = {
   taskName: "Oppgavenavn",
-  executionTime: "Planlagt kjøringstidspungt",
+  executionTime: "Planlagt kjøringstidspunkt",
   isPicked: "Jobb Kjører",
-  lastSuccess: "Siste vellykkede kjøringstidspungt",
-  lastFailure: "Siste mislykkede kjøringstidspungt",
+  lastSuccess: "Siste vellykkede kjøringstidspunkt",
+  lastFailure: "Siste mislykkede kjøringstidspunkt",
 };
 
 const JobCard: React.FC<JobCardProps> = ({
@@ -106,8 +107,7 @@ const JobCard: React.FC<JobCardProps> = ({
                 } else if (typeof value === "boolean") {
                   displayValue = value ? "Ja" : "Nei";
                 } else if (typeof value === "string" && value.endsWith("Z")) {
-                  const dateValue = new Date(value);
-                  displayValue = isNaN(dateValue.getTime()) ? "N/A" : value;
+                  displayValue = isoDatoTilNorskDato(value);
                 } else {
                   displayValue = value || "N/A";
                 }
