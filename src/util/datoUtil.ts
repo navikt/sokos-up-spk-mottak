@@ -18,19 +18,5 @@ export function isoDatoTilNorskDato(isoDato: string | undefined): string {
 }
 
 export function norskDatoTilIsoDato(norskDato?: string): string {
-  return dayjs(norskDato, "DD.MM.YYYY", true).format("YYYY-MM-DD");
-}
-
-export function dagensDato(): string {
-  return dayjs().tz("Europe/Oslo").format(datoFormatNorsk);
-}
-
-export function isInvalidDateFormat(norskDato: string): boolean {
-  const oppgittDato = dayjs(norskDato, datoFormatNorsk, true);
-  return !oppgittDato.isValid();
-}
-
-export function isDateInThePast(norskDato: string): boolean {
-  const oppgittDato = dayjs(norskDato, datoFormatNorsk, true);
-  return oppgittDato.isBefore(dayjs().startOf("day"));
+  return dayjs(norskDato, "DD.MM.YYYY HH:mm", true).format("YYYY-MM-DD HH:mm");
 }
