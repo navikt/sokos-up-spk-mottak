@@ -95,7 +95,7 @@ const Dashboard = () => {
         {data && data.length > 0 ? (
           <>
             <JobCard
-              title="Read and Parse File"
+              title="Les inn fil og valider transaksjoner"
               buttonText="Start"
               buttonId="readParseFileAndValidateTransactions"
               activeAlert={activeAlert}
@@ -115,7 +115,7 @@ const Dashboard = () => {
               )}
             />
             <JobCard
-              title="Send Utbetaling Transaksjon"
+              title="Send utbetalingtransaksjoner"
               buttonText="Start"
               buttonId="sendUtbetalingTransaksjonToOppdragZ"
               activeAlert={activeAlert}
@@ -135,7 +135,7 @@ const Dashboard = () => {
               )}
             />
             <JobCard
-              title="Send Trekk Transaksjon"
+              title="Send trekktransaksjoner"
               buttonText="Start"
               buttonId="sendTrekkTransaksjonToOppdragZ"
               activeAlert={activeAlert}
@@ -155,7 +155,7 @@ const Dashboard = () => {
               )}
             />
             <JobCard
-              title="Grensesnitt Avstemming"
+              title="Grensesnittavstemming"
               buttonText="Start"
               buttonId="grensesnittAvstemming"
               activeAlert={activeAlert}

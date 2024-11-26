@@ -1,7 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { CheckmarkIcon, XMarkIcon } from "@navikt/aksel-icons";
 import { Alert, Button, Heading } from "@navikt/ds-react";
-import { isoDatoTilNorskDato } from "../../util/datoUtil";
 import styles from "../Dashboard.module.css";
 
 interface JobCardProps {
@@ -20,10 +18,10 @@ interface JobCardProps {
 
 const labelTranslations: Record<string, string> = {
   taskName: "Oppgavenavn",
-  executionTime: "Planlagt kjøringstid",
-  isPicked: "Er valgt",
-  lastSuccess: "Siste vellykkede kjøring",
-  lastFailure: "Siste mislykkede kjøring",
+  executionTime: "Planlagt kjøringstidspungt",
+  isPicked: "Jobb Kjører",
+  lastSuccess: "Siste vellykkede kjøringstidspungt",
+  lastFailure: "Siste mislykkede kjøringstidspungt",
 };
 
 const JobCard: React.FC<JobCardProps> = ({
@@ -104,19 +102,12 @@ const JobCard: React.FC<JobCardProps> = ({
 
                 let displayValue;
                 if (key === "taskName") {
-                  // Always display the task name as plain text
                   displayValue = value || "N/A";
                 } else if (typeof value === "boolean") {
-                  displayValue = value ? (
-                    <CheckmarkIcon aria-hidden="true" />
-                  ) : (
-                    <XMarkIcon aria-hidden="true" />
-                  );
+                  displayValue = value ? "Ja" : "Nei";
                 } else if (typeof value === "string" && value.endsWith("Z")) {
                   const dateValue = new Date(value);
-                  displayValue = isNaN(dateValue.getTime())
-                    ? "N/A"
-                    : isoDatoTilNorskDato(value);
+                  displayValue = isNaN(dateValue.getTime()) ? "N/A" : value;
                 } else {
                   displayValue = value || "N/A";
                 }
