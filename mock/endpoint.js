@@ -1,20 +1,51 @@
+import jobtaskinfo from './jobtaskinfo.json'
+
 export default [
   {
-    url: "/mikrofrontend-api/api/v1/employee",
-    method: "GET",
+    url: "/spk-mottak-api/api/v1/readParseFileAndValidateTransactions",
+    method: "POST",
     response: () => {
-      return [
-        {
-          id: 1,
-          navn: "Ola Nordmann",
-          yrke: "Tech Lead",
-        },
-        {
-          id: 2,
-          navn: "Kari Nordmann",
-          yrke: "Prosjektleder",
-        },
-      ];
+      const message = "ReadAndParseFile av filer har startet, sjekk logger for status";
+      console.log(message);
+      return message;
     },
   },
+
+  { 
+    url: "/spk-mottak-api/api/v1/sendUtbetalingTransaksjonToOppdragZ",
+    method: "POST",
+    response: () => {
+      const message = "SendUtbetalingTransaksjonTilOppdrag har startet, sjekk logger for status";
+      console.log(message);
+      return message;
+    },
+  },
+
+  {
+    url: "/spk-mottak-api/api/v1/sendTrekkTransaksjonToOppdragZ",
+    method: "POST",
+    response: () => {
+      const message = "SendTrekkTransaksjonTilOppdrag har startet, sjekk logger for status";
+      console.log(message);
+      return message;
+    },
+  },
+  
+  {
+    url: "/spk-mottak-api/api/v1/avstemming",
+    method: "POST",
+    response: () => {
+      const message = "GrensesnittAvstemming har startet, sjekk logger for status";
+      console.log(message);
+      return message;
+    },
+  },
+
+  {
+    url: "/spk-mottak-api/api/v1/jobTaskInfo",
+    method: "GET",
+    response: () => jobtaskinfo
+  },
+
 ];
+

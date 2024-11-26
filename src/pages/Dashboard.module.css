@@ -1,25 +1,62 @@
-.animated-alert {
-  animation: fade-in-out 10s ease-in-out;
+.jobCardContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 65%;
+  height: 380px;
+  margin: 0 auto;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  padding: 16px;
+  position: relative;
+  background-color: #e0d8e9;
 }
 
-@keyframes fade-in-out {
-  0% {
-    opacity: 0;
-    transform: translateY(20px);
-  }
+.titleContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 8px;
+}
 
-  10% {
-    opacity: 1;
-    transform: translateY(0);
-  }
+.taskDetailsContainer {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 10px;
+  margin-top: -100px;
+}
 
-  90% {
-    opacity: 1;
-    transform: translateY(0);
-  }
+.taskDetailsRow {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
 
-  100% {
-    opacity: 0;
-    transform: translateY(-20px);
-  }
+.taskDetailItem {
+  display: flex;
+  flex-direction: column;
+}
+
+.buttonAndAlertContainer {
+  position: absolute;
+  bottom: 16px;
+  right: 16px;
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  width: auto;
+}
+
+.alertWrapper {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 8px;
+  width: auto;
+}
+
+.buttonWrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
 }

@@ -1,206 +1,182 @@
-import { useState } from "react";
-import { Alert, Button, HStack, Heading, VStack } from "@navikt/ds-react";
-import styles from "./Dashboard.module.css";
+import React, { useEffect, useState } from "react";
+import { HStack, Heading, VStack } from "@navikt/ds-react";
+import {
+  postAvstemming,
+  postReadAndParseFile,
+  postSendTrekkTransaksjon,
+  postSendUtbetalingTransaksjon,
+  useGetjobTaskInfo,
+} from "../api/apiService";
+import { JobTaskInfo } from "../types/JobTaskInfo";
+import JobCard from "./components/JobCard";
 
-const fetchReadParseFile = async () => {
-  try {
-    const response = await fetch(
-      "/spk-mottak-api/api/v1/readParseFileAndValidateTransactions",
-    );
-    if (!response.ok) {
-      throw new Error("Network response was not ok");
-    }
-    const data = await response.json();
-    return { success: true, data };
-  } catch (error) {
-    return { success: false, error: error };
-  }
-};
-
-const fetchSendUtbetalingTransaksjon = async () => {
-  try {
-    const response = await fetch(
-      "/spk-mottak-api/api/v1/sendUtbetalingTransaksjonToOppdragZ",
-    );
-    if (!response.ok) {
-      throw new Error("Network response was not ok");
-    }
-    const data = await response.json();
-
-    return { success: true, data };
-  } catch (error) {
-    return { success: false, error: error };
-  }
-};
-
-const fetchSendTrekkTransaksjon = async () => {
-  try {
-    const response = await fetch(
-      "/spk-mottak-api/api/v1/sendTrekkTransaksjonToOppdragZ",
-    );
-    if (!response.ok) {
-      throw new Error("Network response was not ok");
-    }
-    const data = await response.json();
-
-    return { success: true, data };
-  } catch (error) {
-    return { success: false, error: error };
-  }
-};
-
-const fetchAvstemming = async () => {
-  try {
-    const response = await fetch("/spk-mottak-api/api/v1/avstemming");
-    if (!response.ok) {
-      throw new Error("Network response was not ok");
-    }
-    const data = await response.json();
-    return { success: true, data };
-  } catch (error) {
-    return { success: false, error: error };
-  }
-};
-
-const TemplatePage = () => {
+const Dashboard = () => {
   const [activeAlert, setActiveAlert] = useState<{
-    id: number;
+    id: string;
     type: "success" | "error";
     message: string;
   } | null>(null);
-  const [disabled, setDisabled] = useState(false);
 
-  const handleButtonClick = async (buttonId: number) => {
-    setDisabled(true);
+  const [disabledButtons, setDisabledButtons] = useState<{
+    [key: string]: { disabled: boolean; timestamp: number };
+  }>({});
 
-    let result;
-    switch (buttonId) {
-      case 1:
-        result = await fetchReadParseFile();
-        break;
-      case 2:
-        result = await fetchSendUtbetalingTransaksjon();
-        break;
-      case 3:
-        result = await fetchSendTrekkTransaksjon();
-        break;
-      case 4:
-        result = await fetchAvstemming();
-        break;
-      default:
-        return;
-    }
+  const { data } = useGetjobTaskInfo();
 
-    if (result.success) {
-      setActiveAlert({ id: buttonId, type: "success", message: result.data });
-    } else {
+  const handleButtonClick = async (
+    buttonId: string,
+    action: () => Promise<unknown>,
+  ) => {
+    const currentTime = Date.now();
+    setDisabledButtons((prev) => {
+      const newState = {
+        ...prev,
+        [buttonId]: { disabled: true, timestamp: currentTime },
+      };
+      localStorage.setItem("disabledButtons", JSON.stringify(newState));
+      return newState;
+    });
+
+    try {
+      const data = (await action()) as string;
+      setActiveAlert({ id: buttonId, type: "success", message: data });
+    } catch (error: unknown) {
+      const errorMessage =
+        error instanceof Error ? error.message : "Ukjent feil oppstod";
       setActiveAlert({
         id: buttonId,
         type: "error",
-        message: `Feil oppstod: ${result.error}`,
+        message: `Feil oppstod: ${errorMessage}`,
       });
     }
 
-    setTimeout(() => {
-      setActiveAlert(null);
-    }, 10000);
+    setTimeout(() => setActiveAlert(null), 15000);
 
     setTimeout(() => {
-      setDisabled(false);
-    }, 10000);
+      setDisabledButtons((prev) => {
+        const newState = {
+          ...prev,
+          [buttonId]: { disabled: false, timestamp: 0 },
+        };
+        localStorage.setItem("disabledButtons", JSON.stringify(newState));
+        return newState;
+      });
+    }, 15000);
   };
+
+  useEffect(() => {
+    const disabledState = localStorage.getItem("disabledButtons");
+    if (disabledState) {
+      const parsedState = JSON.parse(disabledState);
+      const now = Date.now();
+      Object.keys(parsedState).forEach((key) => {
+        const buttonState = parsedState[key];
+        if (buttonState.disabled && now - buttonState.timestamp < 15000) {
+          parsedState[key].disabled = true;
+        } else {
+          parsedState[key].disabled = false;
+        }
+      });
+      setDisabledButtons(parsedState);
+    }
+  }, []);
 
   return (
     <>
-      <div className={styles.template__header}>
-        <VStack align="center">
-          <HStack margin="6" paddingBlock="6" gap="24">
-            <Heading spacing size="large">
-              SPK Mottak Dashboard
-            </Heading>
-          </HStack>
-        </VStack>
+      <VStack align="center">
+        <HStack margin="6" paddingBlock="6" gap="24">
+          <Heading spacing size="large">
+            SPK Mottak Dashboard
+          </Heading>
+        </HStack>
+      </VStack>
 
-        <VStack gap="16" align="center">
-          <HStack gap="16">
-            <Heading size="medium">Start Read and Parse File</Heading>
-            <Button
-              variant="primary"
-              onClick={() => handleButtonClick(1)}
-              disabled={disabled}
-            >
-              Knapp en
-            </Button>
-            {activeAlert && activeAlert.id === 1 && (
-              <Alert
-                variant={activeAlert.type}
-                className={styles.animatedAlert}
-              >
-                {activeAlert.message}
-              </Alert>
-            )}
-          </HStack>
-
-          <HStack gap="16">
-            <Heading size="medium">Send Utbetaling Transaksjon</Heading>
-            <Button
-              variant="primary"
-              onClick={() => handleButtonClick(2)}
-              disabled={disabled}
-            >
-              Knapp to
-            </Button>
-            {activeAlert && activeAlert.id === 2 && (
-              <Alert
-                variant={activeAlert.type}
-                className={styles.animatedAlert}
-              >
-                {activeAlert.message}
-              </Alert>
-            )}
-          </HStack>
-
-          <HStack gap="16">
-            <Heading size="medium">Send Trekk Transaksjon</Heading>
-            <Button
-              variant="primary"
-              onClick={() => handleButtonClick(3)}
-              disabled={disabled}
-            >
-              Knapp tre
-            </Button>
-            {activeAlert && activeAlert.id === 3 && (
-              <Alert
-                variant={activeAlert.type}
-                className={styles.animatedAlert}
-              >
-                {activeAlert.message}
-              </Alert>
-            )}
-          </HStack>
-
-          <HStack gap="16">
-            <Heading size="medium">Start Grensesnitt Avstemming</Heading>
-            <Button
-              variant="primary"
-              onClick={() => handleButtonClick(4)}
-              disabled={disabled}
-            >
-              Knapp fire
-            </Button>
-            {activeAlert && activeAlert.id === 4 && (
-              <Alert
-                variant={activeAlert.type}
-                className={styles.animatedAlert}
-              >
-                {activeAlert.message}
-              </Alert>
-            )}
-          </HStack>
-        </VStack>
-      </div>
+      <VStack gap="16" align="stretch">
+        {data && data.length > 0 ? (
+          <>
+            <JobCard
+              title="Les inn fil og valider transaksjoner"
+              buttonText="Start"
+              buttonId="readParseFileAndValidateTransactions"
+              activeAlert={activeAlert}
+              onClick={() =>
+                handleButtonClick(
+                  "readParseFileAndValidateTransactions",
+                  postReadAndParseFile,
+                )
+              }
+              disabled={
+                disabledButtons["readParseFileAndValidateTransactions"]
+                  ?.disabled || false
+              }
+              jobTaskInfo={data.filter(
+                (task: JobTaskInfo) =>
+                  task.taskName === "readParseFileAndValidateTransactions",
+              )}
+            />
+            <JobCard
+              title="Send utbetalingtransaksjoner"
+              buttonText="Start"
+              buttonId="sendUtbetalingTransaksjonToOppdragZ"
+              activeAlert={activeAlert}
+              onClick={() =>
+                handleButtonClick(
+                  "sendUtbetalingTransaksjonToOppdragZ",
+                  postSendUtbetalingTransaksjon,
+                )
+              }
+              disabled={
+                disabledButtons["sendUtbetalingTransaksjonToOppdragZ"]
+                  ?.disabled || false
+              }
+              jobTaskInfo={data.filter(
+                (task: JobTaskInfo) =>
+                  task.taskName === "sendUtbetalingTransaksjonToOppdragZ",
+              )}
+            />
+            <JobCard
+              title="Send trekktransaksjoner"
+              buttonText="Start"
+              buttonId="sendTrekkTransaksjonToOppdragZ"
+              activeAlert={activeAlert}
+              onClick={() =>
+                handleButtonClick(
+                  "sendTrekkTransaksjonToOppdragZ",
+                  postSendTrekkTransaksjon,
+                )
+              }
+              disabled={
+                disabledButtons["sendTrekkTransaksjonToOppdragZ"]?.disabled ||
+                false
+              }
+              jobTaskInfo={data.filter(
+                (task: JobTaskInfo) =>
+                  task.taskName === "sendTrekkTransaksjonToOppdragZ",
+              )}
+            />
+            <JobCard
+              title="Grensesnittavstemming"
+              buttonText="Start"
+              buttonId="grensesnittAvstemming"
+              activeAlert={activeAlert}
+              onClick={() =>
+                handleButtonClick("grensesnittAvstemming", postAvstemming)
+              }
+              disabled={
+                disabledButtons["grensesnittAvstemming"]?.disabled || false
+              }
+              jobTaskInfo={data.filter(
+                (task: JobTaskInfo) =>
+                  task.taskName === "grensesnittAvstemming",
+              )}
+            />
+          </>
+        ) : (
+          <Heading size="small">Ingen oppgaveinformasjon tilgjengelig</Heading>
+        )}
+      </VStack>
     </>
   );
 };
 
-export default TemplatePage;
+export default Dashboard;
