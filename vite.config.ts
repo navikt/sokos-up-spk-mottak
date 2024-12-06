@@ -12,7 +12,6 @@ const reactDomUrl =
   "https://www.nav.no/tms-min-side-assets/react-dom/18/esm/index.js";
 
 export default defineConfig(({ mode }) => ({
-  base: "/mikrofrontend",
   build: {
     lib: {
       entry: resolve(__dirname, "src/App.tsx"),
@@ -26,20 +25,20 @@ export default defineConfig(({ mode }) => ({
       generateScopedName: "[name]__[local]___[hash:base64:5]",
     },
   },
-  server:
-    mode == "local-dev"
-      ? {
-          proxy: {
-            "/mikrofrontend-api/api/v1/employee": {
-              target: "http://localhost:8080",
-              rewrite: (path: string) =>
-                path.replace(/^\/mikrofrontend-api/, ""),
-              changeOrigin: true,
-              secure: false,
-            },
-          },
-        }
-      : {},
+  server: {
+    proxy: {
+      ...(mode === "backend" && {
+        "/spk-mottak-api/api/v1": {
+          target: /^.*-q1$/.test(mode)
+            ? "https://sokos-spk-mottak.intern.dev.nav.no"
+            : "http://localhost:8080",
+          rewrite: (path: string) => path.replace(/^\/spk-mottak-api/, ""),
+          changeOrigin: true,
+          secure: /^.*-q1$/.test(mode),
+        },
+      }),
+    },
+  },
   plugins: [
     react(),
     cssInjectedByJsPlugin(),

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { Alert, Button, Heading } from "@navikt/ds-react";
 import { isoDatoTilNorskDato } from "../../util/datoUtil";
 import styles from "../Dashboard.module.css";
@@ -41,22 +41,13 @@ const JobCard: React.FC<JobCardProps> = ({
   );
   const buttonDisabled = disabled || isButtonDisabled;
 
-  const [isRefreshDisabled, setIsRefreshDisabled] = useState(true);
-
-  const handleRefresh = () => {
-    window.location.reload();
-  };
-
   const handleStartClick = async (id: string) => {
     await onClick(id);
 
     const currentTime = Date.now();
     localStorage.setItem(`${id}_timestamp`, currentTime.toString());
 
-    setIsRefreshDisabled(false);
-
     setTimeout(() => {
-      setIsRefreshDisabled(true);
       localStorage.removeItem(`${id}_timestamp`);
     }, 15000);
   };
@@ -69,22 +60,12 @@ const JobCard: React.FC<JobCardProps> = ({
       const currentTime = Date.now();
 
       if (currentTime - savedTime < 15000) {
-        setIsRefreshDisabled(false);
-
         setTimeout(() => {
-          setIsRefreshDisabled(true);
           localStorage.removeItem(`${buttonId}_timestamp`);
         }, 15000);
       } else {
-        setIsRefreshDisabled(true);
         localStorage.removeItem(`${buttonId}_timestamp`);
       }
-    }
-
-    const isErValgtTrue = jobTaskInfo?.some((task) => task.isPicked === true);
-
-    if (isErValgtTrue) {
-      setIsRefreshDisabled(false);
     }
   }, [buttonId, jobTaskInfo]);
 
@@ -145,14 +126,6 @@ const JobCard: React.FC<JobCardProps> = ({
           </div>
         )}
         <div className={styles.buttonWrapper}>
-          <Button
-            variant="secondary"
-            size="medium"
-            onClick={handleRefresh}
-            disabled={isRefreshDisabled}
-          >
-            Refresh
-          </Button>
           <Button
             variant="primary"
             size="medium"
