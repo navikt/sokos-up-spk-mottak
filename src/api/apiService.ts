@@ -6,7 +6,7 @@ const swrConfig = {
   fetcher: <T>(url: string) => axiosFetcher<T>(BASE_API_URL, url),
   suspense: true,
   revalidateOnFocus: false,
-  refreshInterval: 15000,
+  refreshInterval: 30000,
 };
 
 export function useGetjobTaskInfo() {
