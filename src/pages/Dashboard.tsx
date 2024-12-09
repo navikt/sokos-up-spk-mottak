@@ -49,19 +49,6 @@ const Dashboard = () => {
         message: `Feil oppstod: ${errorMessage}`,
       });
     }
-
-    setTimeout(() => setActiveAlert(null), 15000);
-
-    setTimeout(() => {
-      setDisabledButtons((prev) => {
-        const newState = {
-          ...prev,
-          [buttonId]: { disabled: false, timestamp: 0 },
-        };
-        localStorage.setItem("disabledButtons", JSON.stringify(newState));
-        return newState;
-      });
-    }, 15000);
   };
 
   useEffect(() => {
@@ -71,7 +58,7 @@ const Dashboard = () => {
       const now = Date.now();
       Object.keys(parsedState).forEach((key) => {
         const buttonState = parsedState[key];
-        if (buttonState.disabled && now - buttonState.timestamp < 15000) {
+        if (buttonState.disabled && now - buttonState.timestamp < 30000) {
           parsedState[key].disabled = true;
         } else {
           parsedState[key].disabled = false;
@@ -79,7 +66,7 @@ const Dashboard = () => {
       });
       setDisabledButtons(parsedState);
     }
-  }, []);
+  }, [data]);
 
   return (
     <>

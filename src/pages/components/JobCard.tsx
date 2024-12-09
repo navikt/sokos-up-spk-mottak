@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Alert, Button, Heading } from "@navikt/ds-react";
 import { isoDatoTilNorskDato } from "../../util/datoUtil";
 import styles from "../Dashboard.module.css";
@@ -31,25 +31,23 @@ const JobCard: React.FC<JobCardProps> = ({
   buttonId,
   activeAlert,
   onClick,
-  disabled,
   jobTaskInfo,
 }) => {
-  const isButtonDisabled = jobTaskInfo?.some((task) =>
-    Object.values(task).some(
-      (value) => typeof value === "boolean" && value === true,
-    ),
-  );
-  const buttonDisabled = disabled || isButtonDisabled;
+  const [isLoading, setIsLoading] = useState(false);
+  const [isAlertVisible, setIsAlertVisible] = useState(false);
+  const [isJobRunningAlertVisible, setIsJobRunningAlertVisible] =
+    useState(false);
+  const [disabledButtons, setDisabledButtons] = useState<{
+    [key: string]: boolean;
+  }>({});
 
   const handleStartClick = async (id: string) => {
+    setIsLoading(true);
     await onClick(id);
 
     const currentTime = Date.now();
     localStorage.setItem(`${id}_timestamp`, currentTime.toString());
-
-    setTimeout(() => {
-      localStorage.removeItem(`${id}_timestamp`);
-    }, 15000);
+    setIsAlertVisible(true);
   };
 
   useEffect(() => {
@@ -59,15 +57,40 @@ const JobCard: React.FC<JobCardProps> = ({
       const savedTime = parseInt(savedTimestamp);
       const currentTime = Date.now();
 
-      if (currentTime - savedTime < 15000) {
-        setTimeout(() => {
-          localStorage.removeItem(`${buttonId}_timestamp`);
-        }, 15000);
+      if (currentTime - savedTime < 30000) {
+        setIsLoading(true);
+        setIsAlertVisible(true);
       } else {
         localStorage.removeItem(`${buttonId}_timestamp`);
       }
     }
-  }, [buttonId, jobTaskInfo]);
+  }, [buttonId]);
+
+  useEffect(() => {
+    const intervalId = setInterval(() => {
+      const savedTimestamp = localStorage.getItem(`${buttonId}_timestamp`);
+      if (savedTimestamp) {
+        setIsAlertVisible(false);
+        localStorage.removeItem(`${buttonId}_timestamp`);
+        setIsLoading(false);
+
+        setDisabledButtons((prevState) => ({
+          ...prevState,
+          [buttonId]: false,
+        }));
+      }
+    }, 30000);
+
+    return () => clearInterval(intervalId);
+  }, [buttonId]);
+  const isJobRunning = jobTaskInfo?.some((task) => task.isPicked === true);
+  useEffect(() => {
+    if (isJobRunning) {
+      setIsJobRunningAlertVisible(true);
+    } else {
+      setIsJobRunningAlertVisible(false);
+    }
+  }, [isJobRunning]);
 
   return (
     <div className={styles.jobCardContainer}>
@@ -112,7 +135,7 @@ const JobCard: React.FC<JobCardProps> = ({
       )}
 
       <div className={styles.buttonAndAlertContainer}>
-        {((activeAlert && activeAlert.id === buttonId) || buttonDisabled) && (
+        {isAlertVisible && (
           <div className={styles.alertWrapper}>
             <Alert
               size="small"
@@ -121,7 +144,14 @@ const JobCard: React.FC<JobCardProps> = ({
             >
               {activeAlert?.id === buttonId
                 ? activeAlert.message
-                : "Jobb holder på, sjekk logger for status"}
+                : "Jobb har startet, sjekk logger for status"}
+            </Alert>
+          </div>
+        )}
+        {isJobRunningAlertVisible && (
+          <div className={styles.alertWrapper}>
+            <Alert size="small" variant="info" className={styles.alert}>
+              Jobb holder på, sjekk logger for status
             </Alert>
           </div>
         )}
@@ -130,7 +160,8 @@ const JobCard: React.FC<JobCardProps> = ({
             variant="primary"
             size="medium"
             onClick={() => handleStartClick(buttonId)}
-            disabled={buttonDisabled}
+            disabled={isJobRunning || disabledButtons[buttonId] || isLoading}
+            loading={isLoading}
           >
             {buttonText}
           </Button>
