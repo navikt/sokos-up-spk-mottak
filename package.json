@@ -5,8 +5,8 @@
   "type": "module",
   "scripts": {
     "dev": "vite --mode local-mock",
-    "dev:backend": "vite --mode backend",
-    "dev:backend-q1": "vite --debug --mode backend-q1",
+    "dev:backend-local": "vite --mode backend",
+    "dev:backend-q1": "vite --mode backend-q1",
     "build": "tsc && vite build",
     "preview": "vite preview",
     "test": "vitest",
