@@ -1,83 +1,41 @@
-# sokos-up-spk-mottak
+# Spk-mottak dashboard mikrofrontend
 
-Brukes som utgangspunkt for å opprette nye mikrofrontends i Økonomiportalen.
+Dashboard for [sokos-spk-mottak](https://github.com/navikt/sokos-up-spk-mottak)
+Denne mikrofrontend gjør det mulig å kunne rekjøre jobber som er satt i `sokos-spk-mottak`.
 
-NB! Navngi følgende: `sokos-up-appNavn` eg: `sokos-up-skattekort`
+## Miljøer
 
-## Tilpass repo-et
+- [Q1-miljø](https://utbetalingsportalen.intern.dev.nav.no/spk-mottak)
+- [QX-miljø](https://utbetalingsportalen-qx.intern.nav.no/spk-mottak)
 
-1. Kjør `chmod 755 setupTemplate.sh`
-2. Kjør:
+## Tilganger
 
-   ```bash
-   ./setupTemplate.sh
-   ```
+### Hvordan få tilgang
 
-3. Kun spesifiser navnet på applikasjonen som skal stå etter sokos-up-`appNavn`. Hvis du ønsker `sokos-up-test` så skriv inn bare `test`.
-4. Slett `setupTemplate.sh` hvis du er ferdig med endre navn på prosjektet
+For å få tilgang til skjermbildet:
 
-5. Sett riktig namespace og team i nais manifestene, de ligger i mappen under `nais/<cluster>`
-6. Velg riktig ingress til appen i nais.yaml. Ingressen bør være `https://utbetalingsportalen.intern.dev.nav.no/appNavn`
+- `0000-GA-SOKOS-MF-SPK-MOTTAK` (selve applikasjon i Utbetalingsportalen)
+
+Tilgang fås ved ta kontakt med din identansvarlig. Det kan noen ganger være en strevsomt å få på plass tilganger
+i identrutinene. Det er derfor viktig å benytte riktig begrep i kommunikasjon med dem.
+
+### Beskrivelse av AD-grupper og hva de heter i identrutinen
+
+| Navn Identrutinen                                      | AD-gruppe                   | Beskrivelse   |
+| ------------------------------------------------------ | --------------------------- | ------------- |
+| Utbetalingsportalen - spk-mottak - Applikasjonstilgang | 0000-GA-SOKOS-MF-Spk-mottak | Admin tilgang |
 
 ## Kom i gang
 
 1. Installere [Node.js](https://nodejs.dev/en/)
 2. Installer [pnpm](https://pnpm.io/)
-3. Installere dependencies `pnpm install && cd server && pnpm install`
-4. Start appen med to følgende måter:
+3. Installere dependencies `pnpm install`
+4. Start appen lokalt `pnpm run dev` (Mock Service Worker) eller mot backend lokalt `pnpm run dev:backend` [sokos-spk-mottak](https://github.com/navikt/sokos-up-spk-mottak)
+5. Appen nås på <http://localhost:5173/oppdragsinfo>
 
-- Mot en mock server -> `pnpm run dev`
-- Mot en backend kjørende lokalt `pnpm run dev-backend`
-  - Gå til [vite.config.ts](/vite.config.ts), endre server.proxy block.
+NB! Anbefaler sette opp [ModHeader](https://modheader.com/) extension på Chrome for å sende med Obo-token i `Authorization` header når du kjører mot backend lokalt da den krever at token inneholder NavIdent.
 
-```javascript
-proxy: {
-   "/mikrofrontend-api/api/v1": {
-   target: "https://sokos-mikrofrontend-api.intern.dev.nav.no",
-   rewrite: (path: string) => path.replace(/^\/mikrofrontend-api/, ""),
-   changeOrigin: true,
-   secure: true;
-  }
-}
-```
-
-5. Bruker du ikke routing? Appen nås på <http://localhost:5173>
-6. Bruker du routing? Appen nås på <http://localhost:5173/mikrofrontend>
-
-## Ønsker du routing?
-
-Templaten har ikke routing. Men om du ønsker å ha routing gjør du følgende:
-
-1. `pnpm i react-router-dom`
-2. Erstatter følgende innhold i [App.tsx](/src/App.tsx)
-
-```typescript
-return <TemplatePage />;
-```
-
-med
-
-```typescript
-return <BrowserRouter basename="/mikrofrontend">
-    <Routes>
-      <Route path={"/"} ErrorBoundary={ErrorBoundary}>
-        <Route path="/" element={<TemplatePage />} />
-        <Route path="/anotherpage" element={<AnotherPage />} />
-      </Route>
-    </Routes>
-  </BrowserRouter>
-
-function ErrorBoundary(): JSX.Element {
-  const error = useRouteError();
-  throw error;
-}
-```
-
-## Design
-
-Det finnes et utkast til en designguide kan man basere seg på: [Kjerneoppsett Utbetalingsportalen](https://navno-my.sharepoint.com/:o:/g/personal/julie_utgard_nav_no/EtV6P-sYimZNsACTYqZmSbsBLeSlsvc6PP2svso_H09dZA?e=KSY5SO)
-
-## Henvendelser
+# Henvendelser
 
 Spørsmål knyttet til koden eller prosjektet kan stilles som issues her på Github.
 Interne henvendelser kan sendes via Slack i kanalen #po-utbetaling.
