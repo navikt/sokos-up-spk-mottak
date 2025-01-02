@@ -1,6 +1,7 @@
 # Spk-mottak dashboard mikrofrontend
 
-Dashboard for [sokos-spk-mottak](https://github.com/navikt/sokos-up-spk-mottak)
+Dashboard for [sokos-spk-mottak](https://github.com/navikt/sokos-up-spk-mottak).
+
 Denne mikrofrontend gjør det mulig å kunne rekjøre jobber som er satt i `sokos-spk-mottak`.
 
 ## Miljøer
@@ -14,16 +15,16 @@ Denne mikrofrontend gjør det mulig å kunne rekjøre jobber som er satt i `soko
 
 For å få tilgang til skjermbildet:
 
-- `0000-GA-SOKOS-MF-SPK-MOTTAK-ADMIN` (selve applikasjon i Utbetalingsportalen)
+- `0000-GA-SOKOS-MF-SPK-MOTTAK-ADMIN` (applikasjon i Utbetalingsportalen)
 
 Tilgang fås ved ta kontakt med din identansvarlig. Det kan noen ganger være en strevsomt å få på plass tilganger
 i identrutinene. Det er derfor viktig å benytte riktig begrep i kommunikasjon med dem.
 
 ### Beskrivelse av AD-grupper og hva de heter i identrutinen
 
-| Navn Identrutinen                               | AD-gruppe                         | Beskrivelse   |
-| ----------------------------------------------- | --------------------------------- | ------------- |
-| Utbetalingsportalen - spk-mottak - Admintilgang | 0000-GA-SOKOS-MF-SPK-MOTTAK-ADMIN | Admin tilgang |
+| Navn Identrutinen                               | AD-gruppe                         | Beskrivelse                               |
+| ----------------------------------------------- | --------------------------------- | ----------------------------------------- |
+| Utbetalingsportalen - spk-mottak - Admintilgang | 0000-GA-SOKOS-MF-SPK-MOTTAK-ADMIN | Admin tilgang for å manuelt trigge jobber |
 
 ## Kom i gang
 
