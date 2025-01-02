@@ -28,6 +28,8 @@ spec:
   ingresses:
     - "https://utbetalingsportalen.intern.dev.nav.no/sokos-up-spk-mottak"
     - "https://utbetalingsportalen.ansatt.dev.nav.no/sokos-up-spk-mottak"
+    - "https://utbetalingsportalen-qx.intern.dev.nav.no/sokos-up-spk-mottak"
+    - "https://utbetalingsportalen-qx.ansatt.dev.nav.no/sokos-up-spk-mottak"
   resources:
     limits:
       cpu: "3"
