@@ -1,6 +1,6 @@
 /* eslint-disable no-console */
 import { HttpResponse, http } from "msw";
-import jobTaskinfo from "./jobTaskinfo.json";
+import jobtaskInfo from "./jobtaskInfo.json";
 
 export const handlers = [
   http.post(
@@ -38,6 +38,6 @@ export const handlers = [
   }),
 
   http.get("/spk-mottak-api/api/v1/jobTaskInfo", () => {
-    return HttpResponse.json(jobTaskinfo, { status: 200 });
+    return HttpResponse.json(jobtaskInfo, { status: 200 });
   }),
 ];
