@@ -15,6 +15,7 @@ interface JobCardProps {
   onClick: (id: string) => void;
   disabled: boolean;
   jobTaskInfo?: Record<string, string | boolean>[];
+  children?: React.ReactNode;
 }
 
 const labelTranslations: Record<string, string> = {
@@ -32,6 +33,7 @@ const JobCard: React.FC<JobCardProps> = ({
   activeAlert,
   onClick,
   jobTaskInfo,
+  children,
 }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [isAlertVisible, setIsAlertVisible] = useState(false);
@@ -133,6 +135,8 @@ const JobCard: React.FC<JobCardProps> = ({
           ))}
         </div>
       )}
+
+      {children}
 
       <div className={styles.buttonAndAlertContainer}>
         {isAlertVisible && (
