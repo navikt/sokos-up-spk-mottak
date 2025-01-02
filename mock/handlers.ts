@@ -1,6 +1,6 @@
 /* eslint-disable no-console */
 import { HttpResponse, http } from "msw";
-import jobtaskInfo from "./jobtaskInfo_info.json";
+import jobtaskInfo from "./jobtask_info.json";
 
 export const handlers = [
   http.post(

@@ -1,5 +1,5 @@
 import axios, { CreateAxiosDefaults } from "axios";
-import { HttpStatusCodeError } from "../types/Errors_type";
+import { HttpStatusCodeError } from "../types/Error";
 
 const config = (baseUri: string): CreateAxiosDefaults => ({
   baseURL: baseUri,
