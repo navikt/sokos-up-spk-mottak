@@ -14,16 +14,16 @@ Denne mikrofrontend gjør det mulig å kunne rekjøre jobber som er satt i `soko
 
 For å få tilgang til skjermbildet:
 
-- `0000-GA-SOKOS-MF-SPK-MOTTAK` (selve applikasjon i Utbetalingsportalen)
+- `0000-GA-SOKOS-MF-SPK-MOTTAK-ADMIN` (selve applikasjon i Utbetalingsportalen)
 
 Tilgang fås ved ta kontakt med din identansvarlig. Det kan noen ganger være en strevsomt å få på plass tilganger
 i identrutinene. Det er derfor viktig å benytte riktig begrep i kommunikasjon med dem.
 
 ### Beskrivelse av AD-grupper og hva de heter i identrutinen
 
-| Navn Identrutinen                                      | AD-gruppe                   | Beskrivelse   |
-| ------------------------------------------------------ | --------------------------- | ------------- |
-| Utbetalingsportalen - spk-mottak - Applikasjonstilgang | 0000-GA-SOKOS-MF-Spk-mottak | Admin tilgang |
+| Navn Identrutinen                               | AD-gruppe                         | Beskrivelse   |
+| ----------------------------------------------- | --------------------------------- | ------------- |
+| Utbetalingsportalen - spk-mottak - Admintilgang | 0000-GA-SOKOS-MF-SPK-MOTTAK-ADMIN | Admin tilgang |
 
 ## Kom i gang
 
