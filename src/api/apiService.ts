@@ -1,6 +1,8 @@
 import useSWRImmutable from "swr/immutable";
 import { JobTaskInfo } from "../types/JobTaskInfo";
-import { BASE_API_URL, axiosFetcher, axiosPostFetcher } from "./apiConfig";
+import { axiosFetcher, axiosPostFetcher } from "./apiConfig";
+
+export const BASE_API_URL = "/spk-mottak-api/api/v1";
 
 const swrConfig = {
   fetcher: <T>(url: string) => axiosFetcher<T>(BASE_API_URL, url),

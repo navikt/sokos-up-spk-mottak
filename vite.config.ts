@@ -5,26 +5,12 @@ import { resolve } from "path";
 import { defineConfig } from "vite";
 import cssInjectedByJsPlugin from "vite-plugin-css-injected-by-js";
 import EnvironmentPlugin from "vite-plugin-environment";
-import { viteMockServe } from "vite-plugin-mock";
 
 const reactUrl = "https://www.nav.no/tms-min-side-assets/react/18/esm/index.js";
 const reactDomUrl =
   "https://www.nav.no/tms-min-side-assets/react-dom/18/esm/index.js";
 
 export default defineConfig(({ mode }) => {
-  const proxyConfig = {
-    ...((mode === "backend" || /^.*-q1$/.test(mode)) && {
-      "/spk-mottak-api/api/v1": {
-        target: /^.*-q1$/.test(mode)
-          ? "https://sokos-spk-mottak.intern.dev.nav.no"
-          : "http://localhost:8080",
-        rewrite: (path: string) => path.replace(/^\/spk-mottak-api/, ""),
-        changeOrigin: true,
-        secure: /^.*-q1$/.test(mode),
-      },
-    }),
-  };
-
   return {
     build: {
       lib: {
@@ -40,17 +26,24 @@ export default defineConfig(({ mode }) => {
       },
     },
     server: {
-      proxy: proxyConfig,
+      proxy: {
+        ...((mode === "backend" || /^.*-q1$/.test(mode)) && {
+          "/spk-mottak-api/api/v1": {
+            target: /^.*-q1$/.test(mode)
+              ? "https://sokos-spk-mottak.intern.dev.nav.no"
+              : "http://localhost:8080",
+            rewrite: (path: string) => path.replace(/^\/spk-mottak-api/, ""),
+            changeOrigin: true,
+            secure: /^.*-q1$/.test(mode),
+          },
+        }),
+      },
     },
     plugins: [
       react(),
       cssInjectedByJsPlugin(),
       EnvironmentPlugin({
         NODE_ENV: process.env.NODE_ENV || "development",
-      }),
-      viteMockServe({
-        mockPath: "mock",
-        enable: mode === "local-mock",
       }),
       {
         ...importMapPlugin({
