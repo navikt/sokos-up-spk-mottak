@@ -1,7 +1,5 @@
 import axios, { CreateAxiosDefaults } from "axios";
-import { ApiError, HttpStatusCodeError } from "../types/errors";
-
-export const BASE_API_URL = "/spk-mottak-api/api/v1";
+import { HttpStatusCodeError } from "../types/Error";
 
 const config = (baseUri: string): CreateAxiosDefaults => ({
   baseURL: baseUri,
@@ -21,24 +19,24 @@ function api(baseUri: string) {
   instance.interceptors.response.use(
     (response) => response,
     (error) => {
-      if (error.response?.status === 400) {
-        // her kan vi legge feilkoder også som vi fra backend
-        throw new HttpStatusCodeError(error.response?.status);
-      }
       if (error.response?.status === 401 || error.response?.status === 403) {
         // Uinnlogget - vil ikke skje i miljø da appen er beskyttet
         return Promise.reject(error);
+      } else {
+        throw new HttpStatusCodeError(
+          error.response?.status || 500, // Default 500 hvis status ikke er definert
+          error.response?.data?.message ||
+            "Nettverksproblemer. Hvis feilen oppstår, meld sak i Porten.", // Default melding hvis message ikke er definert
+        );
       }
-      throw new ApiError("Issues with connection to backend");
     },
   );
   return instance;
 }
 
-export function axiosFetcher<T>(baseUri: string, url: string) {
-  return api(baseUri)
-    .get<T>(url)
-    .then((res) => res.data);
+export async function axiosFetcher<T>(baseUri: string, url: string) {
+  const res = await api(baseUri).get<T>(url);
+  return res.data;
 }
 
 export async function axiosPostFetcher<T, U>(

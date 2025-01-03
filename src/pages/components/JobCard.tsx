@@ -24,6 +24,7 @@ const labelTranslations: Record<string, string> = {
   isPicked: "Jobb Kjører",
   lastSuccess: "Siste vellykkede kjøringstidspunkt",
   lastFailure: "Siste mislykkede kjøringstidspunkt",
+  ident: "Sist kjørt av",
 };
 
 const JobCard: React.FC<JobCardProps> = ({

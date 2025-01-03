@@ -1,0 +1,36 @@
+[
+  {
+    "taskId": "recurring",
+    "taskName": "sendTrekkTransaksjonToOppdragZ",
+    "executionTime": "2024-11-07T09:00:00Z",
+    "isPicked": true,
+    "lastFailure": "2024-11-06T14:54:26.127295Z",
+    "lastSuccess": "2024-11-07T08:00:03.804450Z",
+    "ident": "B171123"
+  },
+  {
+    "taskId": "recurring",
+    "taskName": "sendUtbetalingTransaksjonToOppdragZ",
+    "executionTime": "2024-11-07T09:00:00Z",
+    "isPicked": false,
+    "lastFailure": "2024-11-06T14:54:26.127295Z",
+    "lastSuccess": "2024-11-07T08:00:03.811153Z",
+    "ident": "B171123"
+  },
+  {
+    "taskId": "recurring",
+    "taskName": "readParseFileAndValidateTransactions",
+    "executionTime": "2024-11-07T09:00:00Z",
+    "isPicked": false,
+    "lastSuccess": "2024-11-07T08:05:03.021320Z",
+    "ident": "B171123"
+  },
+  {
+    "taskId": "recurring",
+    "taskName": "grensesnittAvstemming",
+    "executionTime": "2024-11-08T04:00:00Z",
+    "isPicked": false,
+    "lastSuccess": "2024-11-07T04:00:09.082312Z",
+    "ident": "B171123"
+  }
+]

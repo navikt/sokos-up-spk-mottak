@@ -7,4 +7,5 @@ export const JobTaskInfoSchema = z.object({
   isPicked: z.boolean(),
   lastFailure: z.optional(z.string()),
   lastSuccess: z.optional(z.string()),
+  ident: z.string(),
 });
