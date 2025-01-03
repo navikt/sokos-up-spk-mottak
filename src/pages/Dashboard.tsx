@@ -8,6 +8,8 @@ import {
   useGetjobTaskInfo,
 } from "../api/apiService";
 import { JobTaskInfo } from "../types/JobTaskInfo";
+import styles from "./Dashboard.module.css";
+import DateRangePicker from "./components/DateRangePicker";
 import JobCard from "./components/JobCard";
 
 const Dashboard = () => {
@@ -20,12 +22,19 @@ const Dashboard = () => {
   const [disabledButtons, setDisabledButtons] = useState<{
     [key: string]: { disabled: boolean; timestamp: number };
   }>({});
+  const [dateRange, setDateRange] = useState<{
+    fromDate: string | null;
+    toDate: string | null;
+  }>({
+    fromDate: null,
+    toDate: null,
+  });
 
   const { data } = useGetjobTaskInfo();
 
   const handleButtonClick = async (
     buttonId: string,
-    action: () => Promise<unknown>,
+    action: (body?: { fromDate?: string; toDate?: string }) => Promise<unknown>,
   ) => {
     const currentTime = Date.now();
     setDisabledButtons((prev) => {
@@ -37,16 +46,26 @@ const Dashboard = () => {
       return newState;
     });
 
+    let body: { fromDate?: string; toDate?: string } | undefined = undefined;
+
+    if (buttonId === "grensesnittAvstemming") {
+      if (dateRange.fromDate && dateRange.toDate) {
+        body = {
+          fromDate: dateRange.fromDate,
+          toDate: dateRange.toDate,
+        };
+      }
+    }
     try {
-      const data = (await action()) as string;
+      const data = (await action(body)) as string;
       setActiveAlert({ id: buttonId, type: "success", message: data });
     } catch (error: unknown) {
       const errorMessage =
-        error instanceof Error ? error.message : "Ukjent feil oppstod";
+        error instanceof Error ? error.message : "An unknown error occurred.";
       setActiveAlert({
         id: buttonId,
         type: "error",
-        message: `Feil oppstod: ${errorMessage}`,
+        message: `Error occurred: ${errorMessage}`,
       });
     }
   };
@@ -156,10 +175,18 @@ const Dashboard = () => {
                 (task: JobTaskInfo) =>
                   task.taskName === "grensesnittAvstemming",
               )}
-            />
+            >
+              <div className={styles.datePickerWrapper}>
+                <DateRangePicker
+                  onDateChange={(fromDate, toDate) =>
+                    setDateRange({ fromDate, toDate })
+                  }
+                />
+              </div>
+            </JobCard>
           </>
         ) : (
-          <Heading size="small">Ingen oppgaveinformasjon tilgjengelig</Heading>
+          <Heading size="small">No job information available</Heading>
         )}
       </VStack>
     </>
