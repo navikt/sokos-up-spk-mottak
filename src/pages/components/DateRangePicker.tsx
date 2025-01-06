@@ -1,6 +1,6 @@
-import { format } from "date-fns";
 import React, { useEffect, useState } from "react";
 import { DatePicker, HStack, useRangeDatepicker } from "@navikt/ds-react";
+import { tilNorskDato } from "../../util/datoUtil";
 
 const DateRangePicker: React.FC<{
   onDateChange: (fromDate: string | null, toDate: string | null) => void;
@@ -17,8 +17,8 @@ const DateRangePicker: React.FC<{
 
   useEffect(() => {
     onDateChange(
-      fromDate ? format(fromDate, "yyyy-MM-dd") : null,
-      toDate ? format(toDate, "yyyy-MM-dd") : null,
+      fromDate ? tilNorskDato(fromDate) : null,
+      toDate ? tilNorskDato(toDate) : null,
     );
   }, [fromDate, toDate, onDateChange]);
 
