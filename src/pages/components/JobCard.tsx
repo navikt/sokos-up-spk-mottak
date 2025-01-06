@@ -46,7 +46,7 @@ const JobCard: React.FC<JobCardProps> = ({
 
   const handleStartClick = async (id: string) => {
     setIsLoading(true);
-    await onClick(id);
+    onClick(id);
 
     const currentTime = Date.now();
     localStorage.setItem(`${id}_timestamp`, currentTime.toString());
@@ -113,7 +113,7 @@ const JobCard: React.FC<JobCardProps> = ({
                   displayValue = value || "N/A";
                 } else if (typeof value === "boolean") {
                   displayValue = value ? "Ja" : "Nei";
-                } else if (typeof value === "string" && value.endsWith("Z")) {
+                } else if (value.endsWith("Z")) {
                   displayValue = isoDatoTilNorskDato(value);
                 } else {
                   displayValue = value || "N/A";

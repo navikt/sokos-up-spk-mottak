@@ -18,10 +18,6 @@ export function isoDatoTilNorskDato(isoDato: string | undefined): string {
   return dayjs(isoDato).tz("Europe/Oslo", true).format(isoDatoFormatNorsk);
 }
 
-export function norskDatoTilIsoDato(norskDato?: string): string {
-  return dayjs(norskDato, "DD.MM.YYYY HH:mm", true).format("YYYY-MM-DD HH:mm");
-}
-
 export function tilNorskDato(dato: Date): string {
   return dayjs(dato).format(datoFormatNorsk);
 }
