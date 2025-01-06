@@ -61,5 +61,97 @@
 }
 
 .datePickerWrapper {
-  margin-top: 23px;
+  margin-top: 20px;
+}
+
+.spaceundergrensesnittavstemning {
+  height: 600px;
+}
+
+.responsivmelding {
+  display: none !important;
+}
+
+@media (width <= 1405px) {
+  .alertWrapper {
+    margin-left: 10px;
+  }
+
+  .grensesnittcard {
+    height: 480px !important;
+  }
+
+  .jobCardContainer {
+    height: 405px;
+  }
+}
+
+@media (width <= 1207px) {
+  .jobCardContainer {
+    height: 420px;
+  }
+}
+
+@media (width <= 1034px) {
+  .jobCardContainer {
+    width: 80%;
+    height: 430px;
+  }
+}
+
+@media (width <= 675px) {
+  .jobCardContainer {
+    width: 90%;
+    height: 445px;
+  }
+
+  .alertWrapper {
+    margin-left: 10px;
+  }
+
+  .grensesnittcard {
+    height: 485px;
+  }
+
+  .datePickerWrapper {
+    margin-top: 0;
+  }
+}
+
+@media (width <= 500px) {
+  .jobCardContainer {
+    width: 99%;
+  }
+}
+
+@media (width <= 450px) {
+  .buttonWrapper {
+    margin-right: 35%;
+    margin-top: -50px;
+    position: absolute;
+  }
+
+  .jobCardContainer {
+    height: 500px;
+  }
+}
+
+@media (width <= 378px) {
+  .grensesnittcard {
+    height: 630px !important;
+  }
+}
+
+@media (width <= 350px) {
+  .jobCardContainer {
+    display: none;
+  }
+
+  .tittel {
+    display: none;
+  }
+
+  .responsivmelding {
+    display: contents !important;
+  }
 }

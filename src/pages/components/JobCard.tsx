@@ -16,6 +16,7 @@ interface JobCardProps {
   disabled: boolean;
   jobTaskInfo?: Record<string, string | boolean>[];
   children?: React.ReactNode;
+  className?: string;
 }
 
 const labelTranslations: Record<string, string> = {
@@ -35,6 +36,7 @@ const JobCard: React.FC<JobCardProps> = ({
   onClick,
   jobTaskInfo,
   children,
+  className,
 }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [isAlertVisible, setIsAlertVisible] = useState(false);
@@ -86,7 +88,9 @@ const JobCard: React.FC<JobCardProps> = ({
 
     return () => clearInterval(intervalId);
   }, [buttonId]);
+
   const isJobRunning = jobTaskInfo?.some((task) => task.isPicked === true);
+
   useEffect(() => {
     if (isJobRunning) {
       setIsJobRunningAlertVisible(true);
@@ -96,18 +100,16 @@ const JobCard: React.FC<JobCardProps> = ({
   }, [isJobRunning]);
 
   return (
-    <div className={styles.jobCardContainer}>
+    <div className={`${styles.jobCardContainer} ${className || ""}`}>
       <div className={styles.titleContainer}>
         <Heading size="medium">{title}</Heading>
       </div>
-
       {jobTaskInfo && jobTaskInfo.length > 0 && (
         <div className={styles.taskDetailsContainer}>
           {jobTaskInfo.map((task, index) => (
             <div key={index} className={styles.taskDetailsGrid}>
               {Object.entries(task).map(([key, value], i) => {
                 if (key === "taskId") return null;
-
                 let displayValue;
                 if (key === "taskName") {
                   displayValue = value || "N/A";
@@ -118,11 +120,9 @@ const JobCard: React.FC<JobCardProps> = ({
                 } else {
                   displayValue = value || "N/A";
                 }
-
                 const label =
                   labelTranslations[key] ||
                   key.charAt(0).toUpperCase() + key.slice(1);
-
                 return (
                   <div key={i} className={styles.taskDetailItem}>
                     <strong className={styles.taskDetailKey}>{label}:</strong>{" "}
@@ -136,9 +136,7 @@ const JobCard: React.FC<JobCardProps> = ({
           ))}
         </div>
       )}
-
       {children}
-
       <div className={styles.buttonAndAlertContainer}>
         {isAlertVisible && (
           <div className={styles.alertWrapper}>
