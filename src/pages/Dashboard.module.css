@@ -126,7 +126,6 @@
 
 @media (width <= 450px) {
   .buttonWrapper {
-    margin-right: 35%;
     margin-top: -50px;
     position: absolute;
   }
@@ -134,9 +133,13 @@
   .jobCardContainer {
     height: 500px;
   }
+
+  .grensesnittcard {
+    height: 530px !important;
+  }
 }
 
-@media (width <= 378px) {
+@media (width <= 377px) {
   .grensesnittcard {
     height: 630px !important;
   }
