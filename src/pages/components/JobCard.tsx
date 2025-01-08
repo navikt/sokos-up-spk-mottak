@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Alert, Button, Heading, Link } from "@navikt/ds-react";
 import { isoDatoTilNorskDato } from "../../util/datoUtil";
+import { getEnvironment } from "../../util/environment";
 import styles from "../Dashboard.module.css";
 
 interface JobCardProps {
@@ -132,7 +133,7 @@ const JobCard: React.FC<JobCardProps> = ({
                         <>
                           <br />
                           <Link
-                            href="https://logs.adeo.no/app/discover#/?_g=(time:(from:now-1d,to:now))&_a=(filters:!((query:(match_phrase:(application:'sokos-spk-mottak'))),(query:(match_phrase:(cluster:'dev-fss'))),(query:(match_phrase:(level:'Error')))))"
+                            href={`https://logs.adeo.no/app/discover#/?_g=(time:(from:now-1d,to:now))&_a=(filters:!((query:(match_phrase:(application:'sokos-spk-mottak'))),(query:(match_phrase:(cluster:'${getEnvironment() === "production" ? "prod-fss" : "dev-fss"}'))),(query:(match_phrase:(level:'Error')))))`}
                             target="_blank"
                           >
                             Sjekk error logger
