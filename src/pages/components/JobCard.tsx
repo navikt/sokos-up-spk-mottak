@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Alert, Button, Heading } from "@navikt/ds-react";
+import { Alert, Button, Heading, Link } from "@navikt/ds-react";
 import { isoDatoTilNorskDato } from "../../util/datoUtil";
 import styles from "../Dashboard.module.css";
 
@@ -128,6 +128,17 @@ const JobCard: React.FC<JobCardProps> = ({
                     <strong className={styles.taskDetailKey}>{label}:</strong>{" "}
                     <span className={styles.taskDetailValue}>
                       {displayValue}
+                      {key === "lastFailure" && (
+                        <>
+                          <br />
+                          <Link
+                            href="https://logs.adeo.no/app/discover#/?_g=(time:(from:now-1d,to:now))&_a=(filters:!((query:(match_phrase:(application:'sokos-spk-mottak'))),(query:(match_phrase:(cluster:'dev-fss'))),(query:(match_phrase:(level:'Error')))))"
+                            target="_blank"
+                          >
+                            Sjekk error logger
+                          </Link>
+                        </>
+                      )}
                     </span>
                   </div>
                 );
