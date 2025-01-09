@@ -194,7 +194,7 @@ const Dashboard = () => {
             </div>
           </>
         ) : (
-          <Heading size="small">No job information available</Heading>
+          <Alert variant="info">Ingen jobbinformasjon tilgjengelig</Alert>
         )}
       </VStack>
     </>
