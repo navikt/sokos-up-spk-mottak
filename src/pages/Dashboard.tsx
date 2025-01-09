@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { HStack, Heading, VStack } from "@navikt/ds-react";
+import { Alert, HStack, Heading, VStack } from "@navikt/ds-react";
 import {
   postAvstemming,
   postReadAndParseFile,
@@ -91,9 +91,14 @@ const Dashboard = () => {
     <>
       <VStack align="center">
         <HStack margin="6" paddingBlock="6" gap="24">
-          <Heading spacing size="large">
+          <Heading className={styles.tittel} spacing size="large">
             SPK Mottak Dashboard
-          </Heading>
+          </Heading>{" "}
+          <div className={styles.responsivmelding}>
+            <Alert variant="error">
+              Siden er for liten til å vise innhold!
+            </Alert>
+          </div>
         </HStack>
       </VStack>
 
@@ -160,30 +165,33 @@ const Dashboard = () => {
                   task.taskName === "sendTrekkTransaksjonToOppdragZ",
               )}
             />
-            <JobCard
-              title="Grensesnittavstemming"
-              buttonText="Start"
-              buttonId="grensesnittAvstemming"
-              activeAlert={activeAlert}
-              onClick={() =>
-                handleButtonClick("grensesnittAvstemming", postAvstemming)
-              }
-              disabled={
-                disabledButtons["grensesnittAvstemming"]?.disabled || false
-              }
-              jobTaskInfo={data.filter(
-                (task: JobTaskInfo) =>
-                  task.taskName === "grensesnittAvstemming",
-              )}
-            >
-              <div className={styles.datePickerWrapper}>
-                <DateRangePicker
-                  onDateChange={(fromDate, toDate) =>
-                    setDateRange({ fromDate, toDate })
-                  }
-                />
-              </div>
-            </JobCard>
+            <div className={styles.spaceundergrensesnittavstemning}>
+              <JobCard
+                title="Grensesnittavstemming"
+                buttonText="Start"
+                buttonId="grensesnittAvstemming"
+                activeAlert={activeAlert}
+                onClick={() =>
+                  handleButtonClick("grensesnittAvstemming", postAvstemming)
+                }
+                disabled={
+                  disabledButtons["grensesnittAvstemming"]?.disabled || false
+                }
+                jobTaskInfo={data.filter(
+                  (task: JobTaskInfo) =>
+                    task.taskName === "grensesnittAvstemming",
+                )}
+                className={styles.grensesnittcard}
+              >
+                <div className={styles.datePickerWrapper}>
+                  <DateRangePicker
+                    onDateChange={(fromDate, toDate) =>
+                      setDateRange({ fromDate, toDate })
+                    }
+                  />
+                </div>
+              </JobCard>
+            </div>
           </>
         ) : (
           <Heading size="small">No job information available</Heading>
