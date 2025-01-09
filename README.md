@@ -8,6 +8,7 @@ Denne mikrofrontend gjør det mulig å kunne rekjøre jobber som er satt i `soko
 
 - [Q1-miljø](https://utbetalingsportalen.intern.dev.nav.no/spk-mottak)
 - [QX-miljø](https://utbetalingsportalen-qx.intern.nav.no/spk-mottak)
+- [Prod-miljø](https://utbetalingsportalen.intern.nav.no/spk-mottak)
 
 ## Tilganger
 
