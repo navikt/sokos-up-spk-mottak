@@ -37,6 +37,12 @@ export default defineConfig(({ mode }) => ({
           secure: /^.*-q1$/.test(mode),
         },
       }),
+      ...(mode === "mock" && {
+        "/mockServiceWorker.js": {
+          target: "http://localhost:5173",
+          rewrite: () => "spk-mottak/mockServiceWorker.js",
+        },
+      }),
     },
   },
   plugins: [
