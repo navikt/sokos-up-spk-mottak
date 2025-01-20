@@ -11,6 +11,7 @@ import { JobTaskInfo } from "../types/JobTaskInfo";
 import styles from "./Dashboard.module.css";
 import DateRangePicker from "./components/DateRangePicker";
 import JobCard from "./components/JobCard";
+import Body from "@navikt/ds-react/esm/table/Body";
 
 const Dashboard = () => {
   const [activeAlert, setActiveAlert] = useState<{
@@ -171,10 +172,10 @@ const Dashboard = () => {
                 buttonText="Start"
                 buttonId="grensesnittAvstemming"
                 activeAlert={activeAlert}
-                onClick={() =>
-                  handleButtonClick("grensesnittAvstemming", postAvstemming)
-                }
-                disabled={
+                onClick={() => { 
+                 return handleButtonClick("grensesnittAvstemming", postAvstemming)
+                } }
+                disabled={ 
                   disabledButtons["grensesnittAvstemming"]?.disabled || false
                 }
                 jobTaskInfo={data.filter(
@@ -185,8 +186,9 @@ const Dashboard = () => {
               >
                 <div className={styles.datePickerWrapper}>
                   <DateRangePicker
-                    onDateChange={(fromDate, toDate) =>
-                      setDateRange({ fromDate, toDate })
+                    onDateChange={(fromDate, toDate)=> {
+                        if (fromDate != dateRange.fromDate || toDate != dateRange.toDate) setDateRange((prev) => ({ fromDate, toDate }));
+                       }
                     }
                   />
                 </div>

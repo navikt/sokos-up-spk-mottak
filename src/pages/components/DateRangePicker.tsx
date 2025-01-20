@@ -15,7 +15,8 @@ const DateRangePicker: React.FC<{
   const [fromDate, setFromDate] = useState<Date | null>(null);
   const [toDate, setToDate] = useState<Date | null>(null);
 
-  useEffect(() => {
+  useEffect(() => { 
+    if (fromDate && toDate)
     onDateChange(
       fromDate ? tilNorskDato(fromDate) : null,
       toDate ? tilNorskDato(toDate) : null,
