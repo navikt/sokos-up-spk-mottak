@@ -11,7 +11,6 @@ import { JobTaskInfo } from "../types/JobTaskInfo";
 import styles from "./Dashboard.module.css";
 import DateRangePicker from "./components/DateRangePicker";
 import JobCard from "./components/JobCard";
-import Body from "@navikt/ds-react/esm/table/Body";
 
 const Dashboard = () => {
   const [activeAlert, setActiveAlert] = useState<{
@@ -104,100 +103,98 @@ const Dashboard = () => {
       </VStack>
 
       <VStack gap="16" align="stretch">
-        {data && data.length > 0 ? (
-          <>
-            <JobCard
-              title="Les inn fil og valider transaksjoner"
-              buttonText="Start"
-              buttonId="readParseFileAndValidateTransactions"
-              activeAlert={activeAlert}
-              onClick={() =>
-                handleButtonClick(
-                  "readParseFileAndValidateTransactions",
-                  postReadAndParseFile,
-                )
-              }
-              disabled={
-                disabledButtons["readParseFileAndValidateTransactions"]
-                  ?.disabled || false
-              }
-              jobTaskInfo={data.filter(
-                (task: JobTaskInfo) =>
-                  task.taskName === "readParseFileAndValidateTransactions",
-              )}
-            />
-            <JobCard
-              title="Send utbetalingtransaksjoner"
-              buttonText="Start"
-              buttonId="sendUtbetalingTransaksjonToOppdragZ"
-              activeAlert={activeAlert}
-              onClick={() =>
-                handleButtonClick(
-                  "sendUtbetalingTransaksjonToOppdragZ",
-                  postSendUtbetalingTransaksjon,
-                )
-              }
-              disabled={
-                disabledButtons["sendUtbetalingTransaksjonToOppdragZ"]
-                  ?.disabled || false
-              }
-              jobTaskInfo={data.filter(
-                (task: JobTaskInfo) =>
-                  task.taskName === "sendUtbetalingTransaksjonToOppdragZ",
-              )}
-            />
-            <JobCard
-              title="Send trekktransaksjoner"
-              buttonText="Start"
-              buttonId="sendTrekkTransaksjonToOppdragZ"
-              activeAlert={activeAlert}
-              onClick={() =>
-                handleButtonClick(
-                  "sendTrekkTransaksjonToOppdragZ",
-                  postSendTrekkTransaksjon,
-                )
-              }
-              disabled={
-                disabledButtons["sendTrekkTransaksjonToOppdragZ"]?.disabled ||
-                false
-              }
-              jobTaskInfo={data.filter(
-                (task: JobTaskInfo) =>
-                  task.taskName === "sendTrekkTransaksjonToOppdragZ",
-              )}
-            />
-            <div className={styles.spaceundergrensesnittavstemning}>
-              <JobCard
-                title="Grensesnittavstemming"
-                buttonText="Start"
-                buttonId="grensesnittAvstemming"
-                activeAlert={activeAlert}
-                onClick={() => { 
-                 return handleButtonClick("grensesnittAvstemming", postAvstemming)
-                } }
-                disabled={ 
-                  disabledButtons["grensesnittAvstemming"]?.disabled || false
-                }
-                jobTaskInfo={data.filter(
-                  (task: JobTaskInfo) =>
-                    task.taskName === "grensesnittAvstemming",
-                )}
-                className={styles.grensesnittcard}
-              >
-                <div className={styles.datePickerWrapper}>
-                  <DateRangePicker
-                    onDateChange={(fromDate, toDate)=> {
-                        if (fromDate != dateRange.fromDate || toDate != dateRange.toDate) setDateRange((prev) => ({ fromDate, toDate }));
-                       }
-                    }
-                  />
-                </div>
-              </JobCard>
+        <JobCard
+          title="Les inn fil og valider transaksjoner"
+          buttonText="Start"
+          buttonId="readParseFileAndValidateTransactions"
+          activeAlert={activeAlert}
+          onClick={() =>
+            handleButtonClick(
+              "readParseFileAndValidateTransactions",
+              postReadAndParseFile,
+            )
+          }
+          disabled={
+            disabledButtons["readParseFileAndValidateTransactions"]?.disabled ||
+            false
+          }
+          jobTaskInfo={data?.filter(
+            (task: JobTaskInfo) =>
+              task.taskName === "readParseFileAndValidateTransactions",
+          )}
+        />
+        <JobCard
+          title="Send utbetalingtransaksjoner"
+          buttonText="Start"
+          buttonId="sendUtbetalingTransaksjonToOppdragZ"
+          activeAlert={activeAlert}
+          onClick={() =>
+            handleButtonClick(
+              "sendUtbetalingTransaksjonToOppdragZ",
+              postSendUtbetalingTransaksjon,
+            )
+          }
+          disabled={
+            disabledButtons["sendUtbetalingTransaksjonToOppdragZ"]?.disabled ||
+            false
+          }
+          jobTaskInfo={data?.filter(
+            (task: JobTaskInfo) =>
+              task.taskName === "sendUtbetalingTransaksjonToOppdragZ",
+          )}
+        />
+        <JobCard
+          title="Send trekktransaksjoner"
+          buttonText="Start"
+          buttonId="sendTrekkTransaksjonToOppdragZ"
+          activeAlert={activeAlert}
+          onClick={() =>
+            handleButtonClick(
+              "sendTrekkTransaksjonToOppdragZ",
+              postSendTrekkTransaksjon,
+            )
+          }
+          disabled={
+            disabledButtons["sendTrekkTransaksjonToOppdragZ"]?.disabled || false
+          }
+          jobTaskInfo={data?.filter(
+            (task: JobTaskInfo) =>
+              task.taskName === "sendTrekkTransaksjonToOppdragZ",
+          )}
+        />
+        <div className={styles.spaceundergrensesnittavstemning}>
+          <JobCard
+            title="Grensesnittavstemming"
+            buttonText="Start"
+            buttonId="grensesnittAvstemming"
+            activeAlert={activeAlert}
+            onClick={() => {
+              return handleButtonClick("grensesnittAvstemming", postAvstemming);
+            }}
+            disabled={
+              disabledButtons["grensesnittAvstemming"]?.disabled || false
+            }
+            jobTaskInfo={data?.filter(
+              (task: JobTaskInfo) => task.taskName === "grensesnittAvstemming",
+            )}
+            className={styles.grensesnittcard}
+          >
+            <div className={styles.datePickerWrapper}>
+              <DateRangePicker
+                onDateChange={(fromDate, toDate) => {
+                  if (
+                    fromDate != dateRange.fromDate ||
+                    toDate != dateRange.toDate
+                  )
+                    setDateRange(() => ({
+                      fromDate,
+                      toDate,
+                    }));
+                }}
+              />
             </div>
-          </>
-        ) : (
-          <Alert variant="info">Ingen jobbinformasjon tilgjengelig</Alert>
-        )}
+          </JobCard>
+        </div>
       </VStack>
     </>
   );
