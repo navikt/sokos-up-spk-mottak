@@ -1,11 +1,10 @@
 [
   {
     "taskId": "recurring",
-    "taskName": "sendTrekkTransaksjonToOppdragZ",
+    "taskName": "readParseFileAndValidateTransactions",
     "executionTime": "2024-11-07T09:00:00Z",
-    "isPicked": true,
-    "lastFailure": "2024-11-06T14:54:26.127295Z",
-    "lastSuccess": "2024-11-07T08:00:03.804450Z",
+    "isPicked": false,
+    "lastSuccess": "2024-11-07T08:05:03.021320Z",
     "ident": "B171123"
   },
   {
@@ -19,10 +18,11 @@
   },
   {
     "taskId": "recurring",
-    "taskName": "readParseFileAndValidateTransactions",
+    "taskName": "sendTrekkTransaksjonToOppdragZ",
     "executionTime": "2024-11-07T09:00:00Z",
-    "isPicked": false,
-    "lastSuccess": "2024-11-07T08:05:03.021320Z",
+    "isPicked": true,
+    "lastFailure": "2024-11-06T14:54:26.127295Z",
+    "lastSuccess": "2024-11-07T08:00:03.804450Z",
     "ident": "B171123"
   },
   {
