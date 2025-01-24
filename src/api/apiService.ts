@@ -1,6 +1,7 @@
 import useSWRImmutable from "swr/immutable";
 import { JobTaskInfo } from "../types/JobTaskInfo";
 import { axiosFetcher, axiosPostFetcher } from "./apiConfig";
+import { AvstemmingRequest } from "./models/AvstemmingRequest";
 
 export const BASE_API_URL = "/spk-mottak-api/api/v1";
 
@@ -28,12 +29,19 @@ export async function postSendUtbetalingTransaksjon() {
     "/sendUtbetalingTransaksjonToOppdragZ",
   );
 }
+
 export async function postSendTrekkTransaksjon() {
   return await axiosPostFetcher(
     BASE_API_URL,
     "/sendTrekkTransaksjonToOppdragZ",
   );
 }
-export async function postAvstemming() {
-  return await axiosPostFetcher(BASE_API_URL, "/avstemming");
+
+export async function postAvstemming(request: AvstemmingRequest) {
+  //console.log("request", request);
+  return await axiosPostFetcher<AvstemmingRequest, null>(
+    BASE_API_URL,
+    "/avstemming",
+    request,
+  );
 }

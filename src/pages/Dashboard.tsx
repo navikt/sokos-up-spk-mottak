@@ -7,7 +7,9 @@ import {
   postSendUtbetalingTransaksjon,
   useGetjobTaskInfo,
 } from "../api/apiService";
+import { AvstemmingRequest } from "../api/models/AvstemmingRequest";
 import { JobTaskInfo } from "../types/JobTaskInfo";
+import { toIsoDate } from "../util/datoUtil";
 import styles from "./Dashboard.module.css";
 import DateRangePicker from "./components/DateRangePicker";
 import JobCard from "./components/JobCard";
@@ -169,7 +171,17 @@ const Dashboard = () => {
             buttonId="grensesnittAvstemming"
             activeAlert={activeAlert}
             onClick={() => {
-              return handleButtonClick("grensesnittAvstemming", postAvstemming);
+              const request: AvstemmingRequest = {
+                fromDate: dateRange.fromDate
+                  ? toIsoDate(dateRange.fromDate)
+                  : undefined,
+                toDate: dateRange.toDate
+                  ? toIsoDate(dateRange.toDate)
+                  : undefined,
+              };
+              return handleButtonClick("grensesnittAvstemming", () =>
+                postAvstemming(request),
+              );
             }}
             disabled={
               disabledButtons["grensesnittAvstemming"]?.disabled || false
