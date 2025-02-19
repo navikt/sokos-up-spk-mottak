@@ -26,3 +26,7 @@ export function toIsoDate(date: string): string {
 export function tilNorskDato(dato: Date): string {
   return dayjs(dato).format(datoFormatNorsk);
 }
+
+export function isIsoDate(date: string): boolean {
+  return dayjs(date).isValid();
+}

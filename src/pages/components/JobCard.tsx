@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Alert, Button, Heading, Link } from "@navikt/ds-react";
-import { isoDatoTilNorskDato } from "../../util/datoUtil";
+import { isIsoDate, isoDatoTilNorskDato } from "../../util/datoUtil";
 import { getEnvironment } from "../../util/environment";
 import styles from "../Dashboard.module.css";
 
@@ -35,7 +35,7 @@ const JobCard: React.FC<JobCardProps> = ({
   buttonId,
   activeAlert,
   onClick,
-  jobTaskInfo,
+  jobTaskInfo = [],
   children,
   className,
 }) => {
@@ -90,7 +90,7 @@ const JobCard: React.FC<JobCardProps> = ({
     return () => clearInterval(intervalId);
   }, [buttonId]);
 
-  const isJobRunning = jobTaskInfo?.some((task) => task.isPicked === true);
+  const isJobRunning = jobTaskInfo.some((task) => task.isPicked === true);
 
   useEffect(() => {
     if (isJobRunning) {
@@ -105,49 +105,41 @@ const JobCard: React.FC<JobCardProps> = ({
       <div className={styles.titleContainer}>
         <Heading size="medium">{title}</Heading>
       </div>
-      {jobTaskInfo && jobTaskInfo.length > 0 && (
-        <div className={styles.taskDetailsContainer}>
-          {jobTaskInfo.map((task, index) => (
-            <div key={index} className={styles.taskDetailsGrid}>
-              {Object.entries(task).map(([key, value], i) => {
-                if (key === "taskId") return null;
-                let displayValue;
-                if (key === "taskName") {
-                  displayValue = value || "N/A";
-                } else if (typeof value === "boolean") {
-                  displayValue = value ? "Ja" : "Nei";
-                } else if (value.endsWith("Z")) {
-                  displayValue = isoDatoTilNorskDato(value);
-                } else {
-                  displayValue = value || "N/A";
-                }
-                const label =
-                  labelTranslations[key] ||
-                  key.charAt(0).toUpperCase() + key.slice(1);
-                return (
-                  <div key={i} className={styles.taskDetailItem}>
-                    <strong className={styles.taskDetailKey}>{label}:</strong>{" "}
-                    <span className={styles.taskDetailValue}>
-                      {displayValue}
-                      {key === "lastFailure" && (
-                        <>
-                          <br />
-                          <Link
-                            href={`https://logs.adeo.no/app/discover#/?_g=(time:(from:now-1d,to:now))&_a=(filters:!((query:(match_phrase:(application:'sokos-spk-mottak'))),(query:(match_phrase:(cluster:'${getEnvironment() === "production" ? "prod-fss" : "dev-fss"}'))),(query:(match_phrase:(level:'Error')))))`}
-                            target="_blank"
-                          >
-                            Sjekk error logger
-                          </Link>
-                        </>
-                      )}
-                    </span>
-                  </div>
-                );
-              })}
+      <div className={styles.taskDetailsContainer}>
+        {Object.entries(labelTranslations).map(([key, label]) => {
+          const task = jobTaskInfo.find((task) => task[key] !== undefined);
+          let displayValue = task ? task[key] : "N/A";
+
+          if (typeof displayValue === "boolean") {
+            displayValue = displayValue ? "Ja" : "Nei";
+          } else if (
+            typeof displayValue === "string" &&
+            isIsoDate(displayValue)
+          ) {
+            displayValue = isoDatoTilNorskDato(displayValue);
+          }
+
+          return (
+            <div key={key} className={styles.taskDetailItem}>
+              <strong className={styles.taskDetailKey}>{label}:</strong>{" "}
+              <span className={styles.taskDetailValue}>
+                {displayValue}
+                {key === "lastFailure" && displayValue !== "N/A" && (
+                  <>
+                    <br />
+                    <Link
+                      href={`https://logs.adeo.no/app/discover#/?_g=(time:(from:now-1d,to:now))&_a=(filters:!((query:(match_phrase:(application:'sokos-spk-mottak'))),(query:(match_phrase:(cluster:'${getEnvironment() === "production" ? "prod-fss" : "dev-fss"}'))),(query:(match_phrase:(level:'Error')))))`}
+                      target="_blank"
+                    >
+                      Sjekk error logger
+                    </Link>
+                  </>
+                )}
+              </span>
             </div>
-          ))}
-        </div>
-      )}
+          );
+        })}
+      </div>
       {children}
       <div className={styles.buttonAndAlertContainer}>
         {isAlertVisible && (
