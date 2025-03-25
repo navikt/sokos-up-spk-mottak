@@ -4,16 +4,16 @@ import App from "./App";
 import "./index.css";
 
 const startMsw = async () => {
-  if (import.meta.env.MODE === "mock") {
-    try {
-      const { worker } = await import("../mock/browser");
-      await worker.start({
-        onUnhandledRequest: "bypass", // Bypass all unhandled requests
-      });
-    } catch (error) {
-      // eslint-disable-next-line no-console
-      console.error("Failed to start MSW", error);
-    }
+  if (import.meta.env.MODE !== "mock") return;
+
+  try {
+    const { worker } = await import("../mock/browser");
+    await worker.start({
+      onUnhandledRequest: "bypass", // Bypass all unhandled requests
+    });
+  } catch (error) {
+    // eslint-disable-next-line no-console
+    console.error("Failed to start MSW", error);
   }
 };
 
