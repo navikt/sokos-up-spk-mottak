@@ -122,7 +122,6 @@ const Dashboard = () => {
             <>
               <JobCard
                 title="Les inn fil og valider transaksjoner"
-                buttonText="Start"
                 buttonId="readParseFileAndValidateTransactions"
                 activeAlert={activeAlert}
                 onClick={() =>
@@ -135,16 +134,13 @@ const Dashboard = () => {
                   disabledButtons["readParseFileAndValidateTransactions"]
                     ?.disabled || false
                 }
-                jobTaskInfo={
-                  data?.filter(
-                    (task: JobTaskInfo) =>
-                      task.taskName === "readParseFileAndValidateTransactions",
-                  ) || []
-                }
+                jobTaskInfo={data?.find(
+                  (task: JobTaskInfo) =>
+                    task.taskName === "readParseFileAndValidateTransactions",
+                )}
               />
               <JobCard
                 title="Send utbetalingtransaksjoner"
-                buttonText="Start"
                 buttonId="sendUtbetalingTransaksjonToOppdragZ"
                 activeAlert={activeAlert}
                 onClick={() =>
@@ -157,16 +153,13 @@ const Dashboard = () => {
                   disabledButtons["sendUtbetalingTransaksjonToOppdragZ"]
                     ?.disabled || false
                 }
-                jobTaskInfo={
-                  data?.filter(
-                    (task: JobTaskInfo) =>
-                      task.taskName === "sendUtbetalingTransaksjonToOppdragZ",
-                  ) || []
-                }
+                jobTaskInfo={data?.find(
+                  (task: JobTaskInfo) =>
+                    task.taskName === "sendUtbetalingTransaksjonToOppdragZ",
+                )}
               />
               <JobCard
                 title="Send trekktransaksjoner"
-                buttonText="Start"
                 buttonId="sendTrekkTransaksjonToOppdragZ"
                 activeAlert={activeAlert}
                 onClick={() =>
@@ -179,17 +172,14 @@ const Dashboard = () => {
                   disabledButtons["sendTrekkTransaksjonToOppdragZ"]?.disabled ||
                   false
                 }
-                jobTaskInfo={
-                  data?.filter(
-                    (task: JobTaskInfo) =>
-                      task.taskName === "sendTrekkTransaksjonToOppdragZ",
-                  ) || []
-                }
+                jobTaskInfo={data?.find(
+                  (task: JobTaskInfo) =>
+                    task.taskName === "sendTrekkTransaksjonToOppdragZ",
+                )}
               />
               <div className={styles.spaceundergrensesnittavstemning}>
                 <JobCard
                   title="Grensesnittavstemming"
-                  buttonText="Start"
                   buttonId="grensesnittAvstemming"
                   activeAlert={activeAlert}
                   onClick={() => {
@@ -208,12 +198,10 @@ const Dashboard = () => {
                   disabled={
                     disabledButtons["grensesnittAvstemming"]?.disabled || false
                   }
-                  jobTaskInfo={
-                    data?.filter(
-                      (task: JobTaskInfo) =>
-                        task.taskName === "grensesnittAvstemming",
-                    ) || []
-                  }
+                  jobTaskInfo={data?.find(
+                    (task: JobTaskInfo) =>
+                      task.taskName === "grensesnittAvstemming",
+                  )}
                   className={styles.grensesnittcard}
                 >
                   <div className={styles.datePickerWrapper}>

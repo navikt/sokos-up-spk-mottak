@@ -1,12 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { Alert, Button, Heading, Link } from "@navikt/ds-react";
-import { isIsoDate, isoDatoTilNorskDato } from "../../util/datoUtil";
-import { getEnvironment } from "../../util/environment";
+import { Alert, Button, Heading } from "@navikt/ds-react";
+import { JobTaskInfo } from "../../types/JobTaskInfo";
 import styles from "../Dashboard.module.css";
 
 interface JobCardProps {
   title: string;
-  buttonText: string;
   buttonId: string;
   activeAlert: {
     id: string;
@@ -15,27 +13,17 @@ interface JobCardProps {
   } | null;
   onClick: (id: string) => void;
   disabled: boolean;
-  jobTaskInfo?: Record<string, string | boolean>[];
+  jobTaskInfo?: JobTaskInfo;
   children?: React.ReactNode;
   className?: string;
 }
 
-const labelTranslations: Record<string, string> = {
-  taskName: "Oppgavenavn",
-  executionTime: "Planlagt kjøringstidspunkt",
-  isPicked: "Jobb Kjører",
-  lastSuccess: "Siste vellykkede kjøringstidspunkt",
-  lastFailure: "Siste mislykkede kjøringstidspunkt",
-  ident: "Sist kjørt av",
-};
-
 const JobCard: React.FC<JobCardProps> = ({
   title,
-  buttonText,
   buttonId,
   activeAlert,
   onClick,
-  jobTaskInfo = [],
+  jobTaskInfo,
   children,
   className,
 }) => {
@@ -90,7 +78,7 @@ const JobCard: React.FC<JobCardProps> = ({
     return () => clearInterval(intervalId);
   }, [buttonId]);
 
-  const isJobRunning = jobTaskInfo.some((task) => task.isPicked === true);
+  const isJobRunning = jobTaskInfo?.isPicked === true;
 
   useEffect(() => {
     if (isJobRunning) {
@@ -106,7 +94,19 @@ const JobCard: React.FC<JobCardProps> = ({
         <Heading size="medium">{title}</Heading>
       </div>
       <div className={styles.taskDetailsContainer}>
-        {Object.entries(labelTranslations).map(([key, label]) => {
+        Oppgavenavn: {jobTaskInfo?.taskName}
+        <br />
+        Planlagt kjøringstidspunkt: {jobTaskInfo?.executionTime}
+        <br />
+        Jobb Kjører: {jobTaskInfo?.isPicked ? "Ja" : "Nei"}
+        <br />
+        Siste vellykkede kjøringstidspunkt:{jobTaskInfo?.lastSuccess}
+        <br />
+        Siste mislykkede kjøringstidspunkt:{jobTaskInfo?.lastFailure}
+        <br />
+        Sist kjørt av: {jobTaskInfo?.ident}
+        <br />
+        {/* {Object.entries(labelTranslations).map(([key, label]) => {
           const task = jobTaskInfo.find((task) => task[key] !== undefined);
           let displayValue = task ? task[key] : "N/A";
 
@@ -138,7 +138,7 @@ const JobCard: React.FC<JobCardProps> = ({
               </span>
             </div>
           );
-        })}
+        })}*/}
       </div>
       {children}
       <div className={styles.buttonAndAlertContainer}>
@@ -170,7 +170,7 @@ const JobCard: React.FC<JobCardProps> = ({
             disabled={isJobRunning || disabledButtons[buttonId] || isLoading}
             loading={isLoading}
           >
-            {buttonText}
+            Start
           </Button>
         </div>
       </div>
