@@ -5,7 +5,6 @@ import styles from "../Dashboard.module.css";
 
 interface JobCardProps {
   title: string;
-  buttonId: string;
   activeAlert: {
     id: string;
     type: "success" | "error";
@@ -20,7 +19,6 @@ interface JobCardProps {
 
 const JobCard: React.FC<JobCardProps> = ({
   title,
-  buttonId,
   activeAlert,
   onClick,
   jobTaskInfo,
@@ -45,7 +43,9 @@ const JobCard: React.FC<JobCardProps> = ({
   };
 
   useEffect(() => {
-    const savedTimestamp = localStorage.getItem(`${buttonId}_timestamp`);
+    const savedTimestamp = localStorage.getItem(
+      `${jobTaskInfo?.taskName}_timestamp`,
+    );
 
     if (savedTimestamp) {
       const savedTime = parseInt(savedTimestamp);
@@ -55,30 +55,32 @@ const JobCard: React.FC<JobCardProps> = ({
         setIsLoading(true);
         setIsAlertVisible(true);
       } else {
-        localStorage.removeItem(`${buttonId}_timestamp`);
+        localStorage.removeItem(`${jobTaskInfo?.taskName}_timestamp`);
       }
     }
-  }, [buttonId]);
+  }, [jobTaskInfo?.taskName]);
 
   useEffect(() => {
     const intervalId = setInterval(() => {
-      const savedTimestamp = localStorage.getItem(`${buttonId}_timestamp`);
+      const savedTimestamp = localStorage.getItem(
+        `${jobTaskInfo?.taskName}_timestamp`,
+      );
       if (savedTimestamp) {
         setIsAlertVisible(false);
-        localStorage.removeItem(`${buttonId}_timestamp`);
+        localStorage.removeItem(`${jobTaskInfo?.taskName}_timestamp`);
         setIsLoading(false);
 
         setDisabledButtons((prevState) => ({
           ...prevState,
-          [buttonId]: false,
+          [jobTaskInfo?.taskName ?? ""]: false,
         }));
       }
     }, 30000);
 
     return () => clearInterval(intervalId);
-  }, [buttonId]);
+  }, [jobTaskInfo?.taskName]);
 
-  const isJobRunning = jobTaskInfo?.isPicked === true;
+  const isJobRunning = jobTaskInfo?.isPicked;
 
   useEffect(() => {
     if (isJobRunning) {
@@ -107,7 +109,7 @@ const JobCard: React.FC<JobCardProps> = ({
         Sist kjørt av: {jobTaskInfo?.ident}
         <br />
         {/* {Object.entries(labelTranslations).map(([key, label]) => {
-          const task = jobTaskInfo.find((task) => task[key] !== undefined);
+          const task = jobTaskInfo?.find((task) => task[key] !== undefined);
           let displayValue = task ? task[key] : "N/A";
 
           if (typeof displayValue === "boolean") {
@@ -149,8 +151,8 @@ const JobCard: React.FC<JobCardProps> = ({
               variant={activeAlert?.type || "success"}
               className={styles.alert}
             >
-              {activeAlert?.id === buttonId
-                ? activeAlert.message
+              {activeAlert?.id === jobTaskInfo?.taskName
+                ? activeAlert?.message
                 : "Jobb har startet, sjekk logger for status"}
             </Alert>
           </div>
@@ -166,8 +168,12 @@ const JobCard: React.FC<JobCardProps> = ({
           <Button
             variant="primary"
             size="medium"
-            onClick={() => handleStartClick(buttonId)}
-            disabled={isJobRunning || disabledButtons[buttonId] || isLoading}
+            onClick={() => handleStartClick(jobTaskInfo?.taskName ?? "")}
+            disabled={
+              isJobRunning ||
+              disabledButtons[jobTaskInfo?.taskName ?? ""] ||
+              isLoading
+            }
             loading={isLoading}
           >
             Start

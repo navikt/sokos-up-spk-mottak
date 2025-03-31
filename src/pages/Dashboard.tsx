@@ -122,7 +122,6 @@ const Dashboard = () => {
             <>
               <JobCard
                 title="Les inn fil og valider transaksjoner"
-                buttonId="readParseFileAndValidateTransactions"
                 activeAlert={activeAlert}
                 onClick={() =>
                   handleButtonClick(
@@ -141,7 +140,6 @@ const Dashboard = () => {
               />
               <JobCard
                 title="Send utbetalingtransaksjoner"
-                buttonId="sendUtbetalingTransaksjonToOppdragZ"
                 activeAlert={activeAlert}
                 onClick={() =>
                   handleButtonClick(
@@ -160,7 +158,6 @@ const Dashboard = () => {
               />
               <JobCard
                 title="Send trekktransaksjoner"
-                buttonId="sendTrekkTransaksjonToOppdragZ"
                 activeAlert={activeAlert}
                 onClick={() =>
                   handleButtonClick(
@@ -180,7 +177,6 @@ const Dashboard = () => {
               <div className={styles.spaceundergrensesnittavstemning}>
                 <JobCard
                   title="Grensesnittavstemming"
-                  buttonId="grensesnittAvstemming"
                   activeAlert={activeAlert}
                   onClick={() => {
                     const request: AvstemmingRequest = {
