@@ -24,12 +24,10 @@ const Dashboard = () => {
     [key: string]: { disabled: boolean; timestamp: number };
   }>({});
 
-  // New state for tracking loading state per button
   const [loadingButtons, setLoadingButtons] = useState<{
     [key: string]: boolean;
   }>({});
 
-  // New state for tracking alert visibility per button
   const [alertVisibility, setAlertVisibility] = useState<{
     [key: string]: boolean;
   }>({});
@@ -42,21 +40,15 @@ const Dashboard = () => {
     toDate: null,
   });
 
-  const { data, error } = useGetjobTaskInfo();
+  const { data, error, mutate } = useGetjobTaskInfo();
   const isLoading = !data && !error;
 
-  // Move handleButtonClick logic here but enhance it
-  const handleStartJob = (
-    taskId: string,
-    action: (body?: { fromDate?: string; toDate?: string }) => Promise<unknown>,
-  ) => {
-    // Set loading state
+  const handleStartJob = async (taskId: string) => {
     setLoadingButtons((prev) => ({
       ...prev,
       [taskId]: true,
     }));
 
-    // Set alert visibility
     setAlertVisibility((prev) => ({
       ...prev,
       [taskId]: true,
@@ -64,10 +56,8 @@ const Dashboard = () => {
 
     const currentTime = Date.now();
 
-    // Store timestamp in localStorage
     localStorage.setItem(`${taskId}_timestamp`, currentTime.toString());
 
-    // Set disabled state
     setDisabledButtons((prev) => {
       const newState = {
         ...prev,
@@ -77,27 +67,40 @@ const Dashboard = () => {
       return newState;
     });
 
-    // Prepare body if needed
-    let body: { fromDate?: string; toDate?: string } | undefined = undefined;
-    if (
-      taskId === "grensesnittAvstemming" &&
-      dateRange.fromDate &&
-      dateRange.toDate
-    ) {
-      body = {
-        fromDate: dateRange.fromDate,
-        toDate: dateRange.toDate,
-      };
+    let apiPromise: Promise<unknown>;
+
+    switch (taskId) {
+      case "readParseFileAndValidateTransactions":
+        apiPromise = postReadAndParseFile();
+        break;
+      case "sendUtbetalingTransaksjonToOppdragZ":
+        apiPromise = postSendUtbetalingTransaksjon();
+        break;
+      case "sendTrekkTransaksjonToOppdragZ":
+        apiPromise = postSendTrekkTransaksjon();
+        break;
+      case "grensesnittAvstemming": {
+        const request: AvstemmingRequest = {
+          fromDate: dateRange.fromDate
+            ? toIsoDate(dateRange.fromDate)
+            : undefined,
+          toDate: dateRange.toDate ? toIsoDate(dateRange.toDate) : undefined,
+        };
+        apiPromise = postAvstemming(request);
+        break;
+      }
+      default:
+        apiPromise = Promise.reject(new Error("Unknown task ID"));
     }
 
-    // Execute the action
-    action(body)
+    await apiPromise
       .then((data) => {
         setActiveAlert({
           id: taskId,
           type: "success",
           message: data as string,
         });
+        mutate();
       })
       .catch((error) => {
         const errorMessage =
@@ -110,7 +113,6 @@ const Dashboard = () => {
         });
       });
 
-    // Set a timeout to clear states after 30 seconds
     setTimeout(() => {
       setLoadingButtons((prev) => ({ ...prev, [taskId]: false }));
       setAlertVisibility((prev) => ({ ...prev, [taskId]: false }));
@@ -236,9 +238,7 @@ const Dashboard = () => {
                     disabledButtons[readTaskInfo.taskName]?.disabled || false,
                 }}
                 jobTaskInfo={readTaskInfo}
-                onStartClick={() =>
-                  handleStartJob(readTaskInfo.taskName, postReadAndParseFile)
-                }
+                onStartClick={() => handleStartJob(readTaskInfo.taskName)}
               />
               <JobCard
                 title="Send utbetalingtransaksjoner"
@@ -259,12 +259,7 @@ const Dashboard = () => {
                     false,
                 }}
                 jobTaskInfo={utbetalingTaskInfo}
-                onStartClick={() =>
-                  handleStartJob(
-                    utbetalingTaskInfo.taskName,
-                    postSendUtbetalingTransaksjon,
-                  )
-                }
+                onStartClick={() => handleStartJob(utbetalingTaskInfo.taskName)}
               />
 
               <JobCard
@@ -285,12 +280,7 @@ const Dashboard = () => {
                     disabledButtons[trekkTaskInfo.taskName]?.disabled || false,
                 }}
                 jobTaskInfo={trekkTaskInfo}
-                onStartClick={() =>
-                  handleStartJob(
-                    trekkTaskInfo.taskName,
-                    postSendTrekkTransaksjon,
-                  )
-                }
+                onStartClick={() => handleStartJob(trekkTaskInfo.taskName)}
               />
 
               <JobCard
@@ -314,17 +304,7 @@ const Dashboard = () => {
                 jobTaskInfo={avstemmingTaskInfo}
                 className={styles.grensesnittcard}
                 onStartClick={() => {
-                  const request: AvstemmingRequest = {
-                    fromDate: dateRange.fromDate
-                      ? toIsoDate(dateRange.fromDate)
-                      : undefined,
-                    toDate: dateRange.toDate
-                      ? toIsoDate(dateRange.toDate)
-                      : undefined,
-                  };
-                  handleStartJob(avstemmingTaskInfo.taskName, () =>
-                    postAvstemming(request),
-                  );
+                  handleStartJob(avstemmingTaskInfo.taskName);
                 }}
               >
                 <div className={styles.datePickerWrapper}>

@@ -7,8 +7,8 @@ dayjs.extend(customParseFormat);
 dayjs.extend(utc);
 dayjs.extend(timezone);
 
-const isoDatoFormatNorsk = "DD.MM.YYYY HH:mm";
-const datoFormatNorsk = "DD.MM.YYYY";
+const NORSK_DATO_TID = "DD.MM.YYYY HH:mm";
+const NORSK_DATO = "DD.MM.YYYY";
 const ISO_DATO_FORMAT = "YYYY-MM-DD";
 
 export function isoDatoTilNorskDato(isoDato: string | undefined): string {
@@ -16,15 +16,15 @@ export function isoDatoTilNorskDato(isoDato: string | undefined): string {
     return "";
   }
 
-  return dayjs(isoDato).tz("Europe/Oslo", true).format(isoDatoFormatNorsk);
+  return dayjs(isoDato).tz("Europe/Oslo", true).format(NORSK_DATO_TID);
 }
 
 export function toIsoDate(date: string): string {
-  return dayjs(new Date(date)).format(ISO_DATO_FORMAT);
+  return dayjs(date, NORSK_DATO, true).format(ISO_DATO_FORMAT);
 }
 
 export function tilNorskDato(dato: Date): string {
-  return dayjs(dato).format(datoFormatNorsk);
+  return dayjs(dato).format(NORSK_DATO);
 }
 
 export function isIsoDate(date: string): boolean {
