@@ -58,6 +58,6 @@
 }
 
 .smallAlert {
-  font-size: 0.3rem !important; /* Adjust the font size as needed */
-  padding: 2px 6px !important; /* Adjust the padding as needed */
+  font-size: 0.3rem !important;
+  padding: 2px 6px !important;
 }
