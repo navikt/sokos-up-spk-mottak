@@ -8,27 +8,26 @@ import {
   useGetjobTaskInfo,
 } from "../api/apiService";
 import { AvstemmingRequest } from "../api/models/AvstemmingRequest";
+import { TaskInfoState, TaskInfoStateRecord } from "../types/TaskInfoState";
 import { toIsoDate } from "../util/datoUtil";
 import styles from "./Dashboard.module.css";
 import DateRangePicker from "./components/DateRangePicker";
 import JobCard from "./components/JobCard";
 
 const Dashboard = () => {
-  const [activeAlert, setActiveAlert] = useState<{
+  const [alert, setAlert] = useState<{
     id: string;
     type: "success" | "error";
     message: string;
   } | null>(null);
 
-  const [disabledButtons, setDisabledButtons] = useState<{
-    [key: string]: { disabled: boolean; timestamp: number };
-  }>({});
+  const [taskInfoStates, setTaskInfoStates] = useState<TaskInfoStateRecord>({});
 
   const [loadingButtons, setLoadingButtons] = useState<{
     [key: string]: boolean;
   }>({});
 
-  const [alertVisibility, setAlertVisibility] = useState<{
+  const [alertVisibility, setalertVisibility] = useState<{
     [key: string]: boolean;
   }>({});
 
@@ -49,7 +48,7 @@ const Dashboard = () => {
       [taskId]: true,
     }));
 
-    setAlertVisibility((prev) => ({
+    setalertVisibility((prev) => ({
       ...prev,
       [taskId]: true,
     }));
@@ -58,7 +57,7 @@ const Dashboard = () => {
 
     localStorage.setItem(`${taskId}_timestamp`, currentTime.toString());
 
-    setDisabledButtons((prev) => {
+    setTaskInfoStates((prev) => {
       const newState = {
         ...prev,
         [taskId]: { disabled: true, timestamp: currentTime },
@@ -95,7 +94,7 @@ const Dashboard = () => {
 
     await apiPromise
       .then((data) => {
-        setActiveAlert({
+        setAlert({
           id: taskId,
           type: "success",
           message: data as string,
@@ -106,7 +105,7 @@ const Dashboard = () => {
         const errorMessage =
           error instanceof Error ? error.message : "An unknown error occurred.";
 
-        setActiveAlert({
+        setAlert({
           id: taskId,
           type: "error",
           message: `Error occurred: ${errorMessage}`,
@@ -115,10 +114,10 @@ const Dashboard = () => {
 
     setTimeout(() => {
       setLoadingButtons((prev) => ({ ...prev, [taskId]: false }));
-      setAlertVisibility((prev) => ({ ...prev, [taskId]: false }));
+      setalertVisibility((prev) => ({ ...prev, [taskId]: false }));
       localStorage.removeItem(`${taskId}_timestamp`);
 
-      setDisabledButtons((prev) => {
+      setTaskInfoStates((prev) => {
         const newState = {
           ...prev,
           [taskId]: { disabled: false, timestamp: 0 },
@@ -131,32 +130,66 @@ const Dashboard = () => {
 
   // Check for stored timestamps on initial load
   useEffect(() => {
-    // Load disabled buttons from localStorage
-    const disabledState = localStorage.getItem("disabledButtons");
-    if (disabledState) {
-      const parsedState = JSON.parse(disabledState);
+    // Helper function to handle button state restoration
+    const restoreButtonState = (key: string, timestamp: number) => {
       const now = Date.now();
+      const elapsedTime = now - timestamp;
+
+      if (elapsedTime < 30000) {
+        // Still disabled - set UI state
+        setLoadingButtons((prev) => ({ ...prev, [key]: true }));
+        setalertVisibility((prev) => ({ ...prev, [key]: true }));
+
+        // Calculate remaining time and set timeout to re-enable
+        const remainingTime = 30000 - elapsedTime;
+        return setTimeout(() => resetButtonState(key), remainingTime);
+      }
+
+      // Time already elapsed, reset state
+      resetButtonState(key);
+      return null;
+    };
+
+    // Helper function to reset a button's state
+    const resetButtonState = (key: string) => {
+      setLoadingButtons((prev) => ({ ...prev, [key]: false }));
+      setalertVisibility((prev) => ({ ...prev, [key]: false }));
+      localStorage.removeItem(`${key}_timestamp`);
+
+      setTaskInfoStates((prev) => {
+        const newState = {
+          ...prev,
+          [key]: { disabled: false, timestamp: 0 },
+        };
+        localStorage.setItem("disabledButtons", JSON.stringify(newState));
+        return newState;
+      });
+    };
+
+    // Restore disabled button states from localStorage
+    const timeouts: { [key: string]: NodeJS.Timeout } = {};
+    const disabledState = localStorage.getItem("disabledButtons");
+
+    if (disabledState) {
+      const parsedState: TaskInfoStateRecord = JSON.parse(disabledState);
       const newDisabledState = { ...parsedState };
 
-      Object.keys(parsedState).forEach((key) => {
-        const buttonState = parsedState[key];
-        if (buttonState.disabled && now - buttonState.timestamp < 30000) {
-          // Still disabled
-          newDisabledState[key] = { ...buttonState };
+      Object.entries(parsedState).forEach(
+        ([key, buttonState]: [string, TaskInfoState]) => {
+          if (buttonState.disabled) {
+            newDisabledState[key] = { ...buttonState };
+            const timeout = restoreButtonState(key, buttonState.timestamp);
+            if (timeout) timeouts[key] = timeout;
+          } else {
+            newDisabledState[key] = { disabled: false, timestamp: 0 };
+          }
+        },
+      );
 
-          // Also set loading and alert visibility
-          setLoadingButtons((prev) => ({ ...prev, [key]: true }));
-          setAlertVisibility((prev) => ({ ...prev, [key]: true }));
-        } else {
-          // Enable button
-          newDisabledState[key] = { disabled: false, timestamp: 0 };
-        }
-      });
-
-      setDisabledButtons(newDisabledState);
+      setTaskInfoStates(newDisabledState);
     }
 
-    // Check for active tasks in localStorage
+    // Check for active tasks in localStorage based on task data
     if (data) {
       data.forEach((task) => {
         const savedTimestamp = localStorage.getItem(
@@ -164,17 +197,16 @@ const Dashboard = () => {
         );
         if (savedTimestamp) {
           const savedTime = parseInt(savedTimestamp);
-          const currentTime = Date.now();
-
-          if (currentTime - savedTime < 30000) {
-            setLoadingButtons((prev) => ({ ...prev, [task.taskName]: true }));
-            setAlertVisibility((prev) => ({ ...prev, [task.taskName]: true }));
-          } else {
-            localStorage.removeItem(`${task.taskName}_timestamp`);
-          }
+          const timeout = restoreButtonState(task.taskName, savedTime);
+          if (timeout) timeouts[task.taskName] = timeout;
         }
       });
     }
+
+    // Clean up timeouts on unmount
+    return () => {
+      Object.values(timeouts).forEach((timeout) => clearTimeout(timeout));
+    };
   }, [data]);
 
   const taskMap =
@@ -224,18 +256,16 @@ const Dashboard = () => {
                 title="Les inn fil og valider transaksjoner"
                 attributes={{
                   alertMessage:
-                    activeAlert?.id === readTaskInfo.taskName
-                      ? activeAlert.message
+                    alert?.id === readTaskInfo.taskName
+                      ? alert.message
                       : "Jobb har startet, sjekk logger for status",
                   alertType:
-                    activeAlert?.id === readTaskInfo.taskName
-                      ? activeAlert.type
-                      : "info",
+                    alert?.id === readTaskInfo.taskName ? alert.type : "info",
                   isAlertVisible: alertVisibility[readTaskInfo.taskName],
                   isJobRunning: !!readTaskInfo.isPicked,
                   isLoading: loadingButtons[readTaskInfo.taskName],
                   isButtonDisabled:
-                    disabledButtons[readTaskInfo.taskName]?.disabled || false,
+                    taskInfoStates[readTaskInfo.taskName]?.disabled || false,
                 }}
                 jobTaskInfo={readTaskInfo}
                 onStartClick={() => handleStartJob(readTaskInfo.taskName)}
@@ -244,18 +274,18 @@ const Dashboard = () => {
                 title="Send utbetalingtransaksjoner"
                 attributes={{
                   alertMessage:
-                    activeAlert?.id === utbetalingTaskInfo.taskName
-                      ? activeAlert.message
+                    alert?.id === utbetalingTaskInfo.taskName
+                      ? alert.message
                       : "Jobb har startet, sjekk logger for status",
                   alertType:
-                    activeAlert?.id === utbetalingTaskInfo.taskName
-                      ? activeAlert.type
+                    alert?.id === utbetalingTaskInfo.taskName
+                      ? alert.type
                       : "info",
                   isAlertVisible: alertVisibility[utbetalingTaskInfo.taskName],
                   isJobRunning: !!utbetalingTaskInfo.isPicked,
                   isLoading: loadingButtons[utbetalingTaskInfo.taskName],
                   isButtonDisabled:
-                    disabledButtons[utbetalingTaskInfo.taskName]?.disabled ||
+                    taskInfoStates[utbetalingTaskInfo.taskName]?.disabled ||
                     false,
                 }}
                 jobTaskInfo={utbetalingTaskInfo}
@@ -266,18 +296,16 @@ const Dashboard = () => {
                 title="Send trekktransaksjoner"
                 attributes={{
                   alertMessage:
-                    activeAlert?.id === trekkTaskInfo.taskName
-                      ? activeAlert.message
+                    alert?.id === trekkTaskInfo.taskName
+                      ? alert.message
                       : "Jobb har startet, sjekk logger for status",
                   alertType:
-                    activeAlert?.id === trekkTaskInfo.taskName
-                      ? activeAlert.type
-                      : "info",
+                    alert?.id === trekkTaskInfo.taskName ? alert.type : "info",
                   isAlertVisible: alertVisibility[trekkTaskInfo.taskName],
                   isJobRunning: !!trekkTaskInfo.isPicked,
                   isLoading: loadingButtons[trekkTaskInfo.taskName],
                   isButtonDisabled:
-                    disabledButtons[trekkTaskInfo.taskName]?.disabled || false,
+                    taskInfoStates[trekkTaskInfo.taskName]?.disabled || false,
                 }}
                 jobTaskInfo={trekkTaskInfo}
                 onStartClick={() => handleStartJob(trekkTaskInfo.taskName)}
@@ -287,25 +315,23 @@ const Dashboard = () => {
                 title="Grensesnittavstemming"
                 attributes={{
                   alertMessage:
-                    activeAlert?.id === avstemmingTaskInfo.taskName
-                      ? activeAlert.message
+                    alert?.id === avstemmingTaskInfo.taskName
+                      ? alert.message
                       : "Jobb har startet, sjekk logger for status",
                   alertType:
-                    activeAlert?.id === avstemmingTaskInfo.taskName
-                      ? activeAlert.type
+                    alert?.id === avstemmingTaskInfo.taskName
+                      ? alert.type
                       : "info",
                   isAlertVisible: alertVisibility[avstemmingTaskInfo.taskName],
                   isJobRunning: !!avstemmingTaskInfo.isPicked,
                   isLoading: loadingButtons[avstemmingTaskInfo.taskName],
                   isButtonDisabled:
-                    disabledButtons[avstemmingTaskInfo.taskName]?.disabled ||
+                    taskInfoStates[avstemmingTaskInfo.taskName]?.disabled ||
                     false,
                 }}
                 jobTaskInfo={avstemmingTaskInfo}
                 className={styles.grensesnittcard}
-                onStartClick={() => {
-                  handleStartJob(avstemmingTaskInfo.taskName);
-                }}
+                onStartClick={() => handleStartJob(avstemmingTaskInfo.taskName)}
               >
                 <div className={styles.datePickerWrapper}>
                   <DateRangePicker
