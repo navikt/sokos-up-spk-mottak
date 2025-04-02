@@ -58,10 +58,17 @@ const JobCard: React.FC<JobCardProps> = ({
           <div className={styles.alertWrapper}>
             <Alert
               size="small"
-              variant={attributes.alertType || "success"}
+              variant={
+                jobTaskInfo ? attributes.alertType || "success" : "error"
+              }
               className={styles.smallAlert}
             >
-              Jobb har startet, sjekk logger for status
+              {(jobTaskInfo == null || attributes.alertType === "error") && (
+                <span>Jobb kan ikke kjøres, sjekk logger for status</span>
+              )}
+              {jobTaskInfo && attributes.alertType !== "error" && (
+                <span>Jobb har startet, sjekk logger for status</span>
+              )}
             </Alert>
           </div>
         )}
