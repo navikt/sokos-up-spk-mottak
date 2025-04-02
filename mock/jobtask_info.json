@@ -27,7 +27,7 @@
   },
   {
     "taskId": "recurring",
-    "taskName": "writeAvregningreturFile",
+    "taskName": "writeAvregningsreturFile",
     "executionTime": "2024-11-07T09:00:00Z",
     "isPicked": false,
     "lastFailure": "2024-11-06T14:54:26.127295Z",

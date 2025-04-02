@@ -79,7 +79,7 @@ const Dashboard = () => {
       case "sendTrekkTransaksjonToOppdragZ":
         apiPromise = postSendTrekkTransaksjon();
         break;
-      case "writeAvregningreturFile":
+      case "writeAvregningsreturFile":
         apiPromise = postSendAvregningsretur();
         break;
       case "grensesnittAvstemming": {
@@ -226,7 +226,7 @@ const Dashboard = () => {
   const utbetalingTaskInfo = taskMap["sendUtbetalingTransaksjonToOppdragZ"];
   const trekkTaskInfo = taskMap["sendTrekkTransaksjonToOppdragZ"];
   const avstemmingTaskInfo = taskMap["grensesnittAvstemming"];
-  const writeAvregningTaskInfo = taskMap["writeAvregningreturFile"];
+  const writeAvregningTaskInfo = taskMap["writeAvregningsreturFile"];
 
   return (
     <>
