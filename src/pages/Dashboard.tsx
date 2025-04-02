@@ -3,6 +3,7 @@ import { Alert, HStack, Heading, Loader, VStack } from "@navikt/ds-react";
 import {
   postAvstemming,
   postReadAndParseFile,
+  postSendAvregningsretur,
   postSendTrekkTransaksjon,
   postSendUtbetalingTransaksjon,
   useGetjobTaskInfo,
@@ -15,6 +16,9 @@ import DateRangePicker from "./components/DateRangePicker";
 import JobCard from "./components/JobCard";
 
 const Dashboard = () => {
+  const { data, error, mutate } = useGetjobTaskInfo();
+  const isLoading = !data && !error;
+
   const [alert, setAlert] = useState<{
     id: string;
     type: "success" | "error";
@@ -38,9 +42,6 @@ const Dashboard = () => {
     fromDate: null,
     toDate: null,
   });
-
-  const { data, error, mutate } = useGetjobTaskInfo();
-  const isLoading = !data && !error;
 
   const handleStartJob = async (taskId: string) => {
     setLoadingButtons((prev) => ({
@@ -77,6 +78,9 @@ const Dashboard = () => {
         break;
       case "sendTrekkTransaksjonToOppdragZ":
         apiPromise = postSendTrekkTransaksjon();
+        break;
+      case "writeAvregningreturFile":
+        apiPromise = postSendAvregningsretur();
         break;
       case "grensesnittAvstemming": {
         const request: AvstemmingRequest = {
@@ -222,19 +226,13 @@ const Dashboard = () => {
   const utbetalingTaskInfo = taskMap["sendUtbetalingTransaksjonToOppdragZ"];
   const trekkTaskInfo = taskMap["sendTrekkTransaksjonToOppdragZ"];
   const avstemmingTaskInfo = taskMap["grensesnittAvstemming"];
+  const writeAvregningTaskInfo = taskMap["writeAvregningreturFile"];
 
   return (
     <>
       <VStack align="center">
-        <HStack margin="6" paddingBlock="6" gap="24">
-          <Heading className={styles.tittel} spacing size="large">
-            SPK Mottak Dashboard
-          </Heading>
-          <div className={styles.responsivmelding}>
-            <Alert variant="error">
-              Siden er for liten til å vise innhold!
-            </Alert>
-          </div>
+        <HStack margin="4">
+          <Heading size="medium">SPK Mottak Dashboard</Heading>
         </HStack>
       </VStack>
       {error ? (
@@ -245,7 +243,7 @@ const Dashboard = () => {
           </Alert>
         </VStack>
       ) : (
-        <VStack gap="16" align="stretch">
+        <VStack gap="4" align="stretch">
           {isLoading ? (
             <VStack align="center" style={{ marginTop: "2rem" }}>
               <Loader size="large" title="Laster inn..." />
@@ -255,10 +253,6 @@ const Dashboard = () => {
               <JobCard
                 title="Les inn fil og valider transaksjoner"
                 attributes={{
-                  alertMessage:
-                    alert?.id === readTaskInfo.taskName
-                      ? alert.message
-                      : "Jobb har startet, sjekk logger for status",
                   alertType:
                     alert?.id === readTaskInfo.taskName ? alert.type : "info",
                   isAlertVisible: alertVisibility[readTaskInfo.taskName],
@@ -273,10 +267,6 @@ const Dashboard = () => {
               <JobCard
                 title="Send utbetalingtransaksjoner"
                 attributes={{
-                  alertMessage:
-                    alert?.id === utbetalingTaskInfo.taskName
-                      ? alert.message
-                      : "Jobb har startet, sjekk logger for status",
                   alertType:
                     alert?.id === utbetalingTaskInfo.taskName
                       ? alert.type
@@ -295,10 +285,6 @@ const Dashboard = () => {
               <JobCard
                 title="Send trekktransaksjoner"
                 attributes={{
-                  alertMessage:
-                    alert?.id === trekkTaskInfo.taskName
-                      ? alert.message
-                      : "Jobb har startet, sjekk logger for status",
                   alertType:
                     alert?.id === trekkTaskInfo.taskName ? alert.type : "info",
                   isAlertVisible: alertVisibility[trekkTaskInfo.taskName],
@@ -312,12 +298,29 @@ const Dashboard = () => {
               />
 
               <JobCard
+                title="Send avregningsretur"
+                attributes={{
+                  alertType:
+                    alert?.id === writeAvregningTaskInfo.taskName
+                      ? alert.type
+                      : "info",
+                  isAlertVisible:
+                    alertVisibility[writeAvregningTaskInfo.taskName],
+                  isJobRunning: !!writeAvregningTaskInfo.isPicked,
+                  isLoading: loadingButtons[writeAvregningTaskInfo.taskName],
+                  isButtonDisabled:
+                    taskInfoStates[writeAvregningTaskInfo.taskName]?.disabled ||
+                    false,
+                }}
+                jobTaskInfo={writeAvregningTaskInfo}
+                onStartClick={() =>
+                  handleStartJob(writeAvregningTaskInfo.taskName)
+                }
+              />
+
+              <JobCard
                 title="Grensesnittavstemming"
                 attributes={{
-                  alertMessage:
-                    alert?.id === avstemmingTaskInfo.taskName
-                      ? alert.message
-                      : "Jobb har startet, sjekk logger for status",
                   alertType:
                     alert?.id === avstemmingTaskInfo.taskName
                       ? alert.type
@@ -330,7 +333,6 @@ const Dashboard = () => {
                     false,
                 }}
                 jobTaskInfo={avstemmingTaskInfo}
-                className={styles.grensesnittcard}
                 onStartClick={() => handleStartJob(avstemmingTaskInfo.taskName)}
               >
                 <div className={styles.datePickerWrapper}>

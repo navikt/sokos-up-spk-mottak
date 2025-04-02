@@ -30,6 +30,13 @@ export const handlers = [
     return HttpResponse.json(message, { status: 202 });
   }),
 
+  http.post("/spk-mottak-api/api/v1/writeAvregningsreturFile", () => {
+    const message =
+      "writeAvregningsreturFile har startet, sjekk logger for status";
+    console.log(message);
+    return HttpResponse.json(message, { status: 202 });
+  }),
+
   http.post("/spk-mottak-api/api/v1/avstemming", () => {
     const message =
       "GrensesnittAvstemming har startet, sjekk logger for status";

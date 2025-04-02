@@ -1,0 +1,11 @@
+.customDatePickerInput {
+  font-size: 0.75rem !important; /* Adjust the font size as needed */
+  padding: 4px 8px !important; /* Adjust the padding as needed */
+  display: flex !important;
+  align-items: center !important;
+  gap: 8px !important; /* Adjust the gap as needed */
+}
+
+.customDatePickerInput label {
+  margin-right: 8px !important; /* Adjust the margin as needed */
+}
