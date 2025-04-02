@@ -7,7 +7,7 @@ export const BASE_API_URL = "/spk-mottak-api/api/v1";
 
 const swrConfig = {
   fetcher: <T>(url: string) => axiosFetcher<T>(BASE_API_URL, url),
-  suspense: true,
+  suspense: false,
   revalidateOnFocus: false,
   refreshInterval: 30000,
 };
@@ -37,8 +37,11 @@ export async function postSendTrekkTransaksjon() {
   );
 }
 
+export async function postSendAvregningsretur() {
+  return await axiosPostFetcher(BASE_API_URL, "/writeAvregningsreturFile");
+}
+
 export async function postAvstemming(request: AvstemmingRequest) {
-  //console.log("request", request);
   return await axiosPostFetcher<AvstemmingRequest, null>(
     BASE_API_URL,
     "/avstemming",

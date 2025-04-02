@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { DatePicker, HStack, useRangeDatepicker } from "@navikt/ds-react";
 import { tilNorskDato } from "../../util/datoUtil";
+import styles from "./DateRangePicker.module.css";
 
 const DateRangePicker: React.FC<{
   onDateChange: (fromDate: string | null, toDate: string | null) => void;
@@ -15,12 +16,12 @@ const DateRangePicker: React.FC<{
   const [fromDate, setFromDate] = useState<Date | null>(null);
   const [toDate, setToDate] = useState<Date | null>(null);
 
-  useEffect(() => { 
+  useEffect(() => {
     if (fromDate && toDate)
-    onDateChange(
-      fromDate ? tilNorskDato(fromDate) : null,
-      toDate ? tilNorskDato(toDate) : null,
-    );
+      onDateChange(
+        fromDate ? tilNorskDato(fromDate) : null,
+        toDate ? tilNorskDato(toDate) : null,
+      );
   }, [fromDate, toDate, onDateChange]);
 
   useEffect(() => {
@@ -38,11 +39,15 @@ const DateRangePicker: React.FC<{
         <DatePicker.Input
           {...fromInputProps}
           label="Fra"
+          size="small"
+          className={styles.customDatePickerInput}
           onKeyDown={(e) => e.preventDefault()}
         />
         <DatePicker.Input
           {...toInputProps}
           label="Til"
+          size="small"
+          className={styles.customDatePickerInput}
           onKeyDown={(e) => e.preventDefault()}
         />
       </HStack>

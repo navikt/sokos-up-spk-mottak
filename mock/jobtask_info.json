@@ -27,6 +27,15 @@
   },
   {
     "taskId": "recurring",
+    "taskName": "writeAvregningsreturFile",
+    "executionTime": "2024-11-07T09:00:00Z",
+    "isPicked": false,
+    "lastFailure": "2024-11-06T14:54:26.127295Z",
+    "lastSuccess": "2024-11-07T08:00:03.804450Z",
+    "ident": "B171123"
+  },
+  {
+    "taskId": "recurring",
     "taskName": "grensesnittAvstemming",
     "executionTime": "2024-11-08T04:00:00Z",
     "isPicked": false,

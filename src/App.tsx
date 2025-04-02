@@ -5,12 +5,12 @@ import { initGrafanaFaro } from "./util/grafanaFaro";
 
 export default function App() {
   useEffect(() => {
-    if (
-      import.meta.env.MODE !== "mock" &&
-      import.meta.env.MODE !== "backend" &&
-      import.meta.env.MODE !== "backend-q1"
-    )
+    const devModes = ["mock", "backend", "backend-q1"];
+
+    // Only initialize Grafana Faro in production environments
+    if (!devModes.includes(import.meta.env.MODE)) {
       initGrafanaFaro();
+    }
   }, []);
 
   return <Dashboard />;
