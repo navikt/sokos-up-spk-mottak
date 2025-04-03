@@ -9,3 +9,5 @@ export const JobTaskInfoSchema = z.object({
   lastSuccess: z.optional(z.string()),
   ident: z.string(),
 });
+
+export const JobTaskInfoListSchema = z.array(JobTaskInfoSchema);

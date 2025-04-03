@@ -22,37 +22,31 @@ interface JobCardProps {
   attributes: JobCardAttributes;
 }
 
-const JobCard: React.FC<JobCardProps> = ({
-  title,
-  attributes,
-  jobTaskInfo,
-  children,
-  onStartClick,
-}) => {
+const JobCard: React.FC<JobCardProps> = (props: JobCardProps) => {
   return (
     <div className={styles.jobCardContainer}>
       <div className={styles.titleContainer}>
-        <Heading size="small">{title}</Heading>
+        <Heading size="small">{props.title}</Heading>
       </div>
       <div className={styles.taskDetailsContainer}>
         <BodyShort size="small">
           <b>Planlagt kjøringstidspunkt:</b>{" "}
-          {isoDatoTilNorskDato(jobTaskInfo?.executionTime)}
+          {isoDatoTilNorskDato(props.jobTaskInfo?.executionTime)}
         </BodyShort>
         <BodyShort size="small">
-          <b>Jobb Kjører:</b> {jobTaskInfo?.isPicked ? "Ja" : "Nei"}
+          <b>Jobb Kjører:</b> {props.jobTaskInfo?.isPicked ? "Ja" : "Nei"}
         </BodyShort>
         <BodyShort size="small">
           <b>Siste vellykkede kjøringstidspunkt:</b>{" "}
-          {isoDatoTilNorskDato(jobTaskInfo?.lastSuccess) || "N/A"}
+          {isoDatoTilNorskDato(props.jobTaskInfo?.lastSuccess) || "N/A"}
         </BodyShort>
         <BodyShort size="small">
-          <b>Sist kjørt av:</b> {jobTaskInfo?.ident}
+          <b>Sist kjørt av:</b> {props.jobTaskInfo?.ident}
         </BodyShort>
         <BodyShort size="small">
           <b>Siste mislykkede kjøringstidspunkt:</b>{" "}
-          {isoDatoTilNorskDato(jobTaskInfo?.lastFailure) || "N/A"}
-          {jobTaskInfo?.lastFailure && (
+          {isoDatoTilNorskDato(props.jobTaskInfo?.lastFailure) || "N/A"}
+          {props.jobTaskInfo?.lastFailure && (
             <>
               <br />
               <Link
@@ -66,27 +60,29 @@ const JobCard: React.FC<JobCardProps> = ({
           )}
         </BodyShort>
       </div>
-      {children}
+      {props.children}
       <div className={styles.buttonAndAlertContainer}>
-        {attributes.isAlertVisible && (
+        {props.attributes.isAlertVisible && (
           <div className={styles.alertWrapper}>
             <Alert
               size="small"
               variant={
-                jobTaskInfo ? attributes.alertType || "success" : "error"
+                props.jobTaskInfo
+                  ? props.attributes.alertType || "success"
+                  : "error"
               }
               className={styles.smallAlert}
             >
-              {(jobTaskInfo == null || attributes.alertType === "error") && (
+              {props.jobTaskInfo == undefined ||
+              props.attributes.alertType === "error" ? (
                 <span>Jobb kan ikke kjøres, sjekk logger for status</span>
-              )}
-              {jobTaskInfo && attributes.alertType !== "error" && (
+              ) : (
                 <span>Jobb har startet, sjekk logger for status</span>
               )}
             </Alert>
           </div>
         )}
-        {attributes.isJobRunning && (
+        {props.attributes.isJobRunning && (
           <div className={styles.alertWrapper}>
             <Alert size="small" variant="info" className={styles.smallAlert}>
               Jobb holder på, sjekk logger for status
@@ -97,13 +93,13 @@ const JobCard: React.FC<JobCardProps> = ({
           <Button
             variant="primary"
             size="small"
-            onClick={onStartClick}
+            onClick={props.onStartClick}
             disabled={
-              attributes.isButtonDisabled ||
-              attributes.isLoading ||
-              attributes.isJobRunning
+              props.attributes.isButtonDisabled ||
+              props.attributes.isLoading ||
+              props.attributes.isJobRunning
             }
-            loading={attributes.isLoading}
+            loading={props.attributes.isLoading}
           >
             Start
           </Button>
