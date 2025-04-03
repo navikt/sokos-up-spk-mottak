@@ -1,7 +1,9 @@
 import React from "react";
-import { Alert, BodyShort, Button, Heading } from "@navikt/ds-react";
+import { ExternalLinkIcon } from "@navikt/aksel-icons";
+import { Alert, BodyShort, Button, Heading, Link } from "@navikt/ds-react";
 import { JobTaskInfo } from "../../types/JobTaskInfo";
 import { isoDatoTilNorskDato } from "../../util/datoUtil";
+import { getEnvironment } from "../../util/environment";
 import styles from "./JobCard.module.css";
 
 type JobCardAttributes = {
@@ -50,6 +52,18 @@ const JobCard: React.FC<JobCardProps> = ({
         <BodyShort size="small">
           <b>Siste mislykkede kjøringstidspunkt:</b>{" "}
           {isoDatoTilNorskDato(jobTaskInfo?.lastFailure) || "N/A"}
+          {jobTaskInfo?.lastFailure && (
+            <>
+              <br />
+              <Link
+                href={`https://logs.adeo.no/app/discover#/?_g=(time:(from:now-1d,to:now))&_a=(filters:!((query:(match_phrase:(application:'sokos-spk-mottak'))),(query:(match_phrase:(cluster:'${getEnvironment() === "production" ? "prod-fss" : "dev-fss"}'))),(query:(match_phrase:(level:'Error')))))`}
+                target="_blank"
+              >
+                Sjekk error logger
+                <ExternalLinkIcon title="Lenke til logger" />
+              </Link>
+            </>
+          )}
         </BodyShort>
       </div>
       {children}
