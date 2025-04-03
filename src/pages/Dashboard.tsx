@@ -322,40 +322,43 @@ const Dashboard = () => {
                 }
               />
 
-              <JobCard
-                title="Grensesnittavstemming"
-                attributes={{
-                  alertType:
-                    alert?.id === avstemmingTaskInfo?.taskName
-                      ? alert?.type
-                      : "info",
-                  isAlertVisible: alertVisibility[avstemmingTaskInfo?.taskName],
-                  isJobRunning: !!avstemmingTaskInfo?.isPicked,
-                  isLoading: loadingButtons[avstemmingTaskInfo?.taskName],
-                  isButtonDisabled:
-                    taskInfoStates[avstemmingTaskInfo?.taskName]?.disabled ||
-                    false,
-                }}
-                jobTaskInfo={avstemmingTaskInfo}
-                onStartClick={() =>
-                  handleStartJob(avstemmingTaskInfo?.taskName)
-                }
-              >
-                <div className={styles.datePickerWrapper}>
-                  <DateRangePicker
-                    onDateChange={(fromDate, toDate) => {
-                      if (
-                        fromDate !== dateRange.fromDate ||
-                        toDate !== dateRange.toDate
-                      )
-                        setDateRange(() => ({
-                          fromDate,
-                          toDate,
-                        }));
-                    }}
-                  />
-                </div>
-              </JobCard>
+              <div className={styles.bottomSpacing}>
+                <JobCard
+                  title="Grensesnittavstemming"
+                  attributes={{
+                    alertType:
+                      alert?.id === avstemmingTaskInfo?.taskName
+                        ? alert?.type
+                        : "info",
+                    isAlertVisible:
+                      alertVisibility[avstemmingTaskInfo?.taskName],
+                    isJobRunning: !!avstemmingTaskInfo?.isPicked,
+                    isLoading: loadingButtons[avstemmingTaskInfo?.taskName],
+                    isButtonDisabled:
+                      taskInfoStates[avstemmingTaskInfo?.taskName]?.disabled ||
+                      false,
+                  }}
+                  jobTaskInfo={avstemmingTaskInfo}
+                  onStartClick={() =>
+                    handleStartJob(avstemmingTaskInfo?.taskName)
+                  }
+                >
+                  <div className={styles.datePickerWrapper}>
+                    <DateRangePicker
+                      onDateChange={(fromDate, toDate) => {
+                        if (
+                          fromDate !== dateRange.fromDate ||
+                          toDate !== dateRange.toDate
+                        )
+                          setDateRange(() => ({
+                            fromDate,
+                            toDate,
+                          }));
+                      }}
+                    />
+                  </div>
+                </JobCard>
+              </div>
             </>
           )}
         </VStack>
