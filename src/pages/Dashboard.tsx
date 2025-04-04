@@ -194,18 +194,14 @@ const Dashboard = () => {
     }
 
     // Check for active tasks in localStorage based on task data
-    if (data) {
-      data.forEach((task) => {
-        const savedTimestamp = localStorage.getItem(
-          `${task.taskName}_timestamp`,
-        );
-        if (savedTimestamp) {
-          const savedTime = parseInt(savedTimestamp);
-          const timeout = restoreButtonState(task.taskName, savedTime);
-          if (timeout) timeouts[task.taskName] = timeout;
-        }
-      });
-    }
+    data?.forEach((task) => {
+      const savedTimestamp = localStorage.getItem(`${task.taskName}_timestamp`);
+      if (savedTimestamp) {
+        const savedTime = parseInt(savedTimestamp);
+        const timeout = restoreButtonState(task.taskName, savedTime);
+        if (timeout) timeouts[task.taskName] = timeout;
+      }
+    });
 
     // Clean up timeouts on unmount
     return () => {
@@ -213,14 +209,15 @@ const Dashboard = () => {
     };
   }, [data]);
 
-  const taskMap =
-    data?.reduce(
-      (acc, task) => {
-        acc[task.taskName] = task;
-        return acc;
-      },
-      {} as Record<string, (typeof data)[0]>,
-    ) || {};
+  const taskMap = data
+    ? data.reduce(
+        (acc, task) => {
+          acc[task.taskName] = task;
+          return acc;
+        },
+        {} as Record<string, (typeof data)[0]>,
+      )
+    : {};
 
   const readTaskInfo = taskMap["readParseFileAndValidateTransactions"];
   const utbetalingTaskInfo = taskMap["sendUtbetalingTransaksjonToOppdragZ"];
@@ -254,7 +251,9 @@ const Dashboard = () => {
                 title="Les inn fil og valider transaksjoner"
                 attributes={{
                   alertType:
-                    alert?.id === readTaskInfo?.taskName ? alert?.type : "info",
+                    alert?.id === readTaskInfo?.taskName
+                      ? alert?.type || null
+                      : "info",
                   isAlertVisible: alertVisibility[readTaskInfo?.taskName],
                   isJobRunning: !!readTaskInfo?.isPicked,
                   isLoading: loadingButtons[readTaskInfo?.taskName],
@@ -269,7 +268,7 @@ const Dashboard = () => {
                 attributes={{
                   alertType:
                     alert?.id === utbetalingTaskInfo?.taskName
-                      ? alert?.type
+                      ? alert?.type || null
                       : "info",
                   isAlertVisible: alertVisibility[utbetalingTaskInfo?.taskName],
                   isJobRunning: !!utbetalingTaskInfo?.isPicked,
@@ -289,7 +288,7 @@ const Dashboard = () => {
                 attributes={{
                   alertType:
                     alert?.id === trekkTaskInfo?.taskName
-                      ? alert?.type
+                      ? alert?.type || null
                       : "info",
                   isAlertVisible: alertVisibility[trekkTaskInfo?.taskName],
                   isJobRunning: !!trekkTaskInfo?.isPicked,
@@ -306,7 +305,7 @@ const Dashboard = () => {
                 attributes={{
                   alertType:
                     alert?.id === writeAvregningTaskInfo?.taskName
-                      ? alert?.type
+                      ? alert?.type || null
                       : "info",
                   isAlertVisible:
                     alertVisibility[writeAvregningTaskInfo?.taskName],
@@ -322,40 +321,43 @@ const Dashboard = () => {
                 }
               />
 
-              <JobCard
-                title="Grensesnittavstemming"
-                attributes={{
-                  alertType:
-                    alert?.id === avstemmingTaskInfo?.taskName
-                      ? alert?.type
-                      : "info",
-                  isAlertVisible: alertVisibility[avstemmingTaskInfo?.taskName],
-                  isJobRunning: !!avstemmingTaskInfo?.isPicked,
-                  isLoading: loadingButtons[avstemmingTaskInfo?.taskName],
-                  isButtonDisabled:
-                    taskInfoStates[avstemmingTaskInfo?.taskName]?.disabled ||
-                    false,
-                }}
-                jobTaskInfo={avstemmingTaskInfo}
-                onStartClick={() =>
-                  handleStartJob(avstemmingTaskInfo?.taskName)
-                }
-              >
-                <div className={styles.datePickerWrapper}>
-                  <DateRangePicker
-                    onDateChange={(fromDate, toDate) => {
-                      if (
-                        fromDate !== dateRange.fromDate ||
-                        toDate !== dateRange.toDate
-                      )
-                        setDateRange(() => ({
-                          fromDate,
-                          toDate,
-                        }));
-                    }}
-                  />
-                </div>
-              </JobCard>
+              <div className={styles.bottomSpacing}>
+                <JobCard
+                  title="Grensesnittavstemming"
+                  attributes={{
+                    alertType:
+                      alert?.id === avstemmingTaskInfo?.taskName
+                        ? alert?.type || null
+                        : "info",
+                    isAlertVisible:
+                      alertVisibility[avstemmingTaskInfo?.taskName],
+                    isJobRunning: !!avstemmingTaskInfo?.isPicked,
+                    isLoading: loadingButtons[avstemmingTaskInfo?.taskName],
+                    isButtonDisabled:
+                      taskInfoStates[avstemmingTaskInfo?.taskName]?.disabled ||
+                      false,
+                  }}
+                  jobTaskInfo={avstemmingTaskInfo}
+                  onStartClick={() =>
+                    handleStartJob(avstemmingTaskInfo?.taskName)
+                  }
+                >
+                  <div className={styles.datePickerWrapper}>
+                    <DateRangePicker
+                      onDateChange={(fromDate, toDate) => {
+                        if (
+                          fromDate !== dateRange.fromDate ||
+                          toDate !== dateRange.toDate
+                        )
+                          setDateRange(() => ({
+                            fromDate,
+                            toDate,
+                          }));
+                      }}
+                    />
+                  </div>
+                </JobCard>
+              </div>
             </>
           )}
         </VStack>

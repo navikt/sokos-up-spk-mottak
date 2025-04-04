@@ -1,5 +1,5 @@
 import useSWRImmutable from "swr/immutable";
-import { JobTaskInfo } from "../types/JobTaskInfo";
+import { JobTaskInfoList } from "../types/JobTaskInfo";
 import { axiosFetcher, axiosPostFetcher } from "./apiConfig";
 import { AvstemmingRequest } from "./models/AvstemmingRequest";
 
@@ -13,7 +13,7 @@ const swrConfig = {
 };
 
 export function useGetjobTaskInfo() {
-  return useSWRImmutable<JobTaskInfo[]>(`/jobTaskInfo`, swrConfig);
+  return useSWRImmutable<JobTaskInfoList>(`/jobTaskInfo`, swrConfig);
 }
 
 export async function postReadAndParseFile() {
