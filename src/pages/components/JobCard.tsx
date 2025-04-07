@@ -73,7 +73,7 @@ const JobCard: React.FC<JobCardProps> = (props: JobCardProps) => {
               }
               className={styles.smallAlert}
             >
-              {props.jobTaskInfo == undefined ||
+              {props.jobTaskInfo === undefined ||
               props.attributes.alertType === "error" ? (
                 <span>Jobb kan ikke kjøres, sjekk logger for status</span>
               ) : (

@@ -23,7 +23,8 @@
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "swr": "^2.3.3",
-    "zod": "^3.24.1"
+    "zod": "^3.24.1",
+    "zustand": "^5.0.3"
   },
   "devDependencies": {
     "@eik/rollup-plugin": "^4.0.66",

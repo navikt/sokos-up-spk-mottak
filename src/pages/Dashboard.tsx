@@ -9,7 +9,7 @@ import {
   useGetjobTaskInfo,
 } from "../api/apiService";
 import { AvstemmingRequest } from "../api/models/AvstemmingRequest";
-import { TaskInfoState, TaskInfoStateRecord } from "../types/TaskInfoState";
+import { useStore } from "../store/AppState";
 import { toIsoDate } from "../util/datoUtil";
 import styles from "./Dashboard.module.css";
 import DateRangePicker from "./components/DateRangePicker";
@@ -25,78 +25,48 @@ const Dashboard = () => {
     message: string;
   } | null>(null);
 
-  const [taskInfoStates, setTaskInfoStates] = useState<TaskInfoStateRecord>({});
-
+  const { taskInfoStateRecord, setTaskInfoStateItem, removeTaskInfoStateItem } =
+    useStore();
   const [loadingButtons, setLoadingButtons] = useState<{
     [key: string]: boolean;
   }>({});
-
   const [alertVisibility, setalertVisibility] = useState<{
     [key: string]: boolean;
   }>({});
 
-  const [dateRange, setDateRange] = useState<{
-    fromDate: string | null;
-    toDate: string | null;
-  }>({
-    fromDate: null,
-    toDate: null,
+  const [dateRange, setDateRange] = useState({
+    fromDate: null as string | null,
+    toDate: null as string | null,
   });
 
   const handleStartJob = async (taskId: string) => {
-    setLoadingButtons((prev) => ({
-      ...prev,
-      [taskId]: true,
-    }));
-
-    setalertVisibility((prev) => ({
-      ...prev,
-      [taskId]: true,
-    }));
+    setLoadingButtons((prev) => ({ ...prev, [taskId]: true }));
+    setalertVisibility((prev) => ({ ...prev, [taskId]: true }));
 
     const currentTime = Date.now();
+    setTaskInfoStateItem(taskId, { disabled: true, timestamp: currentTime });
 
-    localStorage.setItem(`${taskId}_timestamp`, currentTime.toString());
-
-    setTaskInfoStates((prev) => {
-      const newState = {
-        ...prev,
-        [taskId]: { disabled: true, timestamp: currentTime },
-      };
-      localStorage.setItem("disabledButtons", JSON.stringify(newState));
-      return newState;
-    });
-
-    let apiPromise: Promise<unknown>;
-
-    switch (taskId) {
-      case "readParseFileAndValidateTransactions":
-        apiPromise = postReadAndParseFile();
-        break;
-      case "sendUtbetalingTransaksjonToOppdragZ":
-        apiPromise = postSendUtbetalingTransaksjon();
-        break;
-      case "sendTrekkTransaksjonToOppdragZ":
-        apiPromise = postSendTrekkTransaksjon();
-        break;
-      case "writeAvregningsreturFile":
-        apiPromise = postSendAvregningsretur();
-        break;
-      case "grensesnittAvstemming": {
+    const apiPromises: Record<string, () => Promise<unknown>> = {
+      readParseFileAndValidateTransactions: postReadAndParseFile,
+      sendUtbetalingTransaksjonToOppdragZ: postSendUtbetalingTransaksjon,
+      sendTrekkTransaksjonToOppdragZ: postSendTrekkTransaksjon,
+      writeAvregningsreturFile: postSendAvregningsretur,
+      grensesnittAvstemming: () => {
         const request: AvstemmingRequest = {
           fromDate: dateRange.fromDate
             ? toIsoDate(dateRange.fromDate)
             : undefined,
           toDate: dateRange.toDate ? toIsoDate(dateRange.toDate) : undefined,
         };
-        apiPromise = postAvstemming(request);
-        break;
-      }
-      default:
-        apiPromise = Promise.reject(new Error("Unknown task ID"));
-    }
+        return postAvstemming(request);
+      },
+    };
 
-    await apiPromise
+    await (
+      apiPromises[taskId]
+        ? apiPromises[taskId]()
+        : Promise.reject(new Error("Unknown task ID"))
+    )
       .then((data) => {
         setAlert({
           id: taskId,
@@ -119,97 +89,70 @@ const Dashboard = () => {
     setTimeout(() => {
       setLoadingButtons((prev) => ({ ...prev, [taskId]: false }));
       setalertVisibility((prev) => ({ ...prev, [taskId]: false }));
-      localStorage.removeItem(`${taskId}_timestamp`);
-
-      setTaskInfoStates((prev) => {
-        const newState = {
-          ...prev,
-          [taskId]: { disabled: false, timestamp: 0 },
-        };
-        localStorage.setItem("disabledButtons", JSON.stringify(newState));
-        return newState;
-      });
+      removeTaskInfoStateItem(taskId);
     }, 30000);
   };
 
   // Check for stored timestamps on initial load
   useEffect(() => {
-    // Helper function to handle button state restoration
-    const restoreButtonState = (key: string, timestamp: number) => {
+    // Track timeouts for cleanup
+    const timeouts: Record<string, number> = {};
+
+    // Single function to handle button state reset
+    const resetButtonState = (key: string) => {
+      setLoadingButtons((prev) => ({ ...prev, [key]: false }));
+      setalertVisibility((prev) => ({ ...prev, [key]: false }));
+      removeTaskInfoStateItem(key);
+    };
+
+    const processTask = (taskId: string, timestamp: number) => {
       const now = Date.now();
       const elapsedTime = now - timestamp;
 
       if (elapsedTime < 30000) {
-        // Still disabled - set UI state
-        setLoadingButtons((prev) => ({ ...prev, [key]: true }));
-        setalertVisibility((prev) => ({ ...prev, [key]: true }));
+        // Still within disabled period - set UI state
+        setLoadingButtons((prev) => ({ ...prev, [taskId]: true }));
+        setalertVisibility((prev) => ({ ...prev, [taskId]: true }));
 
-        // Calculate remaining time and set timeout to re-enable
+        // Schedule reset
         const remainingTime = 30000 - elapsedTime;
-        return setTimeout(() => resetButtonState(key), remainingTime);
+        timeouts[taskId] = window.setTimeout(
+          () => resetButtonState(taskId),
+          remainingTime,
+        );
+      } else {
+        // Already expired
+        resetButtonState(taskId);
       }
-
-      // Time already elapsed, reset state
-      resetButtonState(key);
-      return null;
     };
 
-    // Helper function to reset a button's state
-    const resetButtonState = (key: string) => {
-      setLoadingButtons((prev) => ({ ...prev, [key]: false }));
-      setalertVisibility((prev) => ({ ...prev, [key]: false }));
-      localStorage.removeItem(`${key}_timestamp`);
-
-      setTaskInfoStates((prev) => {
-        const newState = {
-          ...prev,
-          [key]: { disabled: false, timestamp: 0 },
-        };
-        localStorage.setItem("disabledButtons", JSON.stringify(newState));
-        return newState;
+    // Process tasks from state record
+    if (taskInfoStateRecord) {
+      Object.entries(taskInfoStateRecord).forEach(([taskId, state]) => {
+        if (state.disabled) {
+          processTask(taskId, state.timestamp);
+        }
       });
-    };
-
-    // Restore disabled button states from localStorage
-    const timeouts: { [key: string]: NodeJS.Timeout } = {};
-    const disabledState = localStorage.getItem("disabledButtons");
-
-    if (disabledState) {
-      const parsedState: TaskInfoStateRecord = JSON.parse(disabledState);
-      const newDisabledState = { ...parsedState };
-
-      Object.entries(parsedState).forEach(
-        ([key, buttonState]: [string, TaskInfoState]) => {
-          if (buttonState.disabled) {
-            newDisabledState[key] = { ...buttonState };
-            const timeout = restoreButtonState(key, buttonState.timestamp);
-            if (timeout) timeouts[key] = timeout;
-          } else {
-            newDisabledState[key] = { disabled: false, timestamp: 0 };
-          }
-        },
-      );
-
-      setTaskInfoStates(newDisabledState);
     }
 
-    // Check for active tasks in localStorage based on task data
-    data?.forEach((task) => {
-      const savedTimestamp = localStorage.getItem(`${task.taskName}_timestamp`);
-      if (savedTimestamp) {
-        const savedTime = parseInt(savedTimestamp);
-        const timeout = restoreButtonState(task.taskName, savedTime);
-        if (timeout) timeouts[task.taskName] = timeout;
-      }
-    });
+    if (Array.isArray(data)) {
+      data.forEach((task) => {
+        const savedTimestamp = taskInfoStateRecord[task.taskName]?.timestamp;
+        if (savedTimestamp) {
+          processTask(task.taskName, savedTimestamp);
+        }
+      });
+    }
 
-    // Clean up timeouts on unmount
+    // Clean up all timeouts on unmount
     return () => {
-      Object.values(timeouts).forEach((timeout) => clearTimeout(timeout));
+      Object.values(timeouts).forEach((timeoutId) =>
+        window.clearTimeout(timeoutId),
+      );
     };
-  }, [data]);
+  }, [data, taskInfoStateRecord, removeTaskInfoStateItem]);
 
-  const taskMap = data
+  const taskMap = Array.isArray(data)
     ? data.reduce(
         (acc, task) => {
           acc[task.taskName] = task;
@@ -258,7 +201,8 @@ const Dashboard = () => {
                   isJobRunning: !!readTaskInfo?.isPicked,
                   isLoading: loadingButtons[readTaskInfo?.taskName],
                   isButtonDisabled:
-                    taskInfoStates[readTaskInfo?.taskName]?.disabled || false,
+                    taskInfoStateRecord[readTaskInfo?.taskName]?.disabled ||
+                    false,
                 }}
                 jobTaskInfo={readTaskInfo}
                 onStartClick={() => handleStartJob(readTaskInfo?.taskName)}
@@ -274,8 +218,8 @@ const Dashboard = () => {
                   isJobRunning: !!utbetalingTaskInfo?.isPicked,
                   isLoading: loadingButtons[utbetalingTaskInfo?.taskName],
                   isButtonDisabled:
-                    taskInfoStates[utbetalingTaskInfo?.taskName]?.disabled ||
-                    false,
+                    taskInfoStateRecord[utbetalingTaskInfo?.taskName]
+                      ?.disabled || false,
                 }}
                 jobTaskInfo={utbetalingTaskInfo}
                 onStartClick={() =>
@@ -294,7 +238,8 @@ const Dashboard = () => {
                   isJobRunning: !!trekkTaskInfo?.isPicked,
                   isLoading: loadingButtons[trekkTaskInfo?.taskName],
                   isButtonDisabled:
-                    taskInfoStates[trekkTaskInfo?.taskName]?.disabled || false,
+                    taskInfoStateRecord[trekkTaskInfo?.taskName]?.disabled ||
+                    false,
                 }}
                 jobTaskInfo={trekkTaskInfo}
                 onStartClick={() => handleStartJob(trekkTaskInfo?.taskName)}
@@ -312,7 +257,7 @@ const Dashboard = () => {
                   isJobRunning: !!writeAvregningTaskInfo?.isPicked,
                   isLoading: loadingButtons[writeAvregningTaskInfo?.taskName],
                   isButtonDisabled:
-                    taskInfoStates[writeAvregningTaskInfo?.taskName]
+                    taskInfoStateRecord[writeAvregningTaskInfo?.taskName]
                       ?.disabled || false,
                 }}
                 jobTaskInfo={writeAvregningTaskInfo}
@@ -334,8 +279,8 @@ const Dashboard = () => {
                     isJobRunning: !!avstemmingTaskInfo?.isPicked,
                     isLoading: loadingButtons[avstemmingTaskInfo?.taskName],
                     isButtonDisabled:
-                      taskInfoStates[avstemmingTaskInfo?.taskName]?.disabled ||
-                      false,
+                      taskInfoStateRecord[avstemmingTaskInfo?.taskName]
+                        ?.disabled || false,
                   }}
                   jobTaskInfo={avstemmingTaskInfo}
                   onStartClick={() =>
