@@ -93,7 +93,6 @@ const Dashboard = () => {
     }, 30000);
   };
 
-  // Check for stored timestamps on initial load
   useEffect(() => {
     // Track timeouts for cleanup
     const timeouts: Record<string, number> = {};
