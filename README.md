@@ -16,7 +16,7 @@ Denne mikrofrontend gjør det mulig å kunne rekjøre jobber som er satt i `soko
 
 For å få tilgang til skjermbildet:
 
-- `0000-GA-SOKOS-MF-SPK-MOTTAK-ADMIN` (applikasjon i Utbetalingsportalen)
+- `0000-CA-SOKOS-MF-SPK-MOTTAK-ADMIN` (applikasjon i Utbetalingsportalen)
 
 Tilgang fås ved ta kontakt med din identansvarlig. Det kan noen ganger være en strevsomt å få på plass tilganger
 i identrutinene. Det er derfor viktig å benytte riktig begrep i kommunikasjon med dem.
@@ -25,7 +25,7 @@ i identrutinene. Det er derfor viktig å benytte riktig begrep i kommunikasjon m
 
 | Navn Identrutinen                               | AD-gruppe                         | Beskrivelse                               |
 | ----------------------------------------------- | --------------------------------- | ----------------------------------------- |
-| Utbetalingsportalen - spk-mottak - Admintilgang | 0000-GA-SOKOS-MF-SPK-MOTTAK-ADMIN | Admin tilgang for å manuelt trigge jobber |
+| Utbetalingsportalen - spk-mottak - Admintilgang | 0000-CA-SOKOS-MF-SPK-MOTTAK-ADMIN | Admin tilgang for å manuelt trigge jobber |
 
 ## Kom i gang
 
@@ -36,8 +36,3 @@ i identrutinene. Det er derfor viktig å benytte riktig begrep i kommunikasjon m
 5. Appen nås på <http://localhost:5173/>
 
 NB! Anbefaler sette opp [ModHeader](https://modheader.com/) extension på Chrome for å sende med Obo-token i `Authorization` header når du kjører mot backend lokalt da den krever at token inneholder NavIdent.
-
-# Henvendelser
-
-Spørsmål knyttet til koden eller prosjektet kan stilles som issues her på Github.
-Interne henvendelser kan sendes via Slack i kanalen #po-utbetaling.
