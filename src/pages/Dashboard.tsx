@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from "react";
-import { Alert, HStack, Heading, Loader, VStack } from "@navikt/ds-react";
+import { useEffect, useState } from "react";
+import { Alert, HStack, Heading, VStack } from "@navikt/ds-react";
 import {
   postAvstemming,
   postReadAndParseFile,
@@ -17,7 +17,6 @@ import JobCard from "./components/JobCard";
 
 const Dashboard = () => {
   const { data, error, mutate } = useGetjobTaskInfo();
-  const isLoading = !data && !error;
 
   const [alert, setAlert] = useState<{
     id: string;
@@ -183,127 +182,111 @@ const Dashboard = () => {
         </VStack>
       ) : (
         <VStack gap="4" align="stretch">
-          {isLoading ? (
-            <VStack align="center" style={{ marginTop: "2rem" }}>
-              <Loader size="large" title="Laster inn..." />
-            </VStack>
-          ) : (
-            <>
-              <JobCard
-                title="Les inn fil og valider transaksjoner"
-                attributes={{
-                  alertType:
-                    alert?.id === readTaskInfo?.taskName
-                      ? alert?.type || null
-                      : "info",
-                  isAlertVisible: alertVisibility[readTaskInfo?.taskName],
-                  isJobRunning: !!readTaskInfo?.isPicked,
-                  isLoading: loadingButtons[readTaskInfo?.taskName],
-                  isButtonDisabled:
-                    taskInfoStateRecord[readTaskInfo?.taskName]?.disabled ||
-                    false,
-                }}
-                jobTaskInfo={readTaskInfo}
-                onStartClick={() => handleStartJob(readTaskInfo?.taskName)}
-              />
-              <JobCard
-                title="Send utbetalingtransaksjoner"
-                attributes={{
-                  alertType:
-                    alert?.id === utbetalingTaskInfo?.taskName
-                      ? alert?.type || null
-                      : "info",
-                  isAlertVisible: alertVisibility[utbetalingTaskInfo?.taskName],
-                  isJobRunning: !!utbetalingTaskInfo?.isPicked,
-                  isLoading: loadingButtons[utbetalingTaskInfo?.taskName],
-                  isButtonDisabled:
-                    taskInfoStateRecord[utbetalingTaskInfo?.taskName]
-                      ?.disabled || false,
-                }}
-                jobTaskInfo={utbetalingTaskInfo}
-                onStartClick={() =>
-                  handleStartJob(utbetalingTaskInfo?.taskName)
-                }
-              />
+          <JobCard
+            title="Les inn fil og valider transaksjoner"
+            attributes={{
+              alertType:
+                alert?.id === readTaskInfo?.taskName
+                  ? alert?.type || null
+                  : "info",
+              isAlertVisible: alertVisibility[readTaskInfo?.taskName],
+              isJobRunning: !!readTaskInfo?.isPicked,
+              isLoading: loadingButtons[readTaskInfo?.taskName],
+              isButtonDisabled:
+                taskInfoStateRecord[readTaskInfo?.taskName]?.disabled || false,
+            }}
+            jobTaskInfo={readTaskInfo}
+            onStartClick={() => handleStartJob(readTaskInfo?.taskName)}
+          />
+          <JobCard
+            title="Send utbetalingtransaksjoner"
+            attributes={{
+              alertType:
+                alert?.id === utbetalingTaskInfo?.taskName
+                  ? alert?.type || null
+                  : "info",
+              isAlertVisible: alertVisibility[utbetalingTaskInfo?.taskName],
+              isJobRunning: !!utbetalingTaskInfo?.isPicked,
+              isLoading: loadingButtons[utbetalingTaskInfo?.taskName],
+              isButtonDisabled:
+                taskInfoStateRecord[utbetalingTaskInfo?.taskName]?.disabled ||
+                false,
+            }}
+            jobTaskInfo={utbetalingTaskInfo}
+            onStartClick={() => handleStartJob(utbetalingTaskInfo?.taskName)}
+          />
 
-              <JobCard
-                title="Send trekktransaksjoner"
-                attributes={{
-                  alertType:
-                    alert?.id === trekkTaskInfo?.taskName
-                      ? alert?.type || null
-                      : "info",
-                  isAlertVisible: alertVisibility[trekkTaskInfo?.taskName],
-                  isJobRunning: !!trekkTaskInfo?.isPicked,
-                  isLoading: loadingButtons[trekkTaskInfo?.taskName],
-                  isButtonDisabled:
-                    taskInfoStateRecord[trekkTaskInfo?.taskName]?.disabled ||
-                    false,
-                }}
-                jobTaskInfo={trekkTaskInfo}
-                onStartClick={() => handleStartJob(trekkTaskInfo?.taskName)}
-              />
+          <JobCard
+            title="Send trekktransaksjoner"
+            attributes={{
+              alertType:
+                alert?.id === trekkTaskInfo?.taskName
+                  ? alert?.type || null
+                  : "info",
+              isAlertVisible: alertVisibility[trekkTaskInfo?.taskName],
+              isJobRunning: !!trekkTaskInfo?.isPicked,
+              isLoading: loadingButtons[trekkTaskInfo?.taskName],
+              isButtonDisabled:
+                taskInfoStateRecord[trekkTaskInfo?.taskName]?.disabled || false,
+            }}
+            jobTaskInfo={trekkTaskInfo}
+            onStartClick={() => handleStartJob(trekkTaskInfo?.taskName)}
+          />
 
-              <JobCard
-                title="Send avregningsretur"
-                attributes={{
-                  alertType:
-                    alert?.id === writeAvregningTaskInfo?.taskName
-                      ? alert?.type || null
-                      : "info",
-                  isAlertVisible:
-                    alertVisibility[writeAvregningTaskInfo?.taskName],
-                  isJobRunning: !!writeAvregningTaskInfo?.isPicked,
-                  isLoading: loadingButtons[writeAvregningTaskInfo?.taskName],
-                  isButtonDisabled:
-                    taskInfoStateRecord[writeAvregningTaskInfo?.taskName]
-                      ?.disabled || false,
-                }}
-                jobTaskInfo={writeAvregningTaskInfo}
-                onStartClick={() =>
-                  handleStartJob(writeAvregningTaskInfo?.taskName)
-                }
-              />
+          <JobCard
+            title="Send avregningsretur"
+            attributes={{
+              alertType:
+                alert?.id === writeAvregningTaskInfo?.taskName
+                  ? alert?.type || null
+                  : "info",
+              isAlertVisible: alertVisibility[writeAvregningTaskInfo?.taskName],
+              isJobRunning: !!writeAvregningTaskInfo?.isPicked,
+              isLoading: loadingButtons[writeAvregningTaskInfo?.taskName],
+              isButtonDisabled:
+                taskInfoStateRecord[writeAvregningTaskInfo?.taskName]
+                  ?.disabled || false,
+            }}
+            jobTaskInfo={writeAvregningTaskInfo}
+            onStartClick={() =>
+              handleStartJob(writeAvregningTaskInfo?.taskName)
+            }
+          />
 
-              <div className={styles.bottomSpacing}>
-                <JobCard
-                  title="Grensesnittavstemming"
-                  attributes={{
-                    alertType:
-                      alert?.id === avstemmingTaskInfo?.taskName
-                        ? alert?.type || null
-                        : "info",
-                    isAlertVisible:
-                      alertVisibility[avstemmingTaskInfo?.taskName],
-                    isJobRunning: !!avstemmingTaskInfo?.isPicked,
-                    isLoading: loadingButtons[avstemmingTaskInfo?.taskName],
-                    isButtonDisabled:
-                      taskInfoStateRecord[avstemmingTaskInfo?.taskName]
-                        ?.disabled || false,
+          <div className={styles.bottomSpacing}>
+            <JobCard
+              title="Grensesnittavstemming"
+              attributes={{
+                alertType:
+                  alert?.id === avstemmingTaskInfo?.taskName
+                    ? alert?.type || null
+                    : "info",
+                isAlertVisible: alertVisibility[avstemmingTaskInfo?.taskName],
+                isJobRunning: !!avstemmingTaskInfo?.isPicked,
+                isLoading: loadingButtons[avstemmingTaskInfo?.taskName],
+                isButtonDisabled:
+                  taskInfoStateRecord[avstemmingTaskInfo?.taskName]?.disabled ||
+                  false,
+              }}
+              jobTaskInfo={avstemmingTaskInfo}
+              onStartClick={() => handleStartJob(avstemmingTaskInfo?.taskName)}
+            >
+              <div className={styles.datePickerWrapper}>
+                <DateRangePicker
+                  onDateChange={(fromDate, toDate) => {
+                    if (
+                      fromDate !== dateRange.fromDate ||
+                      toDate !== dateRange.toDate
+                    )
+                      setDateRange(() => ({
+                        fromDate,
+                        toDate,
+                      }));
                   }}
-                  jobTaskInfo={avstemmingTaskInfo}
-                  onStartClick={() =>
-                    handleStartJob(avstemmingTaskInfo?.taskName)
-                  }
-                >
-                  <div className={styles.datePickerWrapper}>
-                    <DateRangePicker
-                      onDateChange={(fromDate, toDate) => {
-                        if (
-                          fromDate !== dateRange.fromDate ||
-                          toDate !== dateRange.toDate
-                        )
-                          setDateRange(() => ({
-                            fromDate,
-                            toDate,
-                          }));
-                      }}
-                    />
-                  </div>
-                </JobCard>
+                />
               </div>
-            </>
-          )}
+            </JobCard>
+          </div>
         </VStack>
       )}
     </>
