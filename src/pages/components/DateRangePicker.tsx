@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { DatePicker, HStack, useRangeDatepicker } from "@navikt/ds-react";
 import { tilNorskDato } from "../../util/datoUtil";
 import styles from "./DateRangePicker.module.css";
@@ -13,25 +13,13 @@ const DateRangePicker: React.FC<{
       onRangeChange: () => {},
     });
 
-  const [fromDate, setFromDate] = useState<Date | null>(null);
-  const [toDate, setToDate] = useState<Date | null>(null);
-
   useEffect(() => {
-    if (fromDate && toDate)
+    if (selectedRange?.from && selectedRange?.to)
       onDateChange(
-        fromDate ? tilNorskDato(fromDate) : null,
-        toDate ? tilNorskDato(toDate) : null,
+        tilNorskDato(selectedRange.from),
+        tilNorskDato(selectedRange.to),
       );
-  }, [fromDate, toDate, onDateChange]);
-
-  useEffect(() => {
-    if (selectedRange?.from) {
-      setFromDate(selectedRange.from);
-    }
-    if (selectedRange?.to) {
-      setToDate(selectedRange.to);
-    }
-  }, [selectedRange]);
+  }, [selectedRange, onDateChange]);
 
   return (
     <DatePicker {...datepickerProps}>
