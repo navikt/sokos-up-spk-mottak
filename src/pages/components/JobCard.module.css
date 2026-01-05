@@ -1,80 +1,81 @@
+/** biome-ignore-all lint/complexity/noImportantStyles: false positive */
 .jobCardContainer {
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  width: 65%;
-  margin: 0 auto;
-  border-radius: 8px;
-  padding: 8px;
-  position: relative;
-  background-color: var(--a-surface-alt-3-subtle);
+	display: flex;
+	flex-direction: column;
+	justify-content: flex-start;
+	width: 65%;
+	margin: 0 auto;
+	border-radius: 8px;
+	padding: 8px;
+	position: relative;
+	background-color: var(--a-surface-alt-3-subtle);
 }
 
 .titleContainer {
-  display: flex;
-  justify-content: flex-start;
-  align-items: center;
-  margin-bottom: 8px;
+	display: flex;
+	justify-content: flex-start;
+	align-items: center;
+	margin-bottom: 8px;
 }
 
 .taskDetailsContainer {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  grid-template-rows: repeat(3, auto);
-  gap: 5px;
-  margin-bottom: 5px;
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	grid-template-rows: repeat(3, auto);
+	gap: 5px;
+	margin-bottom: 5px;
 }
 
 @media (width <= 800px) {
-  .taskDetailsContainer {
-    grid-template-columns: 1fr;
-    grid-template-rows: repeat(6, auto);
-  }
+	.taskDetailsContainer {
+		grid-template-columns: 1fr;
+		grid-template-rows: repeat(6, auto);
+	}
 }
 
 .buttonAndAlertContainer {
-  display: flex;
-  flex-direction: row;
-  justify-content: flex-end;
-  align-items: center;
-  width: 60%;
-  margin-left: auto;
-  margin-top: -30px;
+	display: flex;
+	flex-direction: row;
+	justify-content: flex-end;
+	align-items: center;
+	width: 60%;
+	margin-left: auto;
+	margin-top: -30px;
 }
 
 @media (width <= 800px) {
-  .buttonAndAlertContainer {
-    flex-direction: column;
-    align-items: flex-end;
-    width: 80%;
-    height: 80%;
-    padding-top: 30px;
-  }
+	.buttonAndAlertContainer {
+		flex-direction: column;
+		align-items: flex-end;
+		width: 80%;
+		height: 80%;
+		padding-top: 30px;
+	}
 }
 
 .alertWrapper {
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
-  gap: 8px;
-  margin-right: 8px;
+	display: flex;
+	align-items: center;
+	justify-content: flex-start;
+	gap: 8px;
+	margin-right: 8px;
 }
 
 @media (width <= 800px) {
-  .alertWrapper {
-    margin-right: 0;
-    margin-bottom: 8px;
-  }
+	.alertWrapper {
+		margin-right: 0;
+		margin-bottom: 8px;
+	}
 }
 
 .buttonWrapper {
-  display: flex;
-  justify-content: flex-end;
-  gap: 8px;
-  width: auto;
+	display: flex;
+	justify-content: flex-end;
+	gap: 8px;
+	width: auto;
 }
 
 .smallAlert {
-  font-size: 0.3rem !important;
-  padding: 2px 6px !important;
+	font-size: 0.3rem !important;
+	padding: 2px 6px !important;
 }

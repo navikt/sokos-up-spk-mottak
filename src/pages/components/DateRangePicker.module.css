@@ -1,11 +1,12 @@
+/** biome-ignore-all lint/complexity/noImportantStyles: false positive */
 .customDatePickerInput {
-  font-size: 0.75rem !important;
-  padding: 4px 8px !important;
-  display: flex !important;
-  align-items: center !important;
-  gap: 8px !important;
+	font-size: 0.75rem !important;
+	padding: 4px 8px !important;
+	display: flex !important;
+	align-items: center !important;
+	gap: 8px !important;
 }
 
 .customDatePickerInput label {
-  margin-right: 8px !important;
+	margin-right: 8px !important;
 }

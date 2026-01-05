@@ -12,21 +12,21 @@ const NORSK_DATO = "DD.MM.YYYY";
 const ISO_DATO_FORMAT = "YYYY-MM-DD";
 
 export function isoDatoTilNorskDato(isoDato: string | undefined): string {
-  if (!isoDato) {
-    return "";
-  }
+	if (!isoDato) {
+		return "";
+	}
 
-  return dayjs(isoDato).tz("Europe/Oslo", true).format(NORSK_DATO_TID);
+	return dayjs(isoDato).tz("Europe/Oslo", true).format(NORSK_DATO_TID);
 }
 
 export function toIsoDate(date: string): string {
-  return dayjs(date, NORSK_DATO, true).format(ISO_DATO_FORMAT);
+	return dayjs(date, NORSK_DATO, true).format(ISO_DATO_FORMAT);
 }
 
 export function tilNorskDato(dato: Date): string {
-  return dayjs(dato).format(NORSK_DATO);
+	return dayjs(dato).format(NORSK_DATO);
 }
 
 export function isIsoDate(date: string): boolean {
-  return dayjs(date).isValid();
+	return dayjs(date).isValid();
 }
