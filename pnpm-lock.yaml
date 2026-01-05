@@ -55,8 +55,8 @@ importers:
         specifier: ^6.0.0
         version: 6.0.0(prettier@3.7.4)
       '@types/node':
-        specifier: ^24.10.1
-        version: 24.10.1
+        specifier: ^25.0.3
+        version: 25.0.3
       '@types/react':
         specifier: ^19.2.7
         version: 19.2.7
@@ -68,7 +68,7 @@ importers:
         version: 8.50.1(@typescript-eslint/parser@8.50.1(eslint@9.39.2(jiti@1.21.7))(typescript@5.9.3))(eslint@9.39.2(jiti@1.21.7))(typescript@5.9.3)
       '@vitejs/plugin-react':
         specifier: ^5.1.2
-        version: 5.1.2(vite@7.3.0(@types/node@24.10.1)(jiti@1.21.7)(terser@5.39.0)(yaml@2.8.1))
+        version: 5.1.2(vite@7.3.0(@types/node@25.0.3)(jiti@1.21.7)(terser@5.39.0)(yaml@2.8.1))
       autoprefixer:
         specifier: ^10.4.23
         version: 10.4.23(postcss@8.5.6)
@@ -101,7 +101,7 @@ importers:
         version: 16.2.7
       msw:
         specifier: ^2.12.5
-        version: 2.12.5(@types/node@24.10.1)(typescript@5.9.3)
+        version: 2.12.5(@types/node@25.0.3)(typescript@5.9.3)
       postcss:
         specifier: ^8.5.6
         version: 8.5.6
@@ -122,13 +122,13 @@ importers:
         version: 8.50.1(eslint@9.39.2(jiti@1.21.7))(typescript@5.9.3)
       vite:
         specifier: 7.3.0
-        version: 7.3.0(@types/node@24.10.1)(jiti@1.21.7)(terser@5.39.0)(yaml@2.8.1)
+        version: 7.3.0(@types/node@25.0.3)(jiti@1.21.7)(terser@5.39.0)(yaml@2.8.1)
       vite-plugin-css-injected-by-js:
         specifier: ^3.5.2
-        version: 3.5.2(vite@7.3.0(@types/node@24.10.1)(jiti@1.21.7)(terser@5.39.0)(yaml@2.8.1))
+        version: 3.5.2(vite@7.3.0(@types/node@25.0.3)(jiti@1.21.7)(terser@5.39.0)(yaml@2.8.1))
       vite-plugin-environment:
         specifier: ^1.1.3
-        version: 1.1.3(vite@7.3.0(@types/node@24.10.1)(jiti@1.21.7)(terser@5.39.0)(yaml@2.8.1))
+        version: 1.1.3(vite@7.3.0(@types/node@25.0.3)(jiti@1.21.7)(terser@5.39.0)(yaml@2.8.1))
 
 packages:
 
@@ -849,8 +849,8 @@ packages:
   '@types/json-schema@7.0.15':
     resolution: {integrity: sha512-5+fP8P8MFNC+AyZCDxrB2pkZFPGzqQWUzpSeuuVLvm8VMcorNYavBqoFcxK8bQz4Qsbn4oUEEem4wDLfcysGHA==}
 
-  '@types/node@24.10.1':
-    resolution: {integrity: sha512-GNWcUTRBgIRJD5zj+Tq0fKOJ5XZajIiBroOF0yvj2bSU1WvNdYS/dn9UxwsujGW4JX06dnHyjV2y9rRaybH0iQ==}
+  '@types/node@25.0.3':
+    resolution: {integrity: sha512-W609buLVRVmeW693xKfzHeIV6nJGGz98uCPfeXI1ELMLXVeKYZ9m15fAMSaUPBHYLGFsVRcMmSCksQOrZV9BYA==}
 
   '@types/react-dom@19.2.3':
     resolution: {integrity: sha512-jp2L/eY6fn+KgVVQAOqYItbF0VY/YApe5Mz2F0aykSO8gx31bYCZyvSeYxCHKvzHG5eZjc+zyaS5BrBWya2+kQ==}
@@ -2932,31 +2932,31 @@ snapshots:
 
   '@inquirer/ansi@1.0.2': {}
 
-  '@inquirer/confirm@5.1.21(@types/node@24.10.1)':
+  '@inquirer/confirm@5.1.21(@types/node@25.0.3)':
     dependencies:
-      '@inquirer/core': 10.3.2(@types/node@24.10.1)
-      '@inquirer/type': 3.0.10(@types/node@24.10.1)
+      '@inquirer/core': 10.3.2(@types/node@25.0.3)
+      '@inquirer/type': 3.0.10(@types/node@25.0.3)
     optionalDependencies:
-      '@types/node': 24.10.1
+      '@types/node': 25.0.3
 
-  '@inquirer/core@10.3.2(@types/node@24.10.1)':
+  '@inquirer/core@10.3.2(@types/node@25.0.3)':
     dependencies:
       '@inquirer/ansi': 1.0.2
       '@inquirer/figures': 1.0.15
-      '@inquirer/type': 3.0.10(@types/node@24.10.1)
+      '@inquirer/type': 3.0.10(@types/node@25.0.3)
       cli-width: 4.1.0
       mute-stream: 2.0.0
       signal-exit: 4.1.0
       wrap-ansi: 6.2.0
       yoctocolors-cjs: 2.1.3
     optionalDependencies:
-      '@types/node': 24.10.1
+      '@types/node': 25.0.3
 
   '@inquirer/figures@1.0.15': {}
 
-  '@inquirer/type@3.0.10(@types/node@24.10.1)':
+  '@inquirer/type@3.0.10(@types/node@25.0.3)':
     optionalDependencies:
-      '@types/node': 24.10.1
+      '@types/node': 25.0.3
 
   '@jridgewell/gen-mapping@0.3.13':
     dependencies:
@@ -3244,7 +3244,7 @@ snapshots:
 
   '@types/json-schema@7.0.15': {}
 
-  '@types/node@24.10.1':
+  '@types/node@25.0.3':
     dependencies:
       undici-types: 7.16.0
 
@@ -3349,7 +3349,7 @@ snapshots:
       '@typescript-eslint/types': 8.50.1
       eslint-visitor-keys: 4.2.1
 
-  '@vitejs/plugin-react@5.1.2(vite@7.3.0(@types/node@24.10.1)(jiti@1.21.7)(terser@5.39.0)(yaml@2.8.1))':
+  '@vitejs/plugin-react@5.1.2(vite@7.3.0(@types/node@25.0.3)(jiti@1.21.7)(terser@5.39.0)(yaml@2.8.1))':
     dependencies:
       '@babel/core': 7.28.5
       '@babel/plugin-transform-react-jsx-self': 7.27.1(@babel/core@7.28.5)
@@ -3357,7 +3357,7 @@ snapshots:
       '@rolldown/pluginutils': 1.0.0-beta.53
       '@types/babel__core': 7.20.5
       react-refresh: 0.18.0
-      vite: 7.3.0(@types/node@24.10.1)(jiti@1.21.7)(terser@5.39.0)(yaml@2.8.1)
+      vite: 7.3.0(@types/node@25.0.3)(jiti@1.21.7)(terser@5.39.0)(yaml@2.8.1)
     transitivePeerDependencies:
       - supports-color
 
@@ -4453,9 +4453,9 @@ snapshots:
 
   ms@2.1.3: {}
 
-  msw@2.12.5(@types/node@24.10.1)(typescript@5.9.3):
+  msw@2.12.5(@types/node@25.0.3)(typescript@5.9.3):
     dependencies:
-      '@inquirer/confirm': 5.1.21(@types/node@24.10.1)
+      '@inquirer/confirm': 5.1.21(@types/node@25.0.3)
       '@mswjs/interceptors': 0.40.0
       '@open-draft/deferred-promise': 2.2.0
       '@types/statuses': 2.0.6
@@ -4633,7 +4633,7 @@ snapshots:
       '@protobufjs/path': 1.1.2
       '@protobufjs/pool': 1.1.0
       '@protobufjs/utf8': 1.1.0
-      '@types/node': 24.10.1
+      '@types/node': 25.0.3
       long: 5.3.2
 
   proxy-from-env@1.1.0: {}
@@ -5139,15 +5139,15 @@ snapshots:
 
   util-deprecate@1.0.2: {}
 
-  vite-plugin-css-injected-by-js@3.5.2(vite@7.3.0(@types/node@24.10.1)(jiti@1.21.7)(terser@5.39.0)(yaml@2.8.1)):
+  vite-plugin-css-injected-by-js@3.5.2(vite@7.3.0(@types/node@25.0.3)(jiti@1.21.7)(terser@5.39.0)(yaml@2.8.1)):
     dependencies:
-      vite: 7.3.0(@types/node@24.10.1)(jiti@1.21.7)(terser@5.39.0)(yaml@2.8.1)
+      vite: 7.3.0(@types/node@25.0.3)(jiti@1.21.7)(terser@5.39.0)(yaml@2.8.1)
 
-  vite-plugin-environment@1.1.3(vite@7.3.0(@types/node@24.10.1)(jiti@1.21.7)(terser@5.39.0)(yaml@2.8.1)):
+  vite-plugin-environment@1.1.3(vite@7.3.0(@types/node@25.0.3)(jiti@1.21.7)(terser@5.39.0)(yaml@2.8.1)):
     dependencies:
-      vite: 7.3.0(@types/node@24.10.1)(jiti@1.21.7)(terser@5.39.0)(yaml@2.8.1)
+      vite: 7.3.0(@types/node@25.0.3)(jiti@1.21.7)(terser@5.39.0)(yaml@2.8.1)
 
-  vite@7.3.0(@types/node@24.10.1)(jiti@1.21.7)(terser@5.39.0)(yaml@2.8.1):
+  vite@7.3.0(@types/node@25.0.3)(jiti@1.21.7)(terser@5.39.0)(yaml@2.8.1):
     dependencies:
       esbuild: 0.27.2
       fdir: 6.5.0(picomatch@4.0.3)
@@ -5156,7 +5156,7 @@ snapshots:
       rollup: 4.54.0
       tinyglobby: 0.2.15
     optionalDependencies:
-      '@types/node': 24.10.1
+      '@types/node': 25.0.3
       fsevents: 2.3.3
       jiti: 1.21.7
       terser: 5.39.0
