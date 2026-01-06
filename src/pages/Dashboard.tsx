@@ -15,7 +15,7 @@ import { DateRangePicker } from "./components/DateRangePicker";
 import { JobCard } from "./components/JobCard";
 import styles from "./Dashboard.module.css";
 
-export function Dashboard() {
+export const Dashboard = () => {
 	const { data, error, mutate } = useGetjobTaskInfo();
 
 	const [alert, setAlert] = useState<{
@@ -290,4 +290,4 @@ export function Dashboard() {
 			)}
 		</>
 	);
-}
+};

@@ -1,6 +1,6 @@
 import { ExternalLinkIcon } from "@navikt/aksel-icons";
 import { Alert, BodyShort, Button, Heading, Link } from "@navikt/ds-react";
-import type { ReactNode } from "react";
+import type React from "react";
 import type { JobTaskInfo } from "../../types/JobTaskInfo";
 import { isoDatoTilNorskDato } from "../../util/datoUtil";
 import { getEnvironment } from "../../util/environment";
@@ -17,12 +17,12 @@ type JobCardAttributes = {
 interface JobCardProps {
 	title: string;
 	jobTaskInfo?: JobTaskInfo;
-	children?: ReactNode;
+	children?: React.ReactNode;
 	onStartClick: () => void;
 	attributes: JobCardAttributes;
 }
 
-export function JobCard(props: JobCardProps) {
+export const JobCard: React.FC<JobCardProps> = (props: JobCardProps) => {
 	return (
 		<div className={styles.jobCardContainer}>
 			<div className={styles.titleContainer}>
@@ -107,4 +107,4 @@ export function JobCard(props: JobCardProps) {
 			</div>
 		</div>
 	);
-}
+};

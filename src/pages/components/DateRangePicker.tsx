@@ -1,4 +1,5 @@
 import { DatePicker, HStack, useRangeDatepicker } from "@navikt/ds-react";
+import type React from "react";
 import { useEffect } from "react";
 import { tilNorskDato } from "../../util/datoUtil";
 import styles from "./DateRangePicker.module.css";
@@ -7,7 +8,9 @@ interface DateRangePickerProps {
 	onDateChange: (fromDate: string | null, toDate: string | null) => void;
 }
 
-export function DateRangePicker({ onDateChange }: DateRangePickerProps) {
+export const DateRangePicker: React.FC<DateRangePickerProps> = ({
+	onDateChange,
+}) => {
 	const { datepickerProps, toInputProps, fromInputProps, selectedRange } =
 		useRangeDatepicker({
 			fromDate: new Date("2024-01-01"),
@@ -43,4 +46,4 @@ export function DateRangePicker({ onDateChange }: DateRangePickerProps) {
 			</HStack>
 		</DatePicker>
 	);
-}
+};
