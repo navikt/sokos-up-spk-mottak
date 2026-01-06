@@ -1,8 +1,8 @@
 import { useEffect } from "react";
-import Dashboard from "./pages/Dashboard";
+import { Dashboard } from "./pages/Dashboard";
 import { initGrafanaFaro } from "./util/grafanaFaro";
 
-export default function App() {
+export function App() {
 	useEffect(() => {
 		initGrafanaFaro();
 	}, []);

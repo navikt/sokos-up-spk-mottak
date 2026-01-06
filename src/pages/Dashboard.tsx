@@ -11,11 +11,11 @@ import {
 import type { AvstemmingRequest } from "../api/models/AvstemmingRequest";
 import { useStore } from "../store/AppState";
 import { toIsoDate } from "../util/datoUtil";
-import DateRangePicker from "./components/DateRangePicker";
-import JobCard from "./components/JobCard";
+import { DateRangePicker } from "./components/DateRangePicker";
+import { JobCard } from "./components/JobCard";
 import styles from "./Dashboard.module.css";
 
-const Dashboard = () => {
+export function Dashboard() {
 	const { data, error, mutate } = useGetjobTaskInfo();
 
 	const [alert, setAlert] = useState<{
@@ -290,6 +290,4 @@ const Dashboard = () => {
 			)}
 		</>
 	);
-};
-
-export default Dashboard;
+}
