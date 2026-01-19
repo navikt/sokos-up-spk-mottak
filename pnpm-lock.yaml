@@ -12,14 +12,14 @@ importers:
         specifier: ^2.1.0
         version: 2.1.0
       '@navikt/aksel-icons':
-        specifier: ^7.38.0
-        version: 7.38.0
+        specifier: ^7.39.0
+        version: 7.39.0
       '@navikt/ds-css':
-        specifier: ^7.38.0
-        version: 7.38.0
+        specifier: ^7.39.0
+        version: 7.39.0
       '@navikt/ds-react':
-        specifier: ^7.38.0
-        version: 7.38.0(@types/react@19.2.8)(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
+        specifier: ^7.39.0
+        version: 7.39.0(@types/react@19.2.8)(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
       axios:
         specifier: ^1.13.2
         version: 1.13.2
@@ -46,8 +46,8 @@ importers:
         specifier: ^2.3.11
         version: 2.3.11
       '@navikt/aksel-stylelint':
-        specifier: ^7.38.0
-        version: 7.38.0
+        specifier: ^7.39.0
+        version: 7.39.0
       '@rollup/plugin-terser':
         specifier: ^0.4.4
         version: 0.4.4(rollup@4.54.0)
@@ -538,17 +538,17 @@ packages:
     resolution: {integrity: sha512-EFd6cVbHsgLa6wa4RljGj6Wk75qoHxUSyc5asLyyPSyuhIcdS2Q3Phw6ImS1q+CkALthJRShiYfKANcQMuMqsQ==}
     engines: {node: '>=18'}
 
-  '@navikt/aksel-icons@7.38.0':
-    resolution: {integrity: sha512-v+Kiss6gp/DXlbskkXrzfWUWvFEK+XQuhfauo0CP41JDyKsx3DSPKeB/pxFocio6MXGUNK/QQzjBfMPJh7ESng==, tarball: https://npm.pkg.github.com/download/@navikt/aksel-icons/7.38.0/f21368acbac4d1e28604e774d0b95f50404da561}
+  '@navikt/aksel-icons@7.39.0':
+    resolution: {integrity: sha512-M36ZJ1HRYxyonPJmxOBkK4gjEjT1AVNHRLEk3nNioJZhIj2EDGl7Uw/ALjyghfkxzsof5Q/2m7XXIu3DvInxYQ==, tarball: https://npm.pkg.github.com/download/@navikt/aksel-icons/7.39.0/a085e7e78b32ffa64bd7319ab6ac697a59941067}
 
-  '@navikt/aksel-stylelint@7.38.0':
-    resolution: {integrity: sha512-hb55cRqzAmdgfRTRt9VjRefpuKJwKizZerRPFkpn6mYu6iMjh4KhcU3cE+vPU4BA2uzrpcvdMkRplOAwnN8oKg==, tarball: https://npm.pkg.github.com/download/@navikt/aksel-stylelint/7.38.0/0d44774e9228fb371d945750c2478d1c440d3830}
+  '@navikt/aksel-stylelint@7.39.0':
+    resolution: {integrity: sha512-sKQqF21qpZ9VtnL/2wxjvUnbhUFof6yFDB8lMSaorVxwYdiGPyUVOtemulQM6/xt0CZLXQuI/4W8EI+4sR5eLQ==, tarball: https://npm.pkg.github.com/download/@navikt/aksel-stylelint/7.39.0/4ee8940ae9c808e62942c1d2aeff4c35d828bb1b}
 
-  '@navikt/ds-css@7.38.0':
-    resolution: {integrity: sha512-51dvtPgFHcfkKpnJ9fcwHJsfiyZuRsWaawSHxxv7jyXQkDTl8YEsZ0a31gAozgp2CW3wHJBDCSehC89Z9X4x8A==, tarball: https://npm.pkg.github.com/download/@navikt/ds-css/7.38.0/a150b0a282f19f2ba5c583406635fda7f4e4924a}
+  '@navikt/ds-css@7.39.0':
+    resolution: {integrity: sha512-ngLTzI4StcpvDawTzmcPtT7PkU+AIHxrjUqdGX6+ABIQkDxAslta+fIIwVoGrQ8PwC8kAjR4tt4O9Zk2IDv77A==, tarball: https://npm.pkg.github.com/download/@navikt/ds-css/7.39.0/cffa34e23426bc9f15f8f9f8f02ca30f2ddfdb2b}
 
-  '@navikt/ds-react@7.38.0':
-    resolution: {integrity: sha512-i/7lTbIvQ8ddw6TPXEAkrXmIM70haXyig+upB3M5mR8Vbl+DinJmUISBuzvaafWaj//2A5iWmwM9j577PrOKVw==, tarball: https://npm.pkg.github.com/download/@navikt/ds-react/7.38.0/cd426d7d27b652e85f9b511b46539b87c74f7e58}
+  '@navikt/ds-react@7.39.0':
+    resolution: {integrity: sha512-N/dH3FzQpK6hZtTToAr2eHYac3/Gh4OagHUbvaFF5fyTnFoQk3SH7IEcmQHX6YQk3gX1gRu/Y61fd14VTVNxxg==, tarball: https://npm.pkg.github.com/download/@navikt/ds-react/7.39.0/6ae2986f89fc61890e37016b9c683bf74a309adf}
     peerDependencies:
       '@types/react': ^17.0.30 || ^18 || ^19
       react: ^17 || ^18 || ^19
@@ -2187,17 +2187,17 @@ snapshots:
       outvariant: 1.4.3
       strict-event-emitter: 0.5.1
 
-  '@navikt/aksel-icons@7.38.0': {}
+  '@navikt/aksel-icons@7.39.0': {}
 
-  '@navikt/aksel-stylelint@7.38.0': {}
+  '@navikt/aksel-stylelint@7.39.0': {}
 
-  '@navikt/ds-css@7.38.0': {}
+  '@navikt/ds-css@7.39.0': {}
 
-  '@navikt/ds-react@7.38.0(@types/react@19.2.8)(react-dom@19.2.3(react@19.2.3))(react@19.2.3)':
+  '@navikt/ds-react@7.39.0(@types/react@19.2.8)(react-dom@19.2.3(react@19.2.3))(react@19.2.3)':
     dependencies:
       '@floating-ui/react': 0.27.8(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
       '@floating-ui/react-dom': 2.1.6(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
-      '@navikt/aksel-icons': 7.38.0
+      '@navikt/aksel-icons': 7.39.0
       '@navikt/ds-tokens': 7.40.0
       '@types/react': 19.2.8
       clsx: 2.1.1
