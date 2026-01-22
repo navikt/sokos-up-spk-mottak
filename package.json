@@ -17,7 +17,7 @@
 	"dependencies": {
 		"@grafana/faro-web-sdk": "^2.1.0",
 		"@navikt/aksel-icons": "^7.39.0",
-		"@navikt/ds-css": "^7.39.0",
+		"@navikt/ds-css": "^8.0.0",
 		"@navikt/ds-react": "^7.39.0",
 		"axios": "^1.13.2",
 		"dayjs": "^1.11.19",
