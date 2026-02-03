@@ -19,32 +19,32 @@ importers:
         version: 7.39.0
       '@navikt/ds-react':
         specifier: ^7.39.0
-        version: 7.39.0(@types/react@19.2.9)(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
+        version: 7.39.0(@types/react@19.2.10)(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
       axios:
-        specifier: ^1.13.2
-        version: 1.13.2
+        specifier: ^1.13.4
+        version: 1.13.4
       dayjs:
         specifier: ^1.11.19
         version: 1.11.19
       react:
-        specifier: ^19.2.3
-        version: 19.2.3
+        specifier: ^19.2.4
+        version: 19.2.4
       react-dom:
-        specifier: ^19.2.3
-        version: 19.2.3(react@19.2.3)
+        specifier: ^19.2.4
+        version: 19.2.4(react@19.2.4)
       swr:
         specifier: ^2.3.8
-        version: 2.3.8(react@19.2.3)
+        version: 2.3.8(react@19.2.4)
       zod:
         specifier: ^4.3.6
         version: 4.3.6
       zustand:
         specifier: ^5.0.10
-        version: 5.0.10(@types/react@19.2.9)(react@19.2.3)(use-sync-external-store@1.6.0(react@19.2.3))
+        version: 5.0.10(@types/react@19.2.10)(react@19.2.4)(use-sync-external-store@1.6.0(react@19.2.4))
     devDependencies:
       '@biomejs/biome':
-        specifier: ^2.3.12
-        version: 2.3.12
+        specifier: ^2.3.13
+        version: 2.3.13
       '@navikt/aksel-stylelint':
         specifier: ^7.39.0
         version: 7.39.0
@@ -55,11 +55,11 @@ importers:
         specifier: ^25.0.10
         version: 25.0.10
       '@types/react':
-        specifier: ^19.2.9
-        version: 19.2.9
+        specifier: ^19.2.10
+        version: 19.2.10
       '@types/react-dom':
         specifier: ^19.2.3
-        version: 19.2.3(@types/react@19.2.9)
+        version: 19.2.3(@types/react@19.2.10)
       '@vitejs/plugin-react':
         specifier: ^5.1.2
         version: 5.1.2(vite@7.3.1(@types/node@25.0.10)(jiti@1.21.7)(terser@5.39.0)(yaml@2.8.1))
@@ -182,55 +182,55 @@ packages:
     resolution: {integrity: sha512-qQ5m48eI/MFLQ5PxQj4PFaprjyCTLI37ElWMmNs0K8Lk3dVeOdNpB3ks8jc7yM5CDmVC73eMVk/trk3fgmrUpA==}
     engines: {node: '>=6.9.0'}
 
-  '@biomejs/biome@2.3.12':
-    resolution: {integrity: sha512-AR7h4aSlAvXj7TAajW/V12BOw2EiS0AqZWV5dGozf4nlLoUF/ifvD0+YgKSskT0ylA6dY1A8AwgP8kZ6yaCQnA==}
+  '@biomejs/biome@2.3.13':
+    resolution: {integrity: sha512-Fw7UsV0UAtWIBIm0M7g5CRerpu1eKyKAXIazzxhbXYUyMkwNrkX/KLkGI7b+uVDQ5cLUMfOC9vR60q9IDYDstA==}
     engines: {node: '>=14.21.3'}
     hasBin: true
 
-  '@biomejs/cli-darwin-arm64@2.3.12':
-    resolution: {integrity: sha512-cO6fn+KiMBemva6EARDLQBxeyvLzgidaFRJi8G7OeRqz54kWK0E+uSjgFaiHlc3DZYoa0+1UFE8mDxozpc9ieg==}
+  '@biomejs/cli-darwin-arm64@2.3.13':
+    resolution: {integrity: sha512-0OCwP0/BoKzyJHnFdaTk/i7hIP9JHH9oJJq6hrSCPmJPo8JWcJhprK4gQlhFzrwdTBAW4Bjt/RmCf3ZZe59gwQ==}
     engines: {node: '>=14.21.3'}
     cpu: [arm64]
     os: [darwin]
 
-  '@biomejs/cli-darwin-x64@2.3.12':
-    resolution: {integrity: sha512-/fiF/qmudKwSdvmSrSe/gOTkW77mHHkH8Iy7YC2rmpLuk27kbaUOPa7kPiH5l+3lJzTUfU/t6x1OuIq/7SGtxg==}
+  '@biomejs/cli-darwin-x64@2.3.13':
+    resolution: {integrity: sha512-AGr8OoemT/ejynbIu56qeil2+F2WLkIjn2d8jGK1JkchxnMUhYOfnqc9sVzcRxpG9Ycvw4weQ5sprRvtb7Yhcw==}
     engines: {node: '>=14.21.3'}
     cpu: [x64]
     os: [darwin]
 
-  '@biomejs/cli-linux-arm64-musl@2.3.12':
-    resolution: {integrity: sha512-aqkeSf7IH+wkzFpKeDVPSXy9uDjxtLpYA6yzkYsY+tVjwFFirSuajHDI3ul8en90XNs1NA0n8kgBrjwRi5JeyA==}
+  '@biomejs/cli-linux-arm64-musl@2.3.13':
+    resolution: {integrity: sha512-TUdDCSY+Eo/EHjhJz7P2GnWwfqet+lFxBZzGHldrvULr59AgahamLs/N85SC4+bdF86EhqDuuw9rYLvLFWWlXA==}
     engines: {node: '>=14.21.3'}
     cpu: [arm64]
     os: [linux]
 
-  '@biomejs/cli-linux-arm64@2.3.12':
-    resolution: {integrity: sha512-nbOsuQROa3DLla5vvsTZg+T5WVPGi9/vYxETm9BOuLHBJN3oWQIg3MIkE2OfL18df1ZtNkqXkH6Yg9mdTPem7A==}
+  '@biomejs/cli-linux-arm64@2.3.13':
+    resolution: {integrity: sha512-xvOiFkrDNu607MPMBUQ6huHmBG1PZLOrqhtK6pXJW3GjfVqJg0Z/qpTdhXfcqWdSZHcT+Nct2fOgewZvytESkw==}
     engines: {node: '>=14.21.3'}
     cpu: [arm64]
     os: [linux]
 
-  '@biomejs/cli-linux-x64-musl@2.3.12':
-    resolution: {integrity: sha512-kVGWtupRRsOjvw47YFkk5mLiAdpCPMWBo1jOwAzh+juDpUb2sWarIp+iq+CPL1Wt0LLZnYtP7hH5kD6fskcxmg==}
+  '@biomejs/cli-linux-x64-musl@2.3.13':
+    resolution: {integrity: sha512-0bdwFVSbbM//Sds6OjtnmQGp4eUjOTt6kHvR/1P0ieR9GcTUAlPNvPC3DiavTqq302W34Ae2T6u5VVNGuQtGlQ==}
     engines: {node: '>=14.21.3'}
     cpu: [x64]
     os: [linux]
 
-  '@biomejs/cli-linux-x64@2.3.12':
-    resolution: {integrity: sha512-CQtqrJ+qEEI8tgRSTjjzk6wJAwfH3wQlkIGsM5dlecfRZaoT+XCms/mf7G4kWNexrke6mnkRzNy6w8ebV177ow==}
+  '@biomejs/cli-linux-x64@2.3.13':
+    resolution: {integrity: sha512-s+YsZlgiXNq8XkgHs6xdvKDFOj/bwTEevqEY6rC2I3cBHbxXYU1LOZstH3Ffw9hE5tE1sqT7U23C00MzkXztMw==}
     engines: {node: '>=14.21.3'}
     cpu: [x64]
     os: [linux]
 
-  '@biomejs/cli-win32-arm64@2.3.12':
-    resolution: {integrity: sha512-Re4I7UnOoyE4kHMqpgtG6UvSBGBbbtvsOvBROgCCoH7EgANN6plSQhvo2W7OCITvTp7gD6oZOyZy72lUdXjqZg==}
+  '@biomejs/cli-win32-arm64@2.3.13':
+    resolution: {integrity: sha512-QweDxY89fq0VvrxME+wS/BXKmqMrOTZlN9SqQ79kQSIc3FrEwvW/PvUegQF6XIVaekncDykB5dzPqjbwSKs9DA==}
     engines: {node: '>=14.21.3'}
     cpu: [arm64]
     os: [win32]
 
-  '@biomejs/cli-win32-x64@2.3.12':
-    resolution: {integrity: sha512-qqGVWqNNek0KikwPZlOIoxtXgsNGsX+rgdEzgw82Re8nF02W+E2WokaQhpF5TdBh/D/RQ3TLppH+otp6ztN0lw==}
+  '@biomejs/cli-win32-x64@2.3.13':
+    resolution: {integrity: sha512-trDw2ogdM2lyav9WFQsdsfdVy1dvZALymRpgmWsvSez0BJzBjulhOT/t+wyKeh3pZWvwP3VMs1SoOKwO3wecMQ==}
     engines: {node: '>=14.21.3'}
     cpu: [x64]
     os: [win32]
@@ -801,8 +801,8 @@ packages:
     peerDependencies:
       '@types/react': ^19.2.0
 
-  '@types/react@19.2.9':
-    resolution: {integrity: sha512-Lpo8kgb/igvMIPeNV2rsYKTgaORYdO1XGVZ4Qz3akwOj0ySGYMPlQWa8BaLn0G63D1aSaAQ5ldR06wCpChQCjA==}
+  '@types/react@19.2.10':
+    resolution: {integrity: sha512-WPigyYuGhgZ/cTPRXB2EwUw+XvsRA3GqHlsP4qteqrnnjDrApbS7MxcGr/hke5iUoeB7E/gQtrs9I37zAJ0Vjw==}
 
   '@types/statuses@2.0.6':
     resolution: {integrity: sha512-xMAgYwceFhRA2zY+XbEA7mxYbA093wdiW8Vu6gZPGWy9cmOyU9XesH1tNcEWsKFd5Vzrqx5T3D38PWx1FIIXkA==}
@@ -862,8 +862,8 @@ packages:
     peerDependencies:
       postcss: ^8.1.0
 
-  axios@1.13.2:
-    resolution: {integrity: sha512-VPk9ebNqPcy5lRGuSlKx752IlDatOjT9paPlm8A7yOuW2Fbvp4X3JznJtT4f0GzGLLiWE9W8onz51SqLYwzGaA==}
+  axios@1.13.4:
+    resolution: {integrity: sha512-1wVkUaAO6WyaYtCkcYCOx12ZgpGf9Zif+qXa4n+oYzK558YryKqiL6UWwd5DqiH3VRW0GYhTZQ/vlgJrCoNQlg==}
 
   balanced-match@2.0.0:
     resolution: {integrity: sha512-1ugUSr8BHXRnK23KfuYS+gVMC3LB8QGH9W1iGtDPsNWoQbgtXSExkBu2aDR4epiGWZOjZsj6lDl/N/AqqTC3UA==}
@@ -1104,8 +1104,8 @@ packages:
       debug:
         optional: true
 
-  form-data@4.0.4:
-    resolution: {integrity: sha512-KrGhL9Q4zjj0kiUt5OO4Mr/A/jlI2jDYs5eHBpYHPcBEVSiipAvn2Ko2HnPe20rmcuuvMHNdZFp+4IlGTMF0Ow==}
+  form-data@4.0.5:
+    resolution: {integrity: sha512-8RipRLol37bNs2bhoV67fiTEvdTrbMUYcFTiy3+wuuOnUog2QBHCZWXDRijWQfAkhBj2Uf5UnVaiWwA5vdd82w==}
     engines: {node: '>= 6'}
 
   fraction.js@5.3.4:
@@ -1463,17 +1463,17 @@ packages:
     peerDependencies:
       react: '>=16.8.0'
 
-  react-dom@19.2.3:
-    resolution: {integrity: sha512-yELu4WmLPw5Mr/lmeEpox5rw3RETacE++JgHqQzd2dg+YbJuat3jH4ingc+WPZhxaoFzdv9y33G+F7Nl5O0GBg==}
+  react-dom@19.2.4:
+    resolution: {integrity: sha512-AXJdLo8kgMbimY95O2aKQqsz2iWi9jMgKJhRBAxECE4IFxfcazB2LmzloIoibJI3C12IlY20+KFaLv+71bUJeQ==}
     peerDependencies:
-      react: ^19.2.3
+      react: ^19.2.4
 
   react-refresh@0.18.0:
     resolution: {integrity: sha512-QgT5//D3jfjJb6Gsjxv0Slpj23ip+HtOpnNgnb2S5zU3CB26G/IDPGoy4RJB42wzFE46DRsstbW6tKHoKbhAxw==}
     engines: {node: '>=0.10.0'}
 
-  react@19.2.3:
-    resolution: {integrity: sha512-Ku/hhYbVjOQnXDZFv2+RibmLFGwFdeeKHFcOTlrt7xplBnya5OGn/hIRDsqDiSUcfORsDC7MPxwork8jBwsIWA==}
+  react@19.2.4:
+    resolution: {integrity: sha512-9nfp2hYpCwOjAN+8TZFGhtWEwgvWHXqESH8qT89AT/lWklpLON22Lc8pEtnpsZz7VmawabSU0gCjnj8aC0euHQ==}
     engines: {node: '>=0.10.0'}
 
   require-directory@2.1.1:
@@ -1921,39 +1921,39 @@ snapshots:
       '@babel/helper-string-parser': 7.27.1
       '@babel/helper-validator-identifier': 7.28.5
 
-  '@biomejs/biome@2.3.12':
+  '@biomejs/biome@2.3.13':
     optionalDependencies:
-      '@biomejs/cli-darwin-arm64': 2.3.12
-      '@biomejs/cli-darwin-x64': 2.3.12
-      '@biomejs/cli-linux-arm64': 2.3.12
-      '@biomejs/cli-linux-arm64-musl': 2.3.12
-      '@biomejs/cli-linux-x64': 2.3.12
-      '@biomejs/cli-linux-x64-musl': 2.3.12
-      '@biomejs/cli-win32-arm64': 2.3.12
-      '@biomejs/cli-win32-x64': 2.3.12
+      '@biomejs/cli-darwin-arm64': 2.3.13
+      '@biomejs/cli-darwin-x64': 2.3.13
+      '@biomejs/cli-linux-arm64': 2.3.13
+      '@biomejs/cli-linux-arm64-musl': 2.3.13
+      '@biomejs/cli-linux-x64': 2.3.13
+      '@biomejs/cli-linux-x64-musl': 2.3.13
+      '@biomejs/cli-win32-arm64': 2.3.13
+      '@biomejs/cli-win32-x64': 2.3.13
 
-  '@biomejs/cli-darwin-arm64@2.3.12':
+  '@biomejs/cli-darwin-arm64@2.3.13':
     optional: true
 
-  '@biomejs/cli-darwin-x64@2.3.12':
+  '@biomejs/cli-darwin-x64@2.3.13':
     optional: true
 
-  '@biomejs/cli-linux-arm64-musl@2.3.12':
+  '@biomejs/cli-linux-arm64-musl@2.3.13':
     optional: true
 
-  '@biomejs/cli-linux-arm64@2.3.12':
+  '@biomejs/cli-linux-arm64@2.3.13':
     optional: true
 
-  '@biomejs/cli-linux-x64-musl@2.3.12':
+  '@biomejs/cli-linux-x64-musl@2.3.13':
     optional: true
 
-  '@biomejs/cli-linux-x64@2.3.12':
+  '@biomejs/cli-linux-x64@2.3.13':
     optional: true
 
-  '@biomejs/cli-win32-arm64@2.3.12':
+  '@biomejs/cli-win32-arm64@2.3.13':
     optional: true
 
-  '@biomejs/cli-win32-x64@2.3.12':
+  '@biomejs/cli-win32-x64@2.3.13':
     optional: true
 
   '@cacheable/memory@2.0.6':
@@ -2076,18 +2076,18 @@ snapshots:
       '@floating-ui/core': 1.7.3
       '@floating-ui/utils': 0.2.10
 
-  '@floating-ui/react-dom@2.1.6(react-dom@19.2.3(react@19.2.3))(react@19.2.3)':
+  '@floating-ui/react-dom@2.1.6(react-dom@19.2.4(react@19.2.4))(react@19.2.4)':
     dependencies:
       '@floating-ui/dom': 1.7.4
-      react: 19.2.3
-      react-dom: 19.2.3(react@19.2.3)
+      react: 19.2.4
+      react-dom: 19.2.4(react@19.2.4)
 
-  '@floating-ui/react@0.27.8(react-dom@19.2.3(react@19.2.3))(react@19.2.3)':
+  '@floating-ui/react@0.27.8(react-dom@19.2.4(react@19.2.4))(react@19.2.4)':
     dependencies:
-      '@floating-ui/react-dom': 2.1.6(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
+      '@floating-ui/react-dom': 2.1.6(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
       '@floating-ui/utils': 0.2.10
-      react: 19.2.3
-      react-dom: 19.2.3(react@19.2.3)
+      react: 19.2.4
+      react-dom: 19.2.4(react@19.2.4)
       tabbable: 6.4.0
 
   '@floating-ui/utils@0.2.10': {}
@@ -2193,18 +2193,18 @@ snapshots:
 
   '@navikt/ds-css@7.39.0': {}
 
-  '@navikt/ds-react@7.39.0(@types/react@19.2.9)(react-dom@19.2.3(react@19.2.3))(react@19.2.3)':
+  '@navikt/ds-react@7.39.0(@types/react@19.2.10)(react-dom@19.2.4(react@19.2.4))(react@19.2.4)':
     dependencies:
-      '@floating-ui/react': 0.27.8(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
-      '@floating-ui/react-dom': 2.1.6(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
+      '@floating-ui/react': 0.27.8(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
+      '@floating-ui/react-dom': 2.1.6(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
       '@navikt/aksel-icons': 7.39.0
       '@navikt/ds-tokens': 7.40.0
-      '@types/react': 19.2.9
+      '@types/react': 19.2.10
       clsx: 2.1.1
       date-fns: 4.1.0
-      react: 19.2.3
-      react-day-picker: 9.7.0(react@19.2.3)
-      react-dom: 19.2.3(react@19.2.3)
+      react: 19.2.4
+      react-day-picker: 9.7.0(react@19.2.4)
+      react-dom: 19.2.4(react@19.2.4)
 
   '@navikt/ds-tokens@7.40.0': {}
 
@@ -2405,11 +2405,11 @@ snapshots:
     dependencies:
       undici-types: 7.16.0
 
-  '@types/react-dom@19.2.3(@types/react@19.2.9)':
+  '@types/react-dom@19.2.3(@types/react@19.2.10)':
     dependencies:
-      '@types/react': 19.2.9
+      '@types/react': 19.2.10
 
-  '@types/react@19.2.9':
+  '@types/react@19.2.10':
     dependencies:
       csstype: 3.2.3
 
@@ -2467,10 +2467,10 @@ snapshots:
       postcss: 8.5.6
       postcss-value-parser: 4.2.0
 
-  axios@1.13.2:
+  axios@1.13.4:
     dependencies:
       follow-redirects: 1.15.11
-      form-data: 4.0.4
+      form-data: 4.0.5
       proxy-from-env: 1.1.0
     transitivePeerDependencies:
       - debug
@@ -2697,7 +2697,7 @@ snapshots:
 
   follow-redirects@1.15.11: {}
 
-  form-data@4.0.4:
+  form-data@4.0.5:
     dependencies:
       asynckit: 0.4.0
       combined-stream: 1.0.8
@@ -3021,21 +3021,21 @@ snapshots:
     dependencies:
       safe-buffer: 5.2.1
 
-  react-day-picker@9.7.0(react@19.2.3):
+  react-day-picker@9.7.0(react@19.2.4):
     dependencies:
       '@date-fns/tz': 1.2.0
       date-fns: 4.1.0
       date-fns-jalali: 4.1.0-0
-      react: 19.2.3
+      react: 19.2.4
 
-  react-dom@19.2.3(react@19.2.3):
+  react-dom@19.2.4(react@19.2.4):
     dependencies:
-      react: 19.2.3
+      react: 19.2.4
       scheduler: 0.27.0
 
   react-refresh@0.18.0: {}
 
-  react@19.2.3: {}
+  react@19.2.4: {}
 
   require-directory@2.1.1: {}
 
@@ -3220,11 +3220,11 @@ snapshots:
 
   svg-tags@1.0.0: {}
 
-  swr@2.3.8(react@19.2.3):
+  swr@2.3.8(react@19.2.4):
     dependencies:
       dequal: 2.0.3
-      react: 19.2.3
-      use-sync-external-store: 1.6.0(react@19.2.3)
+      react: 19.2.4
+      use-sync-external-store: 1.6.0(react@19.2.4)
 
   tabbable@6.4.0: {}
 
@@ -3282,9 +3282,9 @@ snapshots:
       escalade: 3.2.0
       picocolors: 1.1.1
 
-  use-sync-external-store@1.6.0(react@19.2.3):
+  use-sync-external-store@1.6.0(react@19.2.4):
     dependencies:
-      react: 19.2.3
+      react: 19.2.4
 
   util-deprecate@1.0.2: {}
 
@@ -3362,8 +3362,8 @@ snapshots:
 
   zod@4.3.6: {}
 
-  zustand@5.0.10(@types/react@19.2.9)(react@19.2.3)(use-sync-external-store@1.6.0(react@19.2.3)):
+  zustand@5.0.10(@types/react@19.2.10)(react@19.2.4)(use-sync-external-store@1.6.0(react@19.2.4)):
     optionalDependencies:
-      '@types/react': 19.2.9
-      react: 19.2.3
-      use-sync-external-store: 1.6.0(react@19.2.3)
+      '@types/react': 19.2.10
+      react: 19.2.4
+      use-sync-external-store: 1.6.0(react@19.2.4)
