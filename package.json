@@ -79,6 +79,8 @@
 		"node": ">=24.13.0"
 	},
 	"pnpm": {
-		"overrides": {}
+		"overrides": {
+            "fast-uri": "3.1.2"
+        }
 	}
 }
