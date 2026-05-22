@@ -16,11 +16,11 @@
 		"pnpm:resolve": "node scripts/resolve-pnpm-version.mjs"
 	},
 	"dependencies": {
-		"@grafana/faro-web-sdk": "2.5.0",
+		"@grafana/faro-web-sdk": "2.6.3",
 		"@navikt/aksel-icons": "7.40.0",
 		"@navikt/ds-css": "7.40.0",
 		"@navikt/ds-react": "7.40.0",
-		"axios": "1.16.0",
+		"axios": "1.16.1",
 		"dayjs": "1.11.20",
 		"react": "19.2.6",
 		"react-dom": "19.2.6",
@@ -29,19 +29,19 @@
 		"zustand": "5.0.13"
 	},
 	"devDependencies": {
-		"@biomejs/biome": "2.4.14",
+		"@biomejs/biome": "2.4.15",
 		"@navikt/aksel-stylelint": "7.40.0",
-		"@types/node": "25.6.0",
+		"@types/node": "25.8.0",
 		"@types/react": "19.2.14",
 		"@types/react-dom": "19.2.3",
-		"@vitejs/plugin-react": "6.0.1",
+		"@vitejs/plugin-react": "6.0.2",
 		"husky": "9.1.7",
 		"lint-staged": "16.4.0",
-		"msw": "2.14.3",
-		"stylelint": "17.11.0",
+		"msw": "2.14.6",
+		"stylelint": "17.11.1",
 		"stylelint-config-standard": "40.0.0",
 		"typescript": "6.0.3",
-		"vite": "8.0.10",
+		"vite": "8.0.13",
 		"vite-plugin-css-injected-by-js": "5.0.1"
 	},
 	"msw": {
