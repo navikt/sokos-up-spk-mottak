@@ -17,9 +17,9 @@
 	},
 	"dependencies": {
 		"@grafana/faro-web-sdk": "2.8.2",
-		"@navikt/aksel-icons": "7.40.0",
-		"@navikt/ds-css": "7.40.0",
-		"@navikt/ds-react": "7.40.0",
+		"@navikt/aksel-icons": "8.15.0",
+		"@navikt/ds-css": "8.15.0",
+		"@navikt/ds-react": "8.15.0",
 		"axios": "1.18.1",
 		"dayjs": "1.11.21",
 		"react": "19.2.7",
@@ -30,7 +30,7 @@
 	},
 	"devDependencies": {
 		"@biomejs/biome": "2.5.2",
-		"@navikt/aksel-stylelint": "7.40.0",
+		"@navikt/aksel-stylelint": "8.15.0",
 		"@types/node": "26.1.0",
 		"@types/react": "19.2.17",
 		"@types/react-dom": "19.2.3",
@@ -55,7 +55,8 @@
 			"@navikt/aksel-stylelint/recommended"
 		],
 		"rules": {
-			"selector-class-pattern": null
+			"selector-class-pattern": "^[a-z][a-z0-9-]*(__[a-z][a-z0-9-]*)*(--[a-z][a-z0-9-]*)?$",
+			"custom-property-pattern": "[a-z][a-zA-Z0-9-]+"
 		}
 	},
 	"lint-staged": {

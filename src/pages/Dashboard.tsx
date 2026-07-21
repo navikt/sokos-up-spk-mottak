@@ -1,4 +1,4 @@
-import { Alert, Heading, HStack, VStack } from "@navikt/ds-react";
+import { Box, Heading, InlineMessage, VStack } from "@navikt/ds-react";
 import { useEffect, useState } from "react";
 import {
 	postAvstemming,
@@ -168,19 +168,21 @@ const Dashboard = () => {
 	return (
 		<>
 			<VStack align="center">
-				<HStack margin="4">
-					<Heading size="medium">SPK Mottak Dashboard</Heading>
-				</HStack>
+				<Box paddingBlock="space-16">
+					<Heading size="medium" level="1">
+						SPK Mottak Dashboard
+					</Heading>
+				</Box>
 			</VStack>
 			{error ? (
-				<VStack align="center" justify="center" gap="8">
-					<Alert variant="error">
+				<VStack align="center" justify="center" gap="space-32">
+					<InlineMessage status="error">
 						Det oppstod en feil ved henting av data fra serveren. Vennligst prøv
 						igjen senere.
-					</Alert>
+					</InlineMessage>
 				</VStack>
 			) : (
-				<VStack gap="4" align="stretch">
+				<VStack gap="space-16" align="stretch">
 					<JobCard
 						title="Les inn fil og valider transaksjoner"
 						attributes={{

@@ -24,20 +24,18 @@ const DateRangePicker: React.FC<{
 
 	return (
 		<DatePicker {...datepickerProps}>
-			<HStack wrap gap="4" justify="center">
+			<HStack wrap gap="space-16" justify="center">
 				<DatePicker.Input
 					{...fromInputProps}
 					label="Fra"
 					size="small"
 					className={styles.customDatePickerInput}
-					onKeyDown={(e) => e.preventDefault()}
 				/>
 				<DatePicker.Input
 					{...toInputProps}
 					label="Til"
 					size="small"
 					className={styles.customDatePickerInput}
-					onKeyDown={(e) => e.preventDefault()}
 				/>
 			</HStack>
 		</DatePicker>
