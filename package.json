@@ -16,20 +16,20 @@
 		"pnpm:resolve": "node scripts/resolve-pnpm-version.mjs"
 	},
 	"dependencies": {
-		"@grafana/faro-web-sdk": "2.9.0",
+		"@grafana/faro-web-sdk": "2.10.0",
 		"@navikt/aksel-icons": "7.40.0",
 		"@navikt/ds-css": "7.40.0",
 		"@navikt/ds-react": "7.40.0",
 		"axios": "1.19.0",
-		"dayjs": "1.11.21",
+		"dayjs": "1.11.23",
 		"react": "19.2.8",
 		"react-dom": "19.2.8",
-		"swr": "2.5.0",
+		"swr": "2.5.1",
 		"zod": "4.4.3",
-		"zustand": "5.0.14"
+		"zustand": "5.0.15"
 	},
 	"devDependencies": {
-		"@biomejs/biome": "2.5.7",
+		"@biomejs/biome": "2.5.9",
 		"@navikt/aksel-stylelint": "7.40.0",
 		"@types/node": "26.2.0",
 		"@types/react": "19.2.18",
